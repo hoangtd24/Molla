@@ -1,0 +1,30 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  & label {
+    color: #666666;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 10px;
+  }
+
+  & input {
+    outline: none;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    padding: 8px 16px;
+    color: #999999;
+    background-color: #fafafa;
+    border: 1px solid #e7e7e7;
+    &:focus {
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+.form-group + .form-group {
+  margin-top: 12px;
+}

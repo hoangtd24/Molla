@@ -1,0 +1,35 @@
+.action-item {
+  position: relative;
+  min-width: 60px;
+  & a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: var(--color-secondary);
+  }
+
+  & a:hover {
+    color: var(--color-primary);
+  }
+}
+
+.action-item__title {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.action-item__quantity {
+  position: absolute;
+  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -4px;
+  right: 10px;
+}
