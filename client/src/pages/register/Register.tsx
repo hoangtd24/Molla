@@ -1,20 +1,40 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Divider, Paper, Typography, Container } from "@mui/material";
-import InputItem from "../../components/inputItem/InputItem";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import classNames from "classnames/bind";
 import styles from "./Register.module.scss";
 import Button from "../../components/button/Button";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../../graphql/mutation/User";
 
+interface formValues {
+  username: string;
+  email: string;
+  password: string;
+}
 const cx = classNames.bind(styles);
 const Register = () => {
   const {
-    register,
-    // handleSubmit,
-    // watch,
-    // formState: { errors },
-  } = useForm();
+    register: registerInput,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<formValues>();
+  const navigate = useNavigate();
+
+  const [register, { loading }] = useMutation(REGISTER_USER);
+  const handleRegister: SubmitHandler<formValues> = async (
+    data: formValues
+  ) => {
+    const res = await register({ variables: { registerInput: data } });
+    if (res.data.register.code === 200) {
+      navigate("/login");
+    } else {
+      setError("email", { type: "error", message: res.data.register?.message });
+    }
+  };
   return (
     <Box
       sx={{
@@ -33,11 +53,14 @@ const Register = () => {
         <Paper
           sx={{
             maxWidth: "575px",
-            padding: "36px 60px 64px",
+            padding: "36px 60px 36px",
             margin: "auto",
           }}
         >
-          <form className={cx("login-form")}>
+          <form
+            className={cx("login-form")}
+            onSubmit={handleSubmit(handleRegister)}
+          >
             <Typography
               variant="h2"
               sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
@@ -52,28 +75,51 @@ const Register = () => {
               }}
             />
             <Box>
-              <InputItem
-                name="username"
-                register={register}
-                type="text"
-                label="Username *"
-                placeholder=""
-              />
-              <InputItem
-                name="email"
-                register={register}
-                type="email"
-                label="Email address *"
-                placeholder=""
-              />
-              <InputItem
-                name="password"
-                register={register}
-                type="text"
-                label="Password *"
-                placeholder=""
-              />
+              <div className={cx("form-group")}>
+                <label htmlFor="username">Username</label>
+                <input
+                  {...registerInput("username", {
+                    required: { value: true, message: "Username is required" },
+                  })}
+                  type="username"
+                  id="username"
+                />
+              </div>
+              <div className={cx("form-group")}>
+                <label htmlFor="email">Email</label>
+                <input
+                  {...registerInput("email", {
+                    required: { value: true, message: "Email is required" },
+                  })}
+                  type="email"
+                  id="email"
+                />
+              </div>
+
+              <div className={cx("form-group")}>
+                <label htmlFor="password">Password</label>
+                <input
+                  {...registerInput("password", {
+                    required: { value: true, message: "Password is required" },
+                    minLength: {
+                      value: 5,
+                      message: "Password must be at least 5 characters",
+                    },
+                  })}
+                  type="password"
+                  id="password"
+                />
+              </div>
             </Box>
+            {loading && <span className={cx("loading")}>Please wait ...</span>}
+            {(errors as any)[Object.keys(errors)[0]]?.message && (
+              <div className={cx("error")}>
+                <span className={cx("error-heading")}>Error:</span>
+                <span className={cx("error-title")}>
+                  {(errors as any)[Object.keys(errors)[0]]?.message}
+                </span>
+              </div>
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -85,7 +131,7 @@ const Register = () => {
               <Button
                 title="REGISTER"
                 onClick={() => {}}
-                icon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
+                rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
                 type="submit"
               />
               <Link
@@ -96,6 +142,22 @@ const Register = () => {
               </Link>
             </Box>
             <Divider />
+            <Box sx={{ marginTop: "24px" }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontSize: "14px",
+                  fontFamily: "Jost",
+                  color: "#777",
+                  textAlign: "center",
+                }}
+              >
+                Have an account?
+                <Link to="/login" className={cx("sign-up_btn")}>
+                  Sign in for Molla
+                </Link>
+              </Typography>
+            </Box>
           </form>
         </Paper>
       </Container>

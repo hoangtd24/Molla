@@ -1,26 +1,61 @@
-import { Route, Routes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import "./App.css";
-import { publicRoutes } from "./routes";
+import DefaultLayout from "./layouts/DefaultLayout";
+import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import PrivateOutlet from "./routes/PrivateOutlet";
+import Verify from "./routes/Verify";
+import ForgetPassword from "./pages/forget-password/ForgetPassword";
 function App() {
-  return (
-    <Routes>
-      {publicRoutes.map((route, index) => {
-        const Page = route.component;
-        const Layout = route.layout;
-        return (
-          <Route
-            key={index}
-            path={route.path}
-            element={
-              <Layout>
-                <Page />
-              </Layout>
-            }
-          />
-        );
-      })}
-    </Routes>
-  );
+  const element = useRoutes([
+    {
+      path: "",
+      element: <PrivateOutlet />,
+      children: [
+        {
+          path: "/",
+          element: (
+            <DefaultLayout>
+              <Home />
+            </DefaultLayout>
+          ),
+        },
+      ],
+    },
+    {
+      path: "",
+      element: <Verify />,
+      children: [
+        {
+          path: "/login",
+          element: (
+            <DefaultLayout>
+              <Login />
+            </DefaultLayout>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            <DefaultLayout>
+              <Register />
+            </DefaultLayout>
+          ),
+        },
+        {
+          path: "/forget-password",
+          element: (
+            <DefaultLayout>
+              <ForgetPassword />
+            </DefaultLayout>
+          ),
+        },
+      ],
+    },
+  ]);
+
+  return element;
 }
 
 export default App;

@@ -18,3 +18,6 @@ export const publicRoutes: Route[] = [
   { path: "/register", component: Register, layout: DefaultLayout },
   { path: "/", component: Home, layout: DefaultLayout },
 ];
+
+export const privateRoutes: Route[] = [
+];

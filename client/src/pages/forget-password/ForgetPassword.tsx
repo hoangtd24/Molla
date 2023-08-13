@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import classNames from "classnames/bind";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
-import styles from "./Login.module.scss";
+import styles from "./ForgetPassword.module.scss";
 
 import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../../graphql/mutation/User";
 import { useAuth } from "../../context/UserContext";
+import { LOGIN_USER } from "../../graphql/mutation/User";
 
 const cx = classNames.bind(styles);
 interface formValues {
   email: string;
-  password: string;
 }
-const Login = () => {
+const ForgetPassword = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigate = useNavigate();
   const [login, { loading }] = useMutation(LOGIN_USER);
@@ -67,18 +66,18 @@ const Login = () => {
           >
             <Typography
               variant="h2"
-              sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
-            >
-              Sign In
-            </Typography>
-            <Divider
               sx={{
-                borderBottomWidth: "unset",
-                borderColor: "var(--color-primary)",
-                marginBottom: "20px",
+                fontSize: "14px",
+                lineHeight: "1.5",
+                color: "#777",
+                fontFamily: "Jost",
+                fontWeight: "500",
               }}
-            />
-            <Box>
+            >
+              Lost your password? Please enter your username or email address.
+              You will receive a link to create a new password via email.
+            </Typography>
+            <Box sx={{ marginTop: "16px" }}>
               <div className={cx("form-group")}>
                 <label htmlFor="email">Email</label>
                 <input
@@ -87,21 +86,6 @@ const Login = () => {
                   })}
                   type="email"
                   id="email"
-                />
-              </div>
-
-              <div className={cx("form-group")}>
-                <label htmlFor="password">Password</label>
-                <input
-                  {...register("password", {
-                    required: { value: true, message: "Password is required" },
-                    minLength: {
-                      value: 5,
-                      message: "Password must be at least 5 characters",
-                    },
-                  })}
-                  type="password"
-                  id="password"
                 />
               </div>
             </Box>
@@ -123,32 +107,11 @@ const Login = () => {
               }}
             >
               <Button
-                title="LOG IN"
+                title="RESET PASSWORD"
                 onClick={() => {}}
                 rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
                 type="submit"
               />
-              <Link
-                className={cx("forgot-password__link")}
-                to="/forgot-password"
-              >
-                Forgot Your Password?
-              </Link>
-            </Box>
-            <Divider />
-            <Box sx={{ marginTop: "24px" }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: "14px",
-                  fontFamily: "Jost",
-                  color: "#777",
-                  textAlign: "center",
-                }}
-              >
-                Don't have an account?
-                <Link to="/register" className={cx("sign-up_btn")}>Sign up for Molla</Link>
-              </Typography>
             </Box>
           </form>
         </Paper>
@@ -157,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;

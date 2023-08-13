@@ -14,11 +14,21 @@ import MenuItem from "../menuItem/MenuItem";
 import Tippy from "@tippyjs/react/headless";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import { useAuth } from "../../context/UserContext";
+import { useMutation } from "@apollo/client";
+import { LOGOUT_USER } from "../../graphql/mutation/User";
 
 const cx = classNames.bind(styles);
 
 const Header = () => {
   const [visible, setVisible] = useState<boolean>(false);
+  const { isAuthenticated, logoutClient } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [logout, _] = useMutation(LOGOUT_USER);
+  const handleLogout = () => {
+    logoutClient();
+    logout();
+  };
   return (
     <header className={cx("header")}>
       <Box>
@@ -43,9 +53,19 @@ const Header = () => {
             <div className={cx("nav-dropdown")}>
               <DropDownItem options={["USD", "VND"]} />
               <DropDownItem options={["English", "Spanish", "VietNam"]} />
-              <Link to="/login" className={cx("signIn-link")}>
-                Sign in / Sign up
-              </Link>
+              {isAuthenticated ? (
+                <Link
+                  to="/login"
+                  className={cx("signIn-link")}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Link>
+              ) : (
+                <Link to="/login" className={cx("signIn-link")}>
+                  Sign in / Sign up
+                </Link>
+              )}
             </div>
           </Container>
         </Box>
