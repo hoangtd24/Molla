@@ -14,6 +14,7 @@ import { brands } from "../../data";
 import { ItemCenter } from "../../styles";
 import BannerItem from "../../components/banner/BannerItem";
 import { images } from "../../assets/images";
+import ProductItem from "../../components/productItem/ProductItem";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,13 +41,6 @@ function CustomTabPanel(props: TabPanelProps) {
     </div>
   );
 }
-
-// function a11yProps(index: number) {
-//   return {
-//     id: `simple-tab-${index}`,
-//     "aria-controls": `simple-tabpanel-${index}`,
-//   };
-// }
 
 const cx = classNames.bind(styles);
 const Home = () => {
@@ -185,7 +179,7 @@ const Home = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          Featured
+          <ProductItem />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           On Sale

@@ -1,32 +1,38 @@
-import { DataSource } from "typeorm";
-import { User } from "./entities/User";
-import express from "express";
-import http from "http";
-import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
 import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
+import { ApolloServer } from "apollo-server-express";
+import express from "express";
+import http from "http";
+import { buildSchema } from "type-graphql";
+import { DataSource } from "typeorm";
+import { User } from "./entities/User";
 import { GreetingResovler } from "./resolvers/Hello";
 
 import cors from "cors";
+import { Product } from "./entities/Product";
 import { UserResolver } from "./resolvers/User";
+import { Category } from "./entities/Category";
+import { Discount } from "./entities/Discount";
+import { DiscountResolver } from "./resolvers/Discount";
+import { CategoryResolver } from "./resolvers/Category";
+import { ProductResolver } from "./resolvers/Product";
 require("dotenv").config();
 
-const main = async () => {
-  const AppDataSource = new DataSource({
-    type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: "molla",
-    entities: [User],
-    synchronize: true,
-    logging: true,
-  });
+export const AppDataSource = new DataSource({
+  type: "postgres",
+  host: "localhost",
+  port: 5432,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: "molla",
+  entities: [User, Product, Category, Discount],
+  synchronize: true,
+  logging: true,
+});
 
+const main = async () => {
   AppDataSource.initialize()
     .then(() => {
       console.log("Data Source has been initialized!");
@@ -48,7 +54,13 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       validate: false,
-      resolvers: [GreetingResovler, UserResolver],
+      resolvers: [
+        GreetingResovler,
+        UserResolver,
+        DiscountResolver,
+        CategoryResolver,
+        ProductResolver
+      ],
     }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),

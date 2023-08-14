@@ -1,9 +1,9 @@
 import { User } from "../entities/User";
-import { RegisterInput } from "../types/RegisterInput";
+import { RegisterInput } from "../types/inputTypes/RegisterInput";
 import { UserMutationResponse } from "../types/UserMutationResponse";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import argon2 from "argon2";
-import { LoginInput } from "../types/LoginInput";
+import { LoginInput } from "../types/inputTypes/LoginInput";
 import { createToken, sendRefreshToken } from "../utils/createToken";
 import { Context } from "../types/Context";
 

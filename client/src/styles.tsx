@@ -1,3 +1,4 @@
+
 export const styleNavHeader = {
   fontFamily: "Jost",
   fontSize: "16px",
@@ -11,3 +12,4 @@ export const ItemCenter = {
   justifyContent: "center",
   alignItems: "center",
 };
+
