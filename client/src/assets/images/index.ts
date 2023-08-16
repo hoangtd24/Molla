@@ -10,6 +10,12 @@ import banner1 from "./banner-1.jpg";
 import banner2 from "./banner-2.jpg";
 import banner3 from "./banner-3.jpg";
 import banner4 from "./banner-4.jpg";
+import banner5 from "./banner-5.jpg";
+import banner5Small from "./banner-5-small.jpg";
+import abImg1 from "./abimg-1.png";
+import Blog1 from "./blog-1.jpg";
+import Blog2 from "./blog-2.jpg";
+import Blog3 from "./blog-3.jpg";
 
 export const images = {
   brand1: brand1,
@@ -23,4 +29,10 @@ export const images = {
   banner2,
   banner3,
   banner4,
+  banner5,
+  banner5Small,
+  abImg1,
+  Blog1,
+  Blog2,
+  Blog3,
 };

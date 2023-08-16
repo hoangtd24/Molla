@@ -1,10 +1,11 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
 import { Product } from "../entities/Product";
 import { ProductInput } from "../types/inputTypes/ProductInput";
 import { ProductMutationResponse } from "../types/ProductResponse";
+import { GetProductArg } from "../types/argTypes/GetProductArg";
 
 @Resolver()
 export class ProductResolver {
@@ -56,8 +57,23 @@ export class ProductResolver {
   }
 
   @Query((_returns) => [Product])
-  async getProduct(): Promise<Product[]> {
-    const products = await Product.find({});
+  async getProducts(
+    @Args() { skip, category }: GetProductArg
+  ): Promise<Product[]> {
+    const findOptions: { [key in string]: any } = {
+      take: 10,
+    };
+    if (skip) {
+      findOptions.skip = skip;
+    }
+    if (category) {
+      findOptions.where = {
+        categories: {
+          id: category,
+        },
+      };
+    }
+    const products = await Product.find(findOptions);
     return products;
   }
 }

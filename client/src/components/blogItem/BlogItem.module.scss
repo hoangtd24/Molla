@@ -1,0 +1,17 @@
+.title {
+  font-size: 18px;
+  color: #333;
+}
+
+.read_btn {
+  font-size: 15px;
+  color: #333;
+  display: block;
+  padding: 8px 16px;
+  margin-top: 8px;
+
+  &:hover {
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
+  }
+}

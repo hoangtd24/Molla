@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import Button from "../button/Button";
+import Button from "../../../../components/button/Button";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 interface bannerProps {
@@ -50,7 +50,7 @@ const BannerItem = ({
             fontSize: "24px",
             color: "#333",
             fontFamily: "Jost",
-            marginBottom: "14px"
+            marginBottom: "14px",
           }}
         >
           {subTitle}

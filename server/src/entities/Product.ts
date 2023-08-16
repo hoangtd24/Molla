@@ -7,8 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from "typeorm";
 import { Category } from "./Category";
 import { Discount } from "./Discount";

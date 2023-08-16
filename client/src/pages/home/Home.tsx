@@ -1,65 +1,68 @@
-import { Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Container, Divider, Grid, Tab, Tabs } from "@mui/material";
 import classNames from "classnames/bind";
+import React, { useEffect, useState } from "react";
 import Slider from "../../components/slider/Slider";
 import styles from "./Home.module.scss";
-import React from "react";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
-// Import Swiper styles
+import { useLazyQuery } from "@apollo/client";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { brands } from "../../data";
-import { ItemCenter } from "../../styles";
-import BannerItem from "../../components/banner/BannerItem";
 import { images } from "../../assets/images";
-import ProductItem from "../../components/productItem/ProductItem";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+import BannerItem from "./components/banner/BannerItem";
+import DealBanner from "./components/banner/DealBanner";
+import BlogItem from "../../components/blogItem/BlogItem";
+import ProductItem, {
+  ProductItemProps,
+} from "../../components/productItem/ProductItem";
+import { brands } from "../../data";
+import { GET_PRODUCTS } from "../../graphql/mutation/query/Product";
+import { ItemCenter } from "../../styles";
+import PolicyItem from "./components/policyItem/PolicyItem";
+import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import SupportOutlinedIcon from "@mui/icons-material/SupportOutlined";
 
 const cx = classNames.bind(styles);
 const Home = () => {
+  const tabStyle = {
+    fontSize: "30px",
+    textTransform: "none",
+    fontWeight: "500",
+    fontFamily: "Jost",
+  };
   const [value, setValue] = React.useState(0);
-
+  const [skip, setSkip] = useState(0);
+  const [category, setCategory] = useState<number | null>(null);
+  // const [tab, setTab] = useState<number | null>(null);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const [getProducts, { data }] = useLazyQuery(GET_PRODUCTS);
+  useEffect(() => {
+    getProducts({
+      variables: {
+        skip: skip,
+        category: category,
+      },
+    });
+  }, [category, skip]);
   return (
     <Box>
       <Slider />
       <Box sx={{ backgroundColor: "#fff" }}>
         <Swiper
-          // install Swiper modules
           slidesPerView={4}
           pagination={{ clickable: true }}
           style={{ maxHeight: "500px" }}
           breakpoints={{
-            480: { slidesPerView: 2 },
+            300: { slidesPerView: 2 },
             600: { slidesPerView: 3 },
             1200: { slidesPerView: 4 },
           }}
@@ -151,42 +154,179 @@ const Home = () => {
           >
             <Tab
               label="Featured"
-              sx={{
-                fontSize: "30px",
-                textTransform: "none",
-                fontWeight: "500",
-                fontFamily: "Jost",
-              }}
+              sx={tabStyle}
+              onClick={() => setCategory(null)}
             />
-            <Tab
-              label="On Sale"
-              sx={{
-                fontSize: "30px",
-                textTransform: "none",
-                fontWeight: "500",
-                fontFamily: "Jost",
-              }}
-            />
+            <Tab label="On Sale" sx={tabStyle} onClick={() => setCategory(1)} />
             <Tab
               label="Top Rated"
-              sx={{
-                fontSize: "30px",
-                textTransform: "none",
-                fontWeight: "500",
-                fontFamily: "Jost",
+              sx={tabStyle}
+              onClick={() => {
+                setCategory(2);
               }}
             />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-          <ProductItem />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          On Sale
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Top Rated
-        </CustomTabPanel>
+        <Box sx={{ padding: "40px 24px", minHeight: "600px" }}>
+          <Swiper
+            modules={[Pagination]}
+            slidesPerView={4}
+            pagination={{ clickable: true }}
+            style={{ maxHeight: "500px" }}
+            spaceBetween={32}
+            breakpoints={{
+              300: { slidesPerView: 2 },
+              600: { slidesPerView: 3 },
+              1200: { slidesPerView: 4 },
+            }}
+          >
+            {data &&
+              data.getProducts?.map((props: ProductItemProps) => (
+                <SwiperSlide key={props.id}>
+                  <ProductItem {...props} />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </Box>
+      </Box>
+      <DealBanner />
+      <Box sx={{ padding: "48px 0" }}>
+        <Container sx={{ minHeight: "600px" }}>
+          <Box sx={{ marginBottom: "24px" }}>
+            <h2 className={cx("heading")}>Top Selling Products</h2>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button
+                className={cx("tab_btn", { active: category === null })}
+                onClick={() => setCategory(null)}
+              >
+                All
+              </button>
+              <button
+                className={cx("tab_btn", { active: category === 1 })}
+                onClick={() => setCategory(1)}
+              >
+                Lighting
+              </button>
+              <button
+                className={cx("tab_btn", { active: category === 2 })}
+                onClick={() => setCategory(2)}
+              >
+                Furniture
+              </button>
+              <button
+                className={cx("tab_btn", { active: category === 3 })}
+                onClick={() => setCategory(3)}
+              >
+                Decor
+              </button>
+            </Box>
+          </Box>
+          <Grid container spacing={2}>
+            {data &&
+              data.getProducts?.map((props: ProductItemProps) => (
+                <Grid item lg={2.4} md={3} sm={4} xs={6} key={props.id}>
+                  <ProductItem {...props} />
+                </Grid>
+              ))}
+          </Grid>
+          <Divider />
+        </Container>
+      </Box>
+      <Box>
+        <Container sx={{ minHeight: "600px" }}>
+          <Box sx={{ marginBottom: "24px" }}>
+            <h2 className={cx("heading")}>From Our Blog</h2>
+          </Box>
+          <Box>
+            <Swiper
+              slidesPerView={3}
+              pagination={{ clickable: true }}
+              spaceBetween={20}
+              breakpoints={{
+                300: { slidesPerView: 1 },
+                600: { slidesPerView: 2 },
+                1200: { slidesPerView: 3 },
+              }}
+            >
+              <SwiperSlide>
+                <BlogItem
+                  image={images.Blog1}
+                  title="Fusce lacinia arcuet nulla."
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <BlogItem
+                  image={images.Blog2}
+                  title="Quisque volutpat mattis eros."
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <BlogItem
+                  image={images.Blog3}
+                  title="Cras ornare tristique elit."
+                />
+              </SwiperSlide>
+            </Swiper>
+          </Box>
+          <button className={cx("more_btn")}>
+            View More Articles
+            <ArrowRightAltIcon sx={{ fontSize: "18px" }} />
+          </button>
+        </Container>
+      </Box>
+      <Box sx={{ backgroundColor: "#fcf8e7", padding: "46px 0" }}>
+        <Container>
+          <Grid container spacing={{ lg: 2, xs: 3 }}>
+            <Grid item xs={6} md={4} lg={3}>
+              <PolicyItem
+                icon={
+                  <RocketLaunchOutlinedIcon
+                    sx={{ fontSize: "34px", color: "#333" }}
+                  />
+                }
+                heading="Free Shipping"
+                desc="orders $50 or more"
+              />
+            </Grid>
+            <Grid item xs={6} md={4} lg={3}>
+              <PolicyItem
+                icon={
+                  <RotateLeftOutlinedIcon
+                    sx={{ fontSize: "34px", color: "#333" }}
+                  />
+                }
+                heading="Free Returns"
+                desc="within 30 days"
+              />
+            </Grid>
+            <Grid item xs={6} md={4} lg={3}>
+              <PolicyItem
+                icon={
+                  <InfoOutlinedIcon sx={{ fontSize: "34px", color: "#333" }} />
+                }
+                heading="Get 20% Off 1 Item"
+                desc="When you sign up"
+              />
+            </Grid>
+            <Grid item xs={6} md={12} lg={3}>
+              <PolicyItem
+                icon={
+                  <SupportOutlinedIcon
+                    sx={{ fontSize: "34px", color: "#333" }}
+                  />
+                }
+                heading="We Support"
+                desc="24/7 amazing services"
+              />
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
     </Box>
   );
