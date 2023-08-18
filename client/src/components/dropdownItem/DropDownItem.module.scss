@@ -44,6 +44,10 @@
   & li:hover {
     color: var(--color-primary);
   }
+
+  &.bottom-left {
+    transform: translateX(-100%);
+  }
 }
 
 .drop-down__item:hover .drop-down__options {

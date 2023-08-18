@@ -6,11 +6,13 @@ import {
   List,
   ListItem,
   ListItemText,
+  Divider,
 } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./Footer.module.scss";
 import { Link } from "react-router-dom";
 import { styleNavHeader } from "../../styles";
+import { Facebook, Youtube } from "../icons/icon";
 
 const cx = classNames.bind(styles);
 
@@ -225,6 +227,29 @@ const Footer = () => {
               </Grid>
             </Grid>
           </Box>
+          <Divider />
+          <div className={cx("footer-bottom")}>
+            <div className={cx("footer-bottom__left")}>
+              <p>Copyright © 2023 Molla Store. All Rights Reserved.</p>
+              <Link to="/">Terms Of Use</Link>
+              <Link to="/">Privacy Policy</Link>
+            </div>
+            <div className={cx("footer-bottom__right")}>
+              <p>Social Media: </p>
+              <ul>
+                <li>
+                  <Link to="/">
+                    <Facebook />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/">
+                    <Youtube />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
         </Container>
       </Box>
     </footer>

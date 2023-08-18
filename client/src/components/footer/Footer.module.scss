@@ -1,5 +1,5 @@
 .footer {
-  padding: 60px 0;
+  padding: 60px 0 24px 0;
 }
 .logo {
   width: 104px;
@@ -22,4 +22,65 @@
   font-size: 20px;
   font-weight: 400;
   letter-spacing: 1px;
+}
+
+.footer-bottom {
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-bottom__left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #999;
+  gap: 6px;
+
+  & a {
+    display: block;
+    border-bottom: 1px solid #999;
+  }
+}
+
+.footer-bottom__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  & p {
+    font-size: 14px;
+    color: #999;
+  }
+
+  & ul {
+    display: flex;
+    gap: 4px;
+
+    & li {
+      display: flex;
+
+      & a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-bottom__left{
+    display: flex;
+    flex-direction: column;
+  }
 }

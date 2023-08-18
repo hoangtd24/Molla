@@ -16,6 +16,7 @@ import abImg1 from "./abimg-1.png";
 import Blog1 from "./blog-1.jpg";
 import Blog2 from "./blog-2.jpg";
 import Blog3 from "./blog-3.jpg";
+import parallax from "./parallax.jpg";
 
 export const images = {
   brand1: brand1,
@@ -35,4 +36,5 @@ export const images = {
   Blog1,
   Blog2,
   Blog3,
+  parallax,
 };

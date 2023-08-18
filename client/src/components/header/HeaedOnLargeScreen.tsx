@@ -2,33 +2,42 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Box, Container, Divider, Grid, Typography } from "@mui/material";
-import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
-import ActionIcon from "../actionIcon/ActionIcon";
-import DropDownItem from "../dropdownItem/DropDownItem";
+
+import { useMutation } from "@apollo/client";
+import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
-import styles from "./Header.module.scss";
-import MenuItem from "../menuItem/MenuItem";
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Tippy from "@tippyjs/react/headless";
-import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/UserContext";
-import { useMutation } from "@apollo/client";
 import { LOGOUT_USER } from "../../graphql/mutation/User";
+import ActionIcon from "../actionIcon/ActionIcon";
+import DropDownItem from "../dropdownItem/DropDownItem";
+import MenuItem from "../menuItem/MenuItem";
+import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
 
-const Header = () => {
+const HeaderOnLargeScreen = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const { isAuthenticated, logoutClient } = useAuth();
+  const [fixHeader, setFixHeader] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [logout, _] = useMutation(LOGOUT_USER);
   const handleLogout = () => {
     logoutClient();
     logout();
   };
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setFixHeader(window.scrollY > 185);
+    });
+  }, []);
+
+  console.log(fixHeader);
   return (
     <header className={cx("header")}>
       <Box>
@@ -50,6 +59,7 @@ const Header = () => {
             <Link to="/" className={cx("read-more")}>
               Read more ...
             </Link>
+
             <div className={cx("nav-dropdown")}>
               <DropDownItem options={["USD", "VND"]} />
               <DropDownItem options={["English", "Spanish", "VietNam"]} />
@@ -131,7 +141,7 @@ const Header = () => {
             </Grid>
           </Grid>
         </Container>
-        <Box>
+        <div className={cx(`${fixHeader ? "fixed" : ""}`)}>
           <Container>
             <Divider />
             <Grid container>
@@ -140,25 +150,23 @@ const Header = () => {
                   sx={{
                     position: "relative",
                     height: "100%",
-                    paddingX: "16px",
-                    ":hover": {
-                      backgroundColor: `var(--color-primary)`,
-                    },
                   }}
                 >
                   <Tippy
                     visible={visible}
                     interactive
                     placement={"bottom-start"}
-                    offset={[-16, 0]}
+                    offset={[0, 0]}
                     onClickOutside={() => setVisible(false)}
+                    maxWidth={276}
                     render={(attrs) => (
                       <div className={cx("box")} tabIndex={1} {...attrs}>
                         <Box
                           sx={{
-                            width: "100%",
                             display: "flex",
                             flexDirection: "column",
+                            width: "calc((100vw - 48px)/4)",
+                            maxWidth: "288px",
                           }}
                         >
                           <Link to="/">Furniture</Link>
@@ -180,10 +188,12 @@ const Header = () => {
                         alignItems: "center",
                         gap: "16px",
                         cursor: "pointer",
+                        paddingX: "16px",
                       }}
                       width={"100%"}
                       height={"100%"}
                       onClick={() => setVisible(!visible)}
+                      className={cx({ isActive: visible })}
                     >
                       {visible ? <CloseIcon /> : <MenuIcon />}
                       <Typography
@@ -236,10 +246,10 @@ const Header = () => {
               </Grid>
             </Grid>
           </Container>
-        </Box>
+        </div>
       </Box>
     </header>
   );
 };
 
-export default Header;
+export default HeaderOnLargeScreen;

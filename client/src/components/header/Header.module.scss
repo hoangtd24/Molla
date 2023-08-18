@@ -94,3 +94,40 @@
     opacity: 0.95;
   }
 }
+
+.top-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #999;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.header-main__left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu_icon {
+  display: flex;
+  margin-right: 10px;
+}
+
+.isActive {
+  background-color: var(--color-primary);
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 100;
+  transition: all 0.2s linear;
+}

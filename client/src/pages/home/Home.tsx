@@ -1,4 +1,13 @@
-import { Box, Container, Divider, Grid, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  Typography,
+} from "@mui/material";
 import classNames from "classnames/bind";
 import React, { useEffect, useState } from "react";
 import Slider from "../../components/slider/Slider";
@@ -39,6 +48,7 @@ const Home = () => {
   const [value, setValue] = React.useState(0);
   const [skip, setSkip] = useState(0);
   const [category, setCategory] = useState<number | null>(null);
+  const matches = useMediaQuery("(max-width:900px)");
   // const [tab, setTab] = useState<number | null>(null);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -167,7 +177,12 @@ const Home = () => {
             />
           </Tabs>
         </Box>
-        <Box sx={{ padding: "40px 24px", minHeight: "600px" }}>
+        <Box
+          sx={{
+            padding: "40px 24px",
+            minHeight: `${matches ? "400px" : "600px"} `,
+          }}
+        >
           <Swiper
             modules={[Pagination]}
             slidesPerView={4}
@@ -327,6 +342,62 @@ const Home = () => {
             </Grid>
           </Grid>
         </Container>
+      </Box>
+      <Box
+        sx={{
+          backgroundImage: `url(${images.parallax})`,
+          paddingTop: `${matches ? "40%" : "20%"}`,
+          backgroundSize: "cover",
+          position: "relative",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
+              fontSize: `${matches ? "30px" : "40px"}`,
+              color: "#fff",
+              fontFamily: "Jost",
+              marginBottom: "4px",
+            }}
+          >
+            Get The Latest Deals
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            component="span"
+            sx={{
+              fontSize: `${matches ? "14px" : "15px"}`,
+              color: "#fff",
+              fontFamily: "Jost",
+              fontWeight: "300",
+              marginBottom: `${matches ? "16px" : "24px"}`,
+            }}
+          >
+            and receive <strong>$20 coupon</strong> for first shopping
+          </Typography>
+          <div className={cx("give-cupon")}>
+            <input
+              type="text"
+              placeholder="Enter your email address"
+              required
+            />
+            <button>
+              Subscribe <ArrowRightAltIcon sx={{ fontSize: "16px" }} />
+            </button>
+          </div>
+        </Box>
       </Box>
     </Box>
   );
