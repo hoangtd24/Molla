@@ -42,3 +42,8 @@ ul,
 li {
   list-style: none;
 }
+
+div.swiper-slide-thumb-active {
+  border: 1px solid var(--color-primary);
+  opacity: 1 !important;
+}

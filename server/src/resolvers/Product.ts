@@ -6,6 +6,7 @@ import { Product } from "../entities/Product";
 import { ProductInput } from "../types/inputTypes/ProductInput";
 import { ProductMutationResponse } from "../types/ProductResponse";
 import { GetProductArg } from "../types/argTypes/GetProductArg";
+import { IsNull, Not } from "typeorm";
 
 @Resolver()
 export class ProductResolver {
@@ -58,10 +59,13 @@ export class ProductResolver {
 
   @Query((_returns) => [Product])
   async getProducts(
-    @Args() { skip, category }: GetProductArg
+    @Args() { skip, category, sale }: GetProductArg
   ): Promise<Product[]> {
     const findOptions: { [key in string]: any } = {
       take: 10,
+      relations: {
+        discount: true,
+      },
     };
     if (skip) {
       findOptions.skip = skip;
@@ -70,6 +74,14 @@ export class ProductResolver {
       findOptions.where = {
         categories: {
           id: category,
+        },
+      };
+    }
+    if (sale) {
+      findOptions.where = {
+        ...findOptions.where,
+        discount: {
+          id: Not(IsNull()),
         },
       };
     }

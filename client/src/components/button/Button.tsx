@@ -7,7 +7,7 @@ interface btnProps {
   title: string;
   leftIcon?: ReactElement;
   rightIcon?: ReactElement;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "submit" | "reset" | "button";
   large?: boolean;
   small?: boolean;

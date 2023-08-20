@@ -1,0 +1,267 @@
+.zoom-img,
+.thumb-img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.thumb-swiper {
+  & > div {
+    & > div {
+      display: flex;
+      align-items: center;
+      opacity: 0.8;
+    }
+  }
+}
+
+.product-title {
+  font-size: 24px;
+  color: #333;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.product-review {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  & span {
+    font-size: 16px;
+  }
+
+  .product-review__count {
+    font-size: 13px;
+    color: #999;
+  }
+}
+
+.product-price {
+  display: flex;
+  gap: 12px;
+  font-size: 20px;
+  margin-bottom: 12px;
+  & .product-price__new {
+    color: #ef837b;
+  }
+
+  .product-price__old {
+    color: #ccc;
+    text-decoration: line-through;
+  }
+}
+.product-desc {
+  display: block;
+  width: calc(100% - 24px);
+  font-size: 14px;
+  color: #777;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.product-qty {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.product-qty__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+  border: 1px solid #d7d7d7;
+  width: 130px;
+}
+
+.product-qty__icons {
+  display: flex;
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-bottom: 24px;
+}
+
+.product-actions__wishlist {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    & span {
+      color: vaR(--color-primary);
+    }
+
+    & span::before {
+      display: block;
+    }
+  }
+  & span {
+    position: relative;
+    font-size: 14px;
+    color: #666;
+    font-family: "Jost";
+    transition: all 0.2s linear;
+  }
+
+  & span::before {
+    display: none;
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-primary);
+  }
+}
+
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-category {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #999;
+  gap: 12px;
+}
+.product-category__list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: #999;
+  font-size: 14px;
+  font-family: "Jost";
+  padding: 20px 0;
+
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+.product-social__icon {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.tab-wrapper {
+  padding: 24px 30px;
+  border: 1px solid #ccc;
+}
+
+.tab-content {
+  & p {
+    font-size: 14px;
+    color: #999;
+    line-height: 2;
+  }
+
+  & ul,
+  li {
+    list-style: unset;
+    font-size: 14px;
+    color: #333;
+  }
+
+  & ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0 16px 32px;
+  }
+}
+
+.tab-title {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.product-attribute {
+  & h5 {
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+  }
+
+  & p {
+    font-size: 14px;
+    color: #999;
+    padding: 8px 0;
+  }
+}
+
+.form-title {
+  font-size: 15px;
+  color: #333;
+  font-weight: 400;
+  margin-top: 16px;
+}
+
+.form-sub-title {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.required {
+  color: #ef837b;
+  font-weight: 500;
+}
+.form-field + .form-field {
+  margin-top: 16px;
+}
+
+.tab-link {
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #333;
+  margin-left: 8px;
+}
+
+.field-name {
+  font-weight: 300;
+}
+
+.related-heading {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 30px;
+}

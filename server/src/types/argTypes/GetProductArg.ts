@@ -7,4 +7,7 @@ export class GetProductArg {
 
   @Field(() => Int, { nullable: true })
   category?: number;
+
+  @Field(() => Boolean, { nullable: true })
+  sale?: boolean;
 }

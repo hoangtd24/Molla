@@ -7,6 +7,7 @@ import Register from "./pages/register/Register";
 import PrivateOutlet from "./routes/PrivateOutlet";
 import Verify from "./routes/Verify";
 import ForgetPassword from "./pages/forget-password/ForgetPassword";
+import DetailProduct from "./pages/detai-product/DetailProduct";
 function App() {
   const element = useRoutes([
     {
@@ -48,6 +49,14 @@ function App() {
           element: (
             <DefaultLayout>
               <ForgetPassword />
+            </DefaultLayout>
+          ),
+        },
+        {
+          path: "/detail-product/:id",
+          element: (
+            <DefaultLayout>
+              <DetailProduct />
             </DefaultLayout>
           ),
         },
