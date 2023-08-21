@@ -47,3 +47,62 @@ div.swiper-slide-thumb-active {
   border: 1px solid var(--color-primary);
   opacity: 1 !important;
 }
+
+.prev,
+.next {
+  display: flex;
+  position: absolute;
+  top: 35%;
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  z-index: 1;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.prev {
+  left: 8px;
+}
+
+.next {
+  right: 8px;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.prev:active,
+.next:active {
+  color: var(--color-primary);
+  background-color: #fff;
+  border-color: var(--color-primary);
+}
+
+.prev.swiper-button-disabled {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: unset;
+  color: #ccc;
+}
+
+.prev.swiper-button-disabled:active {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: unset;
+  border-color: #ccc;
+}
+
+.next.swiper-button-disabled {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: unset;
+  color: #ccc;
+}
+
+.next.swiper-button-disabled:active {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: unset;
+  border-color: #ccc;
+}

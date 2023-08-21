@@ -41,7 +41,7 @@ const Slider = () => {
                 <Typography
                   variant="h2"
                   sx={{
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     fontWeight: "400",
                     color: "#222",
                     fontFamily: "Jost",
@@ -54,7 +54,7 @@ const Slider = () => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     color: "var(--color-primary)",
                     fontFamily: "Jost",
                   }}
@@ -92,7 +92,7 @@ const Slider = () => {
                 <Typography
                   variant="h2"
                   sx={{
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     fontWeight: "400",
                     color: "#222",
                     fontFamily: "Jost",
@@ -105,7 +105,7 @@ const Slider = () => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     color: "var(--color-primary)",
                     fontFamily: "Jost",
                   }}
@@ -142,7 +142,7 @@ const Slider = () => {
                 <Typography
                   variant="h2"
                   sx={{
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     fontWeight: "400",
                     color: "#222",
                     fontFamily: "Jost",
@@ -155,7 +155,7 @@ const Slider = () => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    fontSize: "66px",
+                    fontSize: "clamp(40px, 7vw, 66px)",
                     color: "var(--color-primary)",
                     fontFamily: "Jost",
                   }}

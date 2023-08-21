@@ -88,4 +88,39 @@ export class ProductResolver {
     const products = await Product.find(findOptions);
     return products;
   }
+
+  @Query((_returns) => ProductMutationResponse)
+  async detailProduct(@Arg("id") id: number): Promise<ProductMutationResponse> {
+    try {
+      const product = (await Product.findOne({
+        where: {
+          id: id,
+        },
+        relations: {
+          discount: true,
+          categories: true,
+        },
+      })) as Product;
+      const products = await Product.find({
+        where: {
+          categories: product.categories.map((product) => {
+            return { id: product.id };
+          }),
+        },
+      });
+      return {
+        code: 200,
+        success: true,
+        message: "Get product information successfully",
+        product: product,
+        relatedProduct: products,
+      };
+    } catch (error) {
+      return {
+        code: 200,
+        success: true,
+        message: error.message,
+      };
+    }
+  }
 }

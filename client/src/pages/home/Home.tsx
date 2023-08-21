@@ -50,7 +50,7 @@ const Home = () => {
   const [category, setCategory] = useState<number | null>(null);
   const matches = useMediaQuery("(max-width:900px)");
   // const [tab, setTab] = useState<number | null>(null);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

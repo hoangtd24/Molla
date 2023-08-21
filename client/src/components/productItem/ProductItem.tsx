@@ -15,12 +15,18 @@ export interface ProductItemProps {
     discount_percent: number;
   } | null;
 }
-const ProductItem = ({ name, price, images, discount }: ProductItemProps) => {
+const ProductItem = ({
+  id,
+  name,
+  price,
+  images,
+  discount,
+}: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
   return (
     <div className={cx("product-wrapper")}>
       <Link
-        to="/"
+        to={`/detail-product/${id}`}
         onMouseOver={() => setBgImage(images[1])}
         onMouseLeave={() => setBgImage(images[0])}
       >
@@ -30,17 +36,21 @@ const ProductItem = ({ name, price, images, discount }: ProductItemProps) => {
             backgroundImage: `url(${bgImage})`,
           }}
         ></div>
-        <div className={cx("product-actions")}>
-          <span>
-            <FavoriteBorderIcon sx={{ fontSize: "16px" }} />
-          </span>
-          <span>
-            <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />
-          </span>
-        </div>
       </Link>
+      <div className={cx("product-actions")}>
+        <span>
+          <FavoriteBorderIcon sx={{ fontSize: "16px" }} />
+        </span>
+        <span>
+          <Link to={`/detail-product/${id}`}>
+            <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />
+          </Link>
+        </span>
+      </div>
       <div className={cx("product-content")}>
-        <span className={cx("product-name")}>{name}</span>
+        <Link to={`/detail-product/${id}`} className={cx("product-name")}>
+          {name}
+        </Link>
         <div className={cx("product-price")}>
           <span className={cx("product-price__new")}>${price}</span>
           {discount && (

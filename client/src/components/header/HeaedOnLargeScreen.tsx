@@ -35,9 +35,13 @@ const HeaderOnLargeScreen = () => {
     window.addEventListener("scroll", () => {
       setFixHeader(window.scrollY > 185);
     });
+    return () => {
+      window.removeEventListener("scroll", () => {
+        setFixHeader(window.scrollY > 185);
+      });
+    };
   }, []);
 
-  console.log(fixHeader);
   return (
     <header className={cx("header")}>
       <Box>

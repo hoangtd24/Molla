@@ -6,4 +6,7 @@ import { Product } from "../entities/Product";
 export class ProductMutationResponse extends MutationResponse {
   @Field({ nullable: true })
   product?: Product;
+
+  @Field(() => [Product], { nullable: true })
+  relatedProduct?: Product[];
 }
