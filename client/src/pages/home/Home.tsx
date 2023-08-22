@@ -29,7 +29,7 @@ import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import { brands } from "../../data";
-import { GET_PRODUCTS } from "../../graphql/mutation/query/Product";
+import { GET_PRODUCTS } from "../../graphql/query/Product";
 import { ItemCenter } from "../../styles";
 import PolicyItem from "./components/policyItem/PolicyItem";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";

@@ -17,6 +17,7 @@ const ReviewItem = () => {
               name="simple-controlled"
               value={4}
               sx={{ fontSize: "16px" }}
+              disabled
             />
           </div>
           <span className={cx("review-time")}>3 years ago</span>

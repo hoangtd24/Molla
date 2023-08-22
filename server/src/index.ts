@@ -18,6 +18,8 @@ import { Discount } from "./entities/Discount";
 import { DiscountResolver } from "./resolvers/Discount";
 import { CategoryResolver } from "./resolvers/Category";
 import { ProductResolver } from "./resolvers/Product";
+import { Review } from "./entities/Review";
+import { ReviewResolver } from "./resolvers/Review";
 require("dotenv").config();
 
 export const AppDataSource = new DataSource({
@@ -27,7 +29,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: "molla",
-  entities: [User, Product, Category, Discount],
+  entities: [User, Product, Category, Discount, Review],
   synchronize: true,
   logging: true,
 });
@@ -59,7 +61,8 @@ const main = async () => {
         UserResolver,
         DiscountResolver,
         CategoryResolver,
-        ProductResolver
+        ProductResolver,
+        ReviewResolver,
       ],
     }),
     plugins: [

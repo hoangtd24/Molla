@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -36,10 +36,12 @@ import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import ReviewItem from "../../components/reviewItem/ReviewItem";
-import { DETAIL_PRODUCT } from "../../graphql/mutation/query/Product";
+import { DETAIL_PRODUCT } from "../../graphql/query/Product";
 import styles from "./DetailProduct.module.scss";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import { useRef } from "react";
+import { CREATE_REVIEW } from "../../graphql/mutation/Review";
 
 const cx = classNames.bind(styles);
 
@@ -47,17 +49,37 @@ export default function DetailProduct() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
   const [value, setValue] = useState(0);
+  const [rating, setRating] = useState<number | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const param = useParams();
+
+  //handle change tabs
   const handleChange = (
     _event: React.SyntheticEvent<Element, Event>,
     newValue: number
   ) => {
     setValue(newValue);
   };
-  const param = useParams();
+
   const { data } = useQuery(DETAIL_PRODUCT, {
     variables: { id: Number(param.id) },
   });
-  console.log(data);
+
+  const [createReview, _] = useMutation(CREATE_REVIEW);
+  //create review
+  const handleCreateReview = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    createReview({
+      variables: {
+        reviewInput: {
+          rating,
+          userId: 1,
+          content: inputRef.current?.value,
+          productId: Number(param.id),
+        },
+      },
+    });
+  };
   return (
     <Box>
       <Container>
@@ -307,7 +329,10 @@ export default function DetailProduct() {
                 <h4 className={cx("tab-title")}>Reviews</h4>
                 <ReviewItem />
                 <Divider />
-                <form className={cx("rating-form")}>
+                <form
+                  className={cx("rating-form")}
+                  onSubmit={handleCreateReview}
+                >
                   <h4 className={cx("form-title")}>Add A Review</h4>
                   <p className={cx("form-sub-title")}>
                     Your email address will not be published. Required fields
@@ -319,8 +344,12 @@ export default function DetailProduct() {
                     </p>
                     <Rating
                       name="simple-controlled"
-                      value={0}
+                      value={rating}
                       sx={{ fontSize: "16px" }}
+                      onChange={(_event, newValue) => {
+                        setRating(newValue);
+                      }}
+                      precision={0.5}
                     />
                   </div>
                   <div className={cx("form-field")}>
@@ -335,6 +364,7 @@ export default function DetailProduct() {
                         outline: "none",
                         padding: "12px 20px",
                       }}
+                      ref={inputRef}
                     />
                   </div>
                   <Button title="Submit" type="submit" small></Button>

@@ -7,10 +7,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryGeneratedColumn
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Category } from "./Category";
 import { Discount } from "./Discount";
+import { Review } from "./Review";
 
 @ObjectType()
 @Entity()
@@ -40,4 +42,8 @@ export class Product extends BaseEntity {
   @ManyToMany(() => Category)
   @JoinTable()
   categories: Category[];
+
+  @Field(() => [Review])
+  @OneToMany(() => Review, (review) => review.user)
+  reviews?: Review[];
 }
