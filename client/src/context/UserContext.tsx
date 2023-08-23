@@ -24,11 +24,11 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const setToken = (value: string): void => {
-    localStorage.setItem("access_token", JSON.stringify(value));
+    localStorage.setItem("access_token", value);
   };
 
-  const getToken = (): string | undefined => {
-    return JSON.parse(localStorage.getItem("acess_token") as string);
+  const getToken = (): string | null => {
+    return localStorage.getItem("access_token");
   };
 
   const logoutClient = () => {

@@ -9,67 +9,114 @@ import Verify from "./routes/Verify";
 import ForgetPassword from "./pages/forget-password/ForgetPassword";
 import DetailProduct from "./pages/detai-product/DetailProduct";
 import { useLayoutEffect } from "react";
+import { useAuth } from "./context/UserContext";
 function App() {
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  const { isAuthenticated } = useAuth();
 
-  const element = useRoutes([
-    {
-      path: "",
-      element: <PrivateOutlet />,
-      children: [
-        {
-          path: "/",
-          element: (
-            <DefaultLayout>
-              <Home />
-            </DefaultLayout>
-          ),
-        },
-        {
-          path: "/detail-product/:id",
-          element: (
-            <DefaultLayout>
-              <DetailProduct />
-            </DefaultLayout>
-          ),
-        },
-      ],
-    },
-    {
-      path: "",
-      element: <Verify />,
-      children: [
-        {
-          path: "/login",
-          element: (
-            <DefaultLayout>
-              <Login />
-            </DefaultLayout>
-          ),
-        },
-        {
-          path: "/register",
-          element: (
-            <DefaultLayout>
-              <Register />
-            </DefaultLayout>
-          ),
-        },
-        {
-          path: "/forget-password",
-          element: (
-            <DefaultLayout>
-              <ForgetPassword />
-            </DefaultLayout>
-          ),
-        },
-      ],
-    },
-  ]);
+  const element = useRoutes(
+    isAuthenticated
+      ? [
+          {
+            path: "",
+            element: <PrivateOutlet />,
+            children: [
+              {
+                path: "/",
+                element: (
+                  <DefaultLayout>
+                    <Home />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/detail-product/:id",
+                element: (
+                  <DefaultLayout>
+                    <DetailProduct />
+                  </DefaultLayout>
+                ),
+              },
+            ],
+          },
+          {
+            path: "",
+            element: <Verify />,
+            children: [
+              {
+                path: "/login",
+                element: (
+                  <DefaultLayout>
+                    <Login />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/register",
+                element: (
+                  <DefaultLayout>
+                    <Register />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/forget-password",
+                element: (
+                  <DefaultLayout>
+                    <ForgetPassword />
+                  </DefaultLayout>
+                ),
+              },
+            ],
+          },
+        ]
+      : [
+          {
+            path: "/login",
+            element: (
+              <DefaultLayout>
+                <Login />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/register",
+            element: (
+              <DefaultLayout>
+                <Register />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/forget-password",
+            element: (
+              <DefaultLayout>
+                <ForgetPassword />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/",
+            element: (
+              <DefaultLayout>
+                <Home />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/detail-product/:id",
+            element: (
+              <DefaultLayout>
+                <DetailProduct />
+              </DefaultLayout>
+            ),
+          },
+        ]
+  );
 
   return element;
 }

@@ -5,6 +5,7 @@ import styles from "./ProductItem.module.scss";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useState } from "react";
+import { addToCart } from "../../utils/cart";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: number;
@@ -59,7 +60,7 @@ const ProductItem = ({
             </span>
           )}
         </div>
-        <button className={cx("add_btn")}>
+        <button className={cx("add_btn")} onClick={() => addToCart(id)}>
           <span className={cx("icon")}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: "16px" }} />
           </span>

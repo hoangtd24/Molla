@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import classNames from "classnames/bind";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -42,6 +42,8 @@ import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import { useRef } from "react";
 import { CREATE_REVIEW } from "../../graphql/mutation/Review";
+import ModalCustom from "../../components/modal/ModalCustom";
+import { addToCart } from "../../utils/cart";
 
 const cx = classNames.bind(styles);
 
@@ -50,8 +52,10 @@ export default function DetailProduct() {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
   const [value, setValue] = useState(0);
   const [rating, setRating] = useState<number | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const param = useParams();
+  const navigate = useNavigate();
 
   //handle change tabs
   const handleChange = (
@@ -65,10 +69,15 @@ export default function DetailProduct() {
     variables: { id: Number(param.id) },
   });
 
-  const [createReview, _] = useMutation(CREATE_REVIEW);
+  const [createReview] = useMutation(CREATE_REVIEW);
   //create review
   const handleCreateReview = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setOpenModal(true);
+      return;
+    }
     createReview({
       variables: {
         reviewInput: {
@@ -190,6 +199,7 @@ export default function DetailProduct() {
                     <ShoppingCartOutlinedIcon sx={{ fontSize: "18px" }} />
                   }
                   large
+                  onClick={() => addToCart(Number(param.id))}
                 />
                 <button className={cx("product-actions__wishlist")}>
                   <FavoriteBorderOutlinedIcon
@@ -420,6 +430,14 @@ export default function DetailProduct() {
           </Box>
         </Box>
       </Container>
+      <ModalCustom
+        open={openModal}
+        action={() => {
+          setOpenModal(false);
+          navigate("/login");
+        }}
+        cancelAction={() => setOpenModal(false)}
+      />
     </Box>
   );
 }

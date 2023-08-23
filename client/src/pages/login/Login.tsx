@@ -8,8 +8,8 @@ import Button from "../../components/button/Button";
 import styles from "./Login.module.scss";
 
 import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../../graphql/mutation/User";
 import { useAuth } from "../../context/UserContext";
+import { LOGIN_USER } from "../../graphql/mutation/User";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -130,7 +130,7 @@ const Login = () => {
               />
               <Link
                 className={cx("forgot-password__link")}
-                to="/forgot-password"
+                to="/forget-password"
               >
                 Forgot Your Password?
               </Link>
@@ -147,7 +147,9 @@ const Login = () => {
                 }}
               >
                 Don't have an account?
-                <Link to="/register" className={cx("sign-up_btn")}>Sign up for Molla</Link>
+                <Link to="/register" className={cx("sign-up_btn")}>
+                  Sign up for Molla
+                </Link>
               </Typography>
             </Box>
           </form>

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-// import { UserAuthPlayload } from "./UserAuthPayload";
+import { UserAuthPayload } from "./userAuthPayload";
 
 export type Context = {
   req: Request;
   res: Response;
-  // user?: UserAuthPlayload;
+  user?: UserAuthPayload;
 };

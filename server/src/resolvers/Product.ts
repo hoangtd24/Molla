@@ -1,12 +1,12 @@
 import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
+import { IsNull, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
 import { Product } from "../entities/Product";
-import { ProductInput } from "../types/inputTypes/ProductInput";
 import { ProductMutationResponse } from "../types/ProductResponse";
 import { GetProductArg } from "../types/argTypes/GetProductArg";
-import { IsNull, Not } from "typeorm";
+import { ProductInput } from "../types/inputTypes/ProductInput";
 
 @Resolver()
 export class ProductResolver {
