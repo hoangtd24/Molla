@@ -1,4 +1,12 @@
-import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Args,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from "type-graphql";
 import { IsNull, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
@@ -7,9 +15,30 @@ import { Product } from "../entities/Product";
 import { ProductMutationResponse } from "../types/ProductResponse";
 import { GetProductArg } from "../types/argTypes/GetProductArg";
 import { ProductInput } from "../types/inputTypes/ProductInput";
+import { Review } from "../entities/Review";
 
-@Resolver()
+@Resolver((_of) => Product)
 export class ProductResolver {
+  @FieldResolver()
+  async averageRating(@Root() product: Product) {
+    const reviews = await Review.find({
+      where: {
+        product: {
+          id: product.id,
+        },
+      },
+    });
+    if (reviews.length === 0) {
+      return 0;
+    } else {
+      const totalRating = reviews.reduce(
+        (prevValue, currentValue) => prevValue + currentValue.rating,
+        0
+      );
+      return (totalRating / reviews.length).toFixed(1);
+    }
+  }
+
   @Mutation((_returns) => ProductMutationResponse)
   async createProduct(
     @Arg("productInput")
@@ -99,6 +128,16 @@ export class ProductResolver {
         relations: {
           discount: true,
           categories: true,
+          reviews: {
+            user: true,
+            like: true,
+            dislike: true,
+          },
+        },
+        order: {
+          reviews: {
+            createdAt: "DESC",
+          },
         },
       })) as Product;
       const products = await Product.find({

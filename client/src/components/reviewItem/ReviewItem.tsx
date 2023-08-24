@@ -5,30 +5,33 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 
 const cx = classNames.bind(styles);
-
-const ReviewItem = () => {
+export interface ReviewItemprops {
+  id: number;
+  user: {
+    username: string;
+  };
+  content: string;
+  rating: number;
+}
+const ReviewItem = ({ user, content, rating }: ReviewItemprops) => {
   return (
     <div className={cx("review-wrap")}>
-      <h4 className={cx("review-author")}>John Doe</h4>
+      <h4 className={cx("review-author")}>{user.username}</h4>
       <div className={cx("review-content")}>
         <div className={cx("review-content__left")}>
           <div className={cx("review-rating")}>
             <Rating
               name="simple-controlled"
-              value={4}
+              value={rating}
               sx={{ fontSize: "16px" }}
               disabled
+              precision={0.5}
             />
           </div>
           <span className={cx("review-time")}>3 years ago</span>
         </div>
         <div className={cx("review-content__right")}>
-          <p>
-            Morbi purus libero, faucibus adipiscing, commodo quis, gravida id,
-            est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper
-            lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi
-            neque euismod dui
-          </p>
+          <p>{content}</p>
           <div className={cx("actions")}>
             <div className={cx("actions-item")}>
               <span className={cx("actions-item__icon")}>

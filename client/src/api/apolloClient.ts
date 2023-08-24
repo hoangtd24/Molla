@@ -22,5 +22,23 @@ export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     addTypename: false,
+    typePolicies: {
+      Query: {
+        fields: {
+          getReviews: {
+            keyArgs: ["productId"],
+            merge(existing, incomming) {
+              return {
+                ...incomming,
+                paginatedReviews: [
+                  ...(existing?.paginatedReviews || []),
+                  ...incomming.paginatedReviews,
+                ],
+              };
+            },
+          },
+        },
+      },
+    },
   }),
 });

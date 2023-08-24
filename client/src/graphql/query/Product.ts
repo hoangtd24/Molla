@@ -21,8 +21,16 @@ export const DETAIL_PRODUCT = gql`
       code
       success
       message
-      product {
+      relatedProduct {
         id
+        name
+        price
+        discount {
+          discount_percent
+        }
+        images
+      }
+      product {
         name
         price
         discount {
@@ -33,15 +41,19 @@ export const DETAIL_PRODUCT = gql`
           id
           name
         }
-      }
-      relatedProduct {
-        id
-        name
-        price
-        images
-        discount {
-          id
-          discount_percent
+        averageRating
+        reviews {
+          user {
+            username
+          }
+          content
+          rating
+          like {
+            id
+          }
+          dislike {
+            id
+          }
         }
       }
     }

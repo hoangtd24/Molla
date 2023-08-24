@@ -1,9 +1,12 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -31,7 +34,21 @@ export class Review extends BaseEntity {
   @Column()
   content: string;
 
-  @Field()
-  @Column()
+  @Field(() => Float)
+  @Column({ type: "float" })
   rating: number;
+
+  @Field(() => Date)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field(() => [User])
+  @ManyToMany(() => User)
+  @JoinTable()
+  like: User[];
+
+  @Field(() => [User])
+  @ManyToMany(() => User)
+  @JoinTable()
+  dislike: User[];
 }

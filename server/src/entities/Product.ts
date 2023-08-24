@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, Float, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -44,6 +44,9 @@ export class Product extends BaseEntity {
   categories: Category[];
 
   @Field(() => [Review])
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, (review) => review.product)
   reviews?: Review[];
+
+  @Field(() => Float)
+  averageRating: number;
 }

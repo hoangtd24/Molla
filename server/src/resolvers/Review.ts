@@ -1,4 +1,11 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { Product } from "../entities/Product";
 import { Review } from "../entities/Review";
 import { User } from "../entities/User";
@@ -6,6 +13,8 @@ import { ReviewResponse } from "../types/ReviewResponse";
 import { ReviewInput } from "../types/inputTypes/ReviewInput";
 import { checkAuth } from "../middleware/checkAuth";
 import { Context } from "../types/Context";
+import { PaginatedReview } from "../types/PaginatedReview";
+import { LessThan } from "typeorm";
 
 @Resolver()
 export class ReviewResolver {
@@ -38,6 +47,79 @@ export class ReviewResolver {
         success: false,
         message: error.message,
       };
+    }
+  }
+
+  @Query((_returns) => PaginatedReview, { nullable: true })
+  async getReviews(
+    @Arg("cursor", { nullable: true }) cursor: string,
+    @Arg("limit") limit: number,
+    @Arg("productId") productId: number
+  ): Promise<PaginatedReview | null> {
+    try {
+      const totalCount = await Review.find({
+        where: {
+          product: {
+            id: productId,
+          },
+        },
+      });
+      if (totalCount.length === 0) {
+        return {
+          cursor: new Date(),
+          hasMore: false,
+          totalCount: 0,
+          paginatedReviews: [],
+        };
+      }
+      const realLimit = Math.min(3, limit);
+
+      let lastReview: Review[] = [];
+      const findOptions: { [key: string]: any } = {
+        take: realLimit,
+        order: {
+          createdAt: "DESC",
+        },
+        relations: {
+          user: true,
+        },
+      };
+
+      if (cursor) {
+        findOptions.where = {
+          createdAt: LessThan(new Date(cursor)),
+        };
+        lastReview = await Review.find({
+          where: {
+            product: { id: productId },
+          },
+          order: {
+            createdAt: "ASC",
+          },
+          take: 1,
+        });
+      }
+      if (productId) {
+        findOptions.where = {
+          ...findOptions.where,
+          product: {
+            id: productId,
+          },
+        };
+      }
+      const reviews = await Review.find(findOptions);
+      return {
+        totalCount: totalCount.length,
+        cursor: reviews[reviews.length - 1].createdAt,
+        hasMore: cursor
+          ? reviews[reviews.length - 1].createdAt.toString() !==
+            lastReview[0].createdAt.toString()
+          : reviews.length !== totalCount.length,
+        paginatedReviews: reviews,
+      };
+    } catch (error) {
+      console.log(error.message);
+      return null;
     }
   }
 }

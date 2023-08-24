@@ -1,4 +1,4 @@
-import { Field, InputType } from "type-graphql";
+import { Field, Float, InputType } from "type-graphql";
 
 @InputType()
 export class ReviewInput {
@@ -11,6 +11,6 @@ export class ReviewInput {
   @Field()
   content: string;
 
-  @Field()
+  @Field(() => Float)
   rating: number;
 }
