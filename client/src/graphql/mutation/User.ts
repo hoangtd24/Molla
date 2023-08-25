@@ -7,6 +7,7 @@ export const LOGIN_USER = gql`
       success
       message
       user {
+        id
         email
         username
       }

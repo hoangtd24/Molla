@@ -14,6 +14,12 @@ export const GET_REVIEWS = gql`
         user {
           username
         }
+        like {
+          id
+        }
+        dislike {
+          id
+        }
       }
     }
   }

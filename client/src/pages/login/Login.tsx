@@ -34,6 +34,7 @@ const Login = () => {
     if (res.data.login.code === 200) {
       setIsAuthenticated(true);
       setToken(res.data.login.accessToken);
+      localStorage.setItem("user", JSON.stringify(res.data.login.user));
       navigate("/");
     } else {
       setError("email", { type: "error", message: res.data.login?.message });

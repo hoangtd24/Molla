@@ -9,3 +9,28 @@ export const CREATE_REVIEW = gql`
     }
   }
 `;
+
+export const REVIEW_EMOTION = gql`
+  mutation reviewEmotion($reviewId: Float!, $action: String!) {
+    reviewEmotion(reviewId: $reviewId, action: $action) {
+      code
+      success
+      message
+      review {
+        id
+        content
+        rating
+        createdAt
+        user {
+          username
+        }
+        like {
+          id
+        }
+        dislike {
+          id
+        }
+      }
+    }
+  }
+`;

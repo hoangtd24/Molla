@@ -82,6 +82,8 @@ export class ReviewResolver {
         },
         relations: {
           user: true,
+          like: true,
+          dislike: true,
         },
       };
 
@@ -120,6 +122,63 @@ export class ReviewResolver {
     } catch (error) {
       console.log(error.message);
       return null;
+    }
+  }
+
+  @Mutation(() => ReviewResponse)
+  @UseMiddleware(checkAuth)
+  async reviewEmotion(
+    @Arg("reviewId") reviewId: number,
+    @Arg("action") action: string,
+    @Ctx() { user }: Context
+  ): Promise<ReviewResponse> {
+    try {
+      const existingUser = (await User.findOneBy({ id: user?.userId })) as User;
+      const review = (await Review.findOne({
+        relations: {
+          like: true,
+          dislike: true,
+          user: true,
+        },
+        where: {
+          id: reviewId,
+        },
+      })) as Review;
+      const liked = review.like.findIndex(
+        (userItem) => userItem.id === user?.userId
+      );
+      const disliked = review.dislike.findIndex(
+        (userItem) => userItem.id === user?.userId
+      );
+      if (action === "like") {
+        if (liked === -1) {
+          review.like = [...review.like, existingUser];
+          if (disliked !== -1) {
+            review.dislike.splice(disliked, 1);
+          }
+        } else {
+          review.like.splice(liked, 1);
+        }
+      }
+      if (action === "dislike") {
+        if (disliked === -1) {
+          review.dislike = [...review.dislike, existingUser];
+          if (liked !== -1) {
+            review.like.splice(disliked, 1);
+          }
+        } else {
+          review.dislike.splice(liked, 1);
+        }
+      }
+      await review.save();
+      return {
+        code: 200,
+        success: true,
+        message: "success",
+        review: review,
+      };
+    } catch (error) {
+      return error.message;
     }
   }
 }

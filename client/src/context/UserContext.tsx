@@ -34,6 +34,8 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const logoutClient = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("cart");
   };
 
   const authData = {
