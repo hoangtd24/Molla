@@ -49,4 +49,7 @@ export class Product extends BaseEntity {
 
   @Field(() => Float)
   averageRating: number;
+
+  @Field(() => Float)
+  newPrice: number;
 }

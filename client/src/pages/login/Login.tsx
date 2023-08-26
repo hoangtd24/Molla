@@ -10,6 +10,7 @@ import styles from "./Login.module.scss";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../../context/UserContext";
 import { LOGIN_USER } from "../../graphql/mutation/User";
+import { ME } from "../../graphql/query/User";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -19,7 +20,17 @@ interface formValues {
 const Login = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigate = useNavigate();
-  const [login, { loading }] = useMutation(LOGIN_USER);
+  const [login, { loading }] = useMutation(LOGIN_USER, {
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          me() {
+            return data.login;
+          },
+        },
+      });
+    },
+  });
   const { setToken, setIsAuthenticated } = useAuth();
   const {
     register,
@@ -127,7 +138,6 @@ const Login = () => {
                 title="LOG IN"
                 onClick={() => {}}
                 rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
-                type="submit"
               />
               <Link
                 className={cx("forgot-password__link")}

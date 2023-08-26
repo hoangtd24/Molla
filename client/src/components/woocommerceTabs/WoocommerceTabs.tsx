@@ -173,8 +173,8 @@ export default function WoocommerTabs({
               >
                 <Button
                   title="Load More"
-                  black
-                  rightIcon={<ExpandMoreIcon sx={{ fontSize: "20px" }} />}
+                  theme="black"
+                  rightIcon={<ExpandMoreIcon sx={{ fontSize: "18px" }} />}
                   onClick={() =>
                     fetchMore({
                       variables: {
@@ -223,7 +223,7 @@ export default function WoocommerTabs({
                   ref={inputRef}
                 />
               </div>
-              <Button title="Submit" type="submit" small></Button>
+              <Button title="Submit"></Button>
             </form>
           </div>
         )}

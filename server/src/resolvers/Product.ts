@@ -7,7 +7,7 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { IsNull, Not } from "typeorm";
+import { In, IsNull, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
@@ -37,6 +37,14 @@ export class ProductResolver {
       );
       return (totalRating / reviews.length).toFixed(1);
     }
+  }
+
+  @FieldResolver()
+  async newPrice(@Root() product: Product) {
+    if(product.discount){
+      return product.price * (1-product.discount.discount_percent/100)
+    }
+    return product.price
   }
 
   @Mutation((_returns) => ProductMutationResponse)
@@ -161,5 +169,17 @@ export class ProductResolver {
         message: error.message,
       };
     }
+  }
+
+  @Query((_returns) => [Product])
+  async getProductsCart(
+    @Arg("productIds", () => [Number]) productIds: number[]
+  ): Promise<Product[]> {
+    const products = await Product.find({
+      where: {
+        id: In(productIds),
+      },
+    });
+    return products;
   }
 }

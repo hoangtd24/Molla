@@ -1,11 +1,11 @@
+import { useMutation, useQuery } from "@apollo/client";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-
-import { useMutation } from "@apollo/client";
-import CloseIcon from "@mui/icons-material/Close";
-import MenuIcon from "@mui/icons-material/Menu";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Tippy from "@tippyjs/react/headless";
@@ -14,7 +14,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/UserContext";
 import { LOGOUT_USER } from "../../graphql/mutation/User";
+import { ME } from "../../graphql/query/User";
 import ActionIcon from "../actionIcon/ActionIcon";
+import Button from "../button/Button";
+import MinicartItem, {
+  MinicartItemProps,
+} from "../cartItem/MiniCartItem/MinicartItem";
 import DropDownItem from "../dropdownItem/DropDownItem";
 import MenuItem from "../menuItem/MenuItem";
 import styles from "./Header.module.scss";
@@ -26,7 +31,20 @@ const HeaderOnLargeScreen = () => {
   const { isAuthenticated, logoutClient } = useAuth();
   const [fixHeader, setFixHeader] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [logout, _] = useMutation(LOGOUT_USER);
+  const [logout, _] = useMutation(LOGOUT_USER, {
+    update(cache) {
+      cache.modify({
+        fields: {
+          me() {
+            return null;
+          },
+        },
+      });
+    },
+  });
+  const { data } = useQuery(ME);
+  console.log(data);
+
   const handleLogout = () => {
     logoutClient();
     logout();
@@ -136,11 +154,74 @@ const HeaderOnLargeScreen = () => {
                   name="Wishlist"
                   quantity={0}
                 />
-                <ActionIcon
-                  icon={<ShoppingCartOutlinedIcon />}
-                  name="Cart"
-                  quantity={0}
-                />
+                <Tippy
+                  interactive
+                  placement={"bottom-end"}
+                  offset={[0, 0]}
+                  onClickOutside={() => setVisible(false)}
+                  maxWidth={300}
+                  render={(attrs) => (
+                    <div className={cx("cart-box")} tabIndex={1} {...attrs}>
+                      {data && data?.me?.user?.cart?.length ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "300px",
+                            padding: "12px 16px 12px 30px",
+                            transition: "all 0.5s linear",
+                          }}
+                        >
+                          <div className={cx("cart-content")}>
+                            {data.me.user.cart.map(
+                              (product: MinicartItemProps) => (
+                                <MinicartItem key={product.id} {...product} />
+                              )
+                            )}
+                          </div>
+                          <div className={cx("cart-info")}>
+                            <div className={cx("cart-total__price")}>
+                              <span>SUBTOTAL</span>
+                              <span>$500</span>
+                            </div>
+                            <div className={cx("cart-action")}>
+                              <Button
+                                title="View cart"
+                                to="/"
+                                size="sm"
+                                theme="green"
+                              />
+                              <Button
+                                title="Check out"
+                                to="/"
+                                size="sm"
+                                rightIcon={
+                                  <ArrowRightAltIcon
+                                    sx={{ fontSize: "16px" }}
+                                  />
+                                }
+                              />
+                            </div>
+                          </div>
+                        </Box>
+                      ) : (
+                        <span>No items in cart</span>
+                      )}
+                    </div>
+                  )}
+                >
+                  <Box>
+                    <ActionIcon
+                      icon={<ShoppingCartOutlinedIcon />}
+                      name="Cart"
+                      quantity={
+                        data?.me?.user?.cart?.length > 0
+                          ? data.me.user.cart.length
+                          : 0
+                      }
+                    />
+                  </Box>
+                </Tippy>
               </div>
             </Grid>
           </Grid>

@@ -31,7 +31,6 @@ import ProductItem, {
 } from "../../components/productItem/ProductItem";
 import WoocommerTabs from "../../components/woocommerceTabs/WoocommerceTabs";
 import { DETAIL_PRODUCT } from "../../graphql/query/Product";
-import { addToCart } from "../../utils/cart";
 import styles from "./DetailProduct.module.scss";
 
 const cx = classNames.bind(styles);
@@ -162,10 +161,9 @@ export default function DetailProduct() {
                 <Button
                   title="Add to cart"
                   leftIcon={
-                    <ShoppingCartOutlinedIcon sx={{ fontSize: "18px" }} />
+                    <ShoppingCartOutlinedIcon sx={{ fontSize: "20px" }} />
                   }
-                  large
-                  onClick={() => addToCart(Number(param.id))}
+                  size="lg"
                 />
                 <button className={cx("product-actions__wishlist")}>
                   <FavoriteBorderOutlinedIcon

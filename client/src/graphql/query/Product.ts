@@ -59,3 +59,14 @@ export const DETAIL_PRODUCT = gql`
     }
   }
 `;
+
+export const GET_PRODUCTS_IN_CART = gql`
+  query getProductsCart($productIds: [Float!]!) {
+    getProductsCart(productIds: $productIds) {
+      id
+      name
+      price
+      images
+    }
+  }
+`;

@@ -1,5 +1,12 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Cart } from "./Cart";
 
 @ObjectType()
 @Entity()
@@ -26,4 +33,8 @@ export class User extends BaseEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   address?: string;
+
+  @Field(() => [Cart])
+  @OneToMany(() => Cart, (cart) => cart.user)
+  cart: Cart[];
 }

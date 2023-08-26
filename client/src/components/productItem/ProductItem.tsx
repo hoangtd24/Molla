@@ -1,11 +1,13 @@
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
-import styles from "./ProductItem.module.scss";
+import { useMutation } from "@apollo/client";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import classNames from "classnames/bind";
 import { useState } from "react";
-import { addToCart } from "../../utils/cart";
+import { Link } from "react-router-dom";
+import { CREATE_CART } from "../../graphql/mutation/Cart";
+import styles from "./ProductItem.module.scss";
+import { ME } from "../../graphql/query/User";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: number;
@@ -24,6 +26,9 @@ const ProductItem = ({
   discount,
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
+
+  const [createCart] = useMutation(CREATE_CART, { refetchQueries: [ME] });
+
   return (
     <div className={cx("product-wrapper")}>
       <Link
@@ -60,7 +65,19 @@ const ProductItem = ({
             </span>
           )}
         </div>
-        <button className={cx("add_btn")} onClick={() => addToCart(id)}>
+        <button
+          className={cx("add_btn")}
+          onClick={() => {
+            createCart({
+              variables: {
+                cartInput: {
+                  productId: Number(id),
+                  quantity: 1,
+                },
+              },
+            });
+          }}
+        >
           <span className={cx("icon")}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: "16px" }} />
           </span>

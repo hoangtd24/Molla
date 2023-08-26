@@ -10,6 +10,15 @@ export const LOGIN_USER = gql`
         id
         email
         username
+        cart {
+          id
+          product {
+            name
+            newPrice
+            images
+          }
+          qty
+        }
       }
       accessToken
     }

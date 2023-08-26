@@ -64,9 +64,9 @@ const Slider = () => {
                 </Typography>
                 <Button
                   title="Shop Now"
-                  onClick={() => {}}
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
-                  type="submit"
+                  size="lg"
+                  theme="black"
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-1-3.png" />
@@ -117,7 +117,8 @@ const Slider = () => {
                   title="Shop Now"
                   onClick={() => {}}
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
-                  type="submit"
+                  size="lg"
+                  theme="black"
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-2.jpg" />
@@ -167,7 +168,8 @@ const Slider = () => {
                   title="Shop Now"
                   onClick={() => {}}
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
-                  type="submit"
+                  size="lg"
+                  theme="black"
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-3-1.png" />

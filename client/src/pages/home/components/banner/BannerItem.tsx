@@ -21,6 +21,7 @@ const BannerItem = ({
       <img
         src={image}
         style={{ width: "100%", objectFit: "cover", height: "100%" }}
+        loading="lazy"
       />
       <Box sx={{ position: "absolute", top: "50px", left: "36px" }}>
         <Typography
@@ -58,10 +59,8 @@ const BannerItem = ({
         <Button
           title="Shop Now"
           onClick={() => {}}
-          rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
-          type="submit"
-          small
-          black
+          rightIcon={<ArrowRightAltIcon sx={{ fontSize: "18px" }} />}
+          theme="black"
         />
       </Box>
     </Box>

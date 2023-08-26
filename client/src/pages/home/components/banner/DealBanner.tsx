@@ -112,8 +112,9 @@ const DealBanner = () => {
                 </Box>
                 <Button
                   title="Shop now"
-                  rightIcon={<ArrowRightAltIcon />}
-                  onClick={() => {}}
+                  rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
+                  size="lg"
+                  theme="black"
                 ></Button>
               </Box>
               <img
@@ -182,9 +183,9 @@ const DealBanner = () => {
                 </Typography>
                 <Button
                   title="Shop now"
-                  rightIcon={<ArrowRightAltIcon />}
+                  rightIcon={<ArrowRightAltIcon sx={{ fontSize: "18px" }} />}
                   onClick={() => {}}
-                  small
+                  theme="black"
                 ></Button>
               </Box>
             </Box>
