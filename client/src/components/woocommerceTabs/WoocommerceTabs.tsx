@@ -50,7 +50,9 @@ export default function WoocommerTabs({
     notifyOnNetworkStatusChange: true,
   });
 
-  const [createReview] = useMutation(CREATE_REVIEW);
+  const [createReview] = useMutation(CREATE_REVIEW, {
+    refetchQueries: [GET_REVIEWS],
+  });
   //create review
   const handleCreateReview = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -4,21 +4,33 @@ import { User } from "src/entities/User";
 
 export const createToken = (
   type: "accessToken" | "refreshToken",
-  user: User
+  user: User,
+  exp?: number
 ) => {
   return jwt.sign(
     { userId: user.id },
     type === "accessToken"
       ? (process.env.ACCESS_TOKEN_SECRET as Secret)
-      : (process.env.ACCESS_TOKEN_SECRET as Secret),
-    { expiresIn: type === "accessToken" ? "1h" : "5d" }
+      : (process.env.REFRESH_TOKEN_SECRET as Secret),
+    {
+      expiresIn: type === "accessToken" ? "1h" : "2d",
+    }
   );
 };
 
-export const sendRefreshToken = (res: Response, user: User) => {
+export const createRefreshToken = (user: User, exp?: number) => {
+  return jwt.sign(
+    { userId: user.id, exp: exp },
+    process.env.REFRESH_TOKEN_SECRET as Secret
+  );
+};
+
+export const sendRefreshToken = (res: Response, user: User, exp?: number) => {
   res.cookie(
     process.env.REFRESH_TOKEN_NAME as string,
-    createToken("refreshToken", user),
+    exp
+      ? createRefreshToken(user, exp)
+      : createToken("refreshToken", user, exp),
     {
       httpOnly: true,
       secure: true,

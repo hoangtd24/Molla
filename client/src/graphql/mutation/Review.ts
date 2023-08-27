@@ -6,6 +6,21 @@ export const CREATE_REVIEW = gql`
       code
       success
       message
+      review {
+        id
+        content
+        rating
+        createdAt
+        user {
+          username
+        }
+        like {
+          id
+        }
+        dislike {
+          id
+        }
+      }
     }
   }
 `;

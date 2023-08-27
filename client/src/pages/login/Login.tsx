@@ -3,14 +3,13 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import classNames from "classnames/bind";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./Login.module.scss";
 
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../../context/UserContext";
 import { LOGIN_USER } from "../../graphql/mutation/User";
-import { ME } from "../../graphql/query/User";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -20,6 +19,8 @@ interface formValues {
 const Login = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
   const [login, { loading }] = useMutation(LOGIN_USER, {
     update(cache, { data }) {
       cache.modify({
@@ -46,7 +47,7 @@ const Login = () => {
       setIsAuthenticated(true);
       setToken(res.data.login.accessToken);
       localStorage.setItem("user", JSON.stringify(res.data.login.user));
-      navigate("/");
+      navigate(location.state?.pathname ? location.state?.pathname : "/");
     } else {
       setError("email", { type: "error", message: res.data.login?.message });
     }

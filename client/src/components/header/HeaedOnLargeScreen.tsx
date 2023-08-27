@@ -43,7 +43,6 @@ const HeaderOnLargeScreen = () => {
     },
   });
   const { data } = useQuery(ME);
-  console.log(data);
 
   const handleLogout = () => {
     logoutClient();

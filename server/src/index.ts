@@ -22,6 +22,8 @@ import { Review } from "./entities/Review";
 import { ReviewResolver } from "./resolvers/Review";
 import { Cart } from "./entities/Cart";
 import { CartResolver } from "./resolvers/Cart";
+import refreshToken from "./routes/refreshToken";
+import cookieParser from "cookie-parser";
 require("dotenv").config();
 
 export const AppDataSource = new DataSource({
@@ -52,6 +54,8 @@ const main = async () => {
       credentials: true,
     })
   );
+  app.use(cookieParser());
+  app.use("/refresh_token", refreshToken);
 
   const httpServer = http.createServer(app);
 

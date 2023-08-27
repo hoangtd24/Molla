@@ -4,10 +4,11 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import classNames from "classnames/bind";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CREATE_CART } from "../../graphql/mutation/Cart";
 import styles from "./ProductItem.module.scss";
 import { ME } from "../../graphql/query/User";
+import { useAuth } from "../../context/UserContext";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: number;
@@ -29,6 +30,22 @@ const ProductItem = ({
 
   const [createCart] = useMutation(CREATE_CART, { refetchQueries: [ME] });
 
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (id: number) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    createCart({
+      variables: {
+        cartInput: {
+          productId: Number(id),
+          quantity: 1,
+        },
+      },
+    });
+  };
   return (
     <div className={cx("product-wrapper")}>
       <Link
@@ -67,16 +84,7 @@ const ProductItem = ({
         </div>
         <button
           className={cx("add_btn")}
-          onClick={() => {
-            createCart({
-              variables: {
-                cartInput: {
-                  productId: Number(id),
-                  quantity: 1,
-                },
-              },
-            });
-          }}
+          onClick={() => handleAddToCart(Number(id))}
         >
           <span className={cx("icon")}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: "16px" }} />

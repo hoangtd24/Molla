@@ -94,7 +94,12 @@ export class UserResolver {
 
   @Mutation((_returns) => UserMutationResponse)
   async logout(@Ctx() { res }: Context): Promise<UserMutationResponse> {
-    res.clearCookie(process.env.REFRESH_TOKEN_NAME as string);
+    res.clearCookie(process.env.REFRESH_TOKEN_NAME as string,{
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/refresh_token",
+    });
 
     return {
       code: 200,

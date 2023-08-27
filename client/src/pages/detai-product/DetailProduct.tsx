@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -11,8 +11,8 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Box, Container, Divider, Grid, Rating } from "@mui/material";
 import classNames from "classnames/bind";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLayoutEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -30,7 +30,10 @@ import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import WoocommerTabs from "../../components/woocommerceTabs/WoocommerceTabs";
+import { useAuth } from "../../context/UserContext";
+import { CREATE_CART } from "../../graphql/mutation/Cart";
 import { DETAIL_PRODUCT } from "../../graphql/query/Product";
+import { ME } from "../../graphql/query/User";
 import styles from "./DetailProduct.module.scss";
 
 const cx = classNames.bind(styles);
@@ -38,13 +41,37 @@ const cx = classNames.bind(styles);
 export default function DetailProduct() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
+  const { isAuthenticated } = useAuth();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [qty, setQty] = useState<number>(1);
   const param = useParams();
   const navigate = useNavigate();
 
+  const location = useLocation();
   const { data } = useQuery(DETAIL_PRODUCT, {
     variables: { id: Number(param.id) },
   });
+
+  const [createCart] = useMutation(CREATE_CART, { refetchQueries: [ME] });
+
+  const handleAddToCart = async (id: number) => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: location });
+    }
+    createCart({
+      variables: {
+        cartInput: {
+          productId: Number(id),
+          quantity: qty,
+        },
+      },
+    });
+  };
+  useLayoutEffect(() => {
+    if (qty < 1) {
+      setQty(1);
+    }
+  }, [qty]);
 
   return (
     <Box>
@@ -148,11 +175,17 @@ export default function DetailProduct() {
               <div className={cx("product-qty")}>
                 <span>Qty:</span>
                 <div className={cx("product-qty__actions")}>
-                  <span className={cx("product-qty__icons")}>
+                  <span
+                    className={cx("product-qty__icons")}
+                    onClick={() => setQty((prev) => prev - 1)}
+                  >
                     <RemoveOutlinedIcon sx={{ fontSize: "16px" }} />
                   </span>
-                  <span>1</span>
-                  <span className={cx("product-qty__icons")}>
+                  <span>{qty}</span>
+                  <span
+                    className={cx("product-qty__icons")}
+                    onClick={() => setQty((prev) => prev + 1)}
+                  >
                     <AddOutlinedIcon sx={{ fontSize: "16px" }} />
                   </span>
                 </div>
@@ -164,6 +197,7 @@ export default function DetailProduct() {
                     <ShoppingCartOutlinedIcon sx={{ fontSize: "20px" }} />
                   }
                   size="lg"
+                  onClick={() => handleAddToCart(Number(param.id))}
                 />
                 <button className={cx("product-actions__wishlist")}>
                   <FavoriteBorderOutlinedIcon
