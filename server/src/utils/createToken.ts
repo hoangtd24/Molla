@@ -4,8 +4,7 @@ import { User } from "src/entities/User";
 
 export const createToken = (
   type: "accessToken" | "refreshToken",
-  user: User,
-  exp?: number
+  user: User
 ) => {
   return jwt.sign(
     { userId: user.id },
@@ -28,9 +27,7 @@ export const createRefreshToken = (user: User, exp?: number) => {
 export const sendRefreshToken = (res: Response, user: User, exp?: number) => {
   res.cookie(
     process.env.REFRESH_TOKEN_NAME as string,
-    exp
-      ? createRefreshToken(user, exp)
-      : createToken("refreshToken", user, exp),
+    exp ? createRefreshToken(user, exp) : createToken("refreshToken", user),
     {
       httpOnly: true,
       secure: true,

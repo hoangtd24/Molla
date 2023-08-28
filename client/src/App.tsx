@@ -10,6 +10,7 @@ import ForgetPassword from "./pages/forget-password/ForgetPassword";
 import DetailProduct from "./pages/detai-product/DetailProduct";
 import { useLayoutEffect } from "react";
 import { useAuth } from "./context/UserContext";
+import Cart from "./pages/cart/Cart";
 function App() {
   const { pathname } = useLocation();
 
@@ -38,6 +39,14 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <DetailProduct />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/cart",
+                element: (
+                  <DefaultLayout>
+                    <Cart />
                   </DefaultLayout>
                 ),
               },

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, Float, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -32,11 +32,10 @@ export class Cart extends BaseEntity {
   @Column()
   qty: number;
 
-  
   @Field()
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field()
+  @Field(() => Float)
   total: number;
 }

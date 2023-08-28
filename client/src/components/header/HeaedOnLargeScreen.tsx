@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/UserContext";
 import { LOGOUT_USER } from "../../graphql/mutation/User";
-import { ME } from "../../graphql/query/User";
+import { GET_CARTS } from "../../graphql/query/Cart";
 import ActionIcon from "../actionIcon/ActionIcon";
 import Button from "../button/Button";
 import MinicartItem, {
@@ -42,7 +42,8 @@ const HeaderOnLargeScreen = () => {
       });
     },
   });
-  const { data } = useQuery(ME);
+
+  const { data: cartData } = useQuery(GET_CARTS);
 
   const handleLogout = () => {
     logoutClient();
@@ -161,7 +162,7 @@ const HeaderOnLargeScreen = () => {
                   maxWidth={300}
                   render={(attrs) => (
                     <div className={cx("cart-box")} tabIndex={1} {...attrs}>
-                      {data && data?.me?.user?.cart?.length ? (
+                      {cartData && cartData?.getCarts?.carts?.length ? (
                         <Box
                           sx={{
                             display: "flex",
@@ -172,7 +173,7 @@ const HeaderOnLargeScreen = () => {
                           }}
                         >
                           <div className={cx("cart-content")}>
-                            {data.me.user.cart.map(
+                            {cartData.getCarts.carts.map(
                               (product: MinicartItemProps) => (
                                 <MinicartItem key={product.id} {...product} />
                               )
@@ -186,7 +187,7 @@ const HeaderOnLargeScreen = () => {
                             <div className={cx("cart-action")}>
                               <Button
                                 title="View cart"
-                                to="/"
+                                to="/cart"
                                 size="sm"
                                 theme="green"
                               />
@@ -214,8 +215,8 @@ const HeaderOnLargeScreen = () => {
                       icon={<ShoppingCartOutlinedIcon />}
                       name="Cart"
                       quantity={
-                        data?.me?.user?.cart?.length > 0
-                          ? data.me.user.cart.length
+                        cartData?.getCarts?.carts?.length > 0
+                          ? cartData.getCarts.carts.length
                           : 0
                       }
                     />

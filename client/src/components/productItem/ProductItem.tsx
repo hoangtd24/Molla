@@ -5,10 +5,10 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CREATE_CART } from "../../graphql/mutation/Cart";
-import styles from "./ProductItem.module.scss";
-import { ME } from "../../graphql/query/User";
 import { useAuth } from "../../context/UserContext";
+import { CREATE_CART } from "../../graphql/mutation/Cart";
+import { GET_CARTS } from "../../graphql/query/Cart";
+import styles from "./ProductItem.module.scss";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: number;
@@ -28,7 +28,9 @@ const ProductItem = ({
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
 
-  const [createCart] = useMutation(CREATE_CART, { refetchQueries: [ME] });
+  const [createCart] = useMutation(CREATE_CART, {
+    refetchQueries: [GET_CARTS],
+  });
 
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();

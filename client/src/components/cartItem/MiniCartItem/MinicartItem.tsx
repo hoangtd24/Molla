@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
 import { DELETE_CART } from "../../../graphql/mutation/Cart";
-import { ME } from "../../../graphql/query/User";
+import { GET_CARTS } from "../../../graphql/query/Cart";
 import styles from "./MiniCartItem.module.scss";
 const cx = classNames.bind(styles);
 export interface MinicartItemProps {
@@ -15,7 +15,7 @@ export interface MinicartItemProps {
   qty: number;
 }
 const MinicartItem = ({ id, product, qty }: MinicartItemProps) => {
-  const [delCart] = useMutation(DELETE_CART, { refetchQueries: [ME] });
+  const [delCart] = useMutation(DELETE_CART, { refetchQueries: [GET_CARTS] });
   return (
     <div className={cx("mini-cart__wrap")}>
       <div className={cx("mini-cart__right")}>

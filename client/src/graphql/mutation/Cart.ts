@@ -32,3 +32,23 @@ export const DELETE_CART = gql`
     }
   }
 `;
+
+export const UPDATE_CART = gql`
+  mutation updateCart($productId: Float!, $quantity: Float!) {
+    updateCart(productId: $productId, quantity: $quantity) {
+      code
+      success
+      message
+      cart {
+        id
+        product {
+          id
+          name
+          newPrice
+          images
+        }
+        total
+      }
+    }
+  }
+`;

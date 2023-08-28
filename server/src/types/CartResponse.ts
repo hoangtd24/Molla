@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
 import { MutationResponse } from "./MutationResponse";
 import { Cart } from "../entities/Cart";
 
@@ -6,4 +6,10 @@ import { Cart } from "../entities/Cart";
 export class CartResponse extends MutationResponse {
   @Field({ nullable: true })
   cart?: Cart;
+
+  @Field(() => [Cart], { nullable: true })
+  carts?: Cart[];
+
+  @Field(() => Float, { nullable: true })
+  total?: number;
 }
