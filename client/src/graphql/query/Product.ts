@@ -70,3 +70,34 @@ export const GET_PRODUCTS_IN_CART = gql`
     }
   }
 `;
+
+export const FILTER_PRODUCT = gql`
+  query filter(
+    $page: Int! = 1
+    $limit: Int!
+    $category: String
+    $search: String
+    $price: String
+  ) {
+    filter(
+      page: $page
+      limit: $limit
+      category: $category
+      search: $search
+      price: $price
+    ) {
+      total
+      pages
+      products {
+        id
+        name
+        price
+        newPrice
+        images
+        categories {
+          name
+        }
+      }
+    }
+  }
+`;

@@ -12,7 +12,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import { Box, Container, Divider, Grid, Rating } from "@mui/material";
 import classNames from "classnames/bind";
 import { useLayoutEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -76,6 +76,11 @@ export default function DetailProduct() {
   return (
     <Box>
       <Container>
+        <div className={cx("breadcrumbs")}>
+          <Link to="/">Home</Link>
+          <span>{">"}</span>
+          <span>{data && data.detailProduct.product?.name}</span>
+        </div>
         <Grid container spacing={3}>
           <Grid item xs={12} md={5}>
             <Box sx={{ position: "relative" }}>

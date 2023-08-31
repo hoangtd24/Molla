@@ -20,7 +20,7 @@ interface btnProps {
   onClick?: () => void;
   size?: buttonSize;
   theme?: buttonTheme;
-  title: string;
+  title?: string;
 }
 const Button = ({
   leftIcon,

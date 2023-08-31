@@ -7,7 +7,7 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { In, IsNull, Not } from "typeorm";
+import { ILike, In, IsNull, Like, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
@@ -16,6 +16,8 @@ import { ProductMutationResponse } from "../types/ProductResponse";
 import { GetProductArg } from "../types/argTypes/GetProductArg";
 import { ProductInput } from "../types/inputTypes/ProductInput";
 import { Review } from "../entities/Review";
+import { FilterProductArg } from "../types/argTypes/FilterProductArg";
+import { FilterProductResponse } from "../types/FilterProductResponse";
 
 @Resolver((_of) => Product)
 export class ProductResolver {
@@ -41,10 +43,10 @@ export class ProductResolver {
 
   @FieldResolver()
   async newPrice(@Root() product: Product) {
-    if(product.discount){
-      return product.price * (1-product.discount.discount_percent/100)
+    if (product.discount) {
+      return product.price * (1 - product.discount.discount_percent / 100);
     }
-    return product.price
+    return product.price;
   }
 
   @Mutation((_returns) => ProductMutationResponse)
@@ -181,5 +183,40 @@ export class ProductResolver {
       },
     });
     return products;
+  }
+
+  @Query(() => FilterProductResponse)
+  async filter(
+    @Args() { category, limit, page, price, search }: FilterProductArg
+  ): Promise<FilterProductResponse> {
+    const whereOptions: { [key in string]: any } = {};
+    const orderOptions: { [key in string]: any } = {};
+    if (category) {
+      whereOptions.categories = {
+        name: ILike(`%${category}%`),
+      };
+    }
+    if (search) {
+      whereOptions.name = ILike(`%${search}%`);
+    }
+
+    if (price) {
+      orderOptions.price = price;
+    }
+    const products = await Product.findAndCount({
+      where: whereOptions,
+      skip: (page - 1) * limit,
+      take: limit,
+      order: orderOptions,
+      relations: {
+        categories: true,
+      },
+    });
+
+    return {
+      pages: Math.ceil(products[1] / limit),
+      products: products[0],
+      total: products[1],
+    };
   }
 }

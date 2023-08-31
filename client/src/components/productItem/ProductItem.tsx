@@ -15,16 +15,14 @@ export interface ProductItemProps {
   name: string;
   price: number;
   images: string[];
-  discount: {
-    discount_percent: number;
-  } | null;
+  newPrice: number;
 }
 const ProductItem = ({
   id,
   name,
   price,
   images,
-  discount,
+  newPrice,
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
 
@@ -78,11 +76,7 @@ const ProductItem = ({
         </Link>
         <div className={cx("product-price")}>
           <span className={cx("product-price__new")}>${price}</span>
-          {discount && (
-            <span className={cx("product-price__old")}>
-              ${price - (price * discount.discount_percent) / 100}
-            </span>
-          )}
+          <span className={cx("product-price__old")}>{newPrice}</span>
         </div>
         <button
           className={cx("add_btn")}

@@ -185,3 +185,17 @@
   font-weight: 500;
   margin-bottom: 30px;
 }
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #999;
+  padding: 16px 0;
+  font-weight: 300;
+
+  & span:last-child {
+    color: #333;
+  }
+}

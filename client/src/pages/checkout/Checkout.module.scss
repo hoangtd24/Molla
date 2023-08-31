@@ -1,0 +1,148 @@
+.page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(231, 231, 231);
+  background: linear-gradient(
+    90deg,
+    rgba(231, 231, 231, 1) 0%,
+    rgba(226, 223, 255, 1) 100%
+  );
+  padding: 42px 0;
+}
+
+.header {
+  font-size: clamp(28px, 5vw, 40px);
+  color: #333;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.sub-header {
+  font-size: clamp(16px, 5vw, 20px);
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #999;
+  padding: 16px 0;
+  font-weight: 300;
+
+  & span:last-child {
+    color: #333;
+  }
+}
+.filter-result {
+  padding: 8px 0;
+}
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.filter-lable {
+  font-size: 14px;
+  color: #999;
+}
+
+.filter-clear {
+  font-size: 14px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.filter-item {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  padding: 6px 0;
+  cursor: pointer;
+  &:hover {
+    color: var(--color-primary);
+  }
+  &.active {
+    color: var(--color-primary);
+  }
+}
+
+.filter-item + .filter-item {
+  margin-top: 8px;
+}
+
+.filter-result__header {
+  display: flex;
+  align-items: center;
+
+  & > p {
+    font-size: 14px;
+    color: #ccc;
+  }
+}
+
+.filter-sort {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  margin-left: auto;
+}
+
+.filter-views {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  gap: 2px;
+}
+
+.filter-views__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  color: #ccc;
+  transition: all 0.3s linear;
+
+  &:hover {
+    color: #333;
+  }
+
+  &.active {
+    color: #333;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 0;
+  font-family: "Jost";
+}
+.menu_icon {
+  position: fixed;
+  top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  color: #e9e9e9;
+  padding: 4px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .filter-wrapper {
+    width: 280px;
+    padding: 0 16px;
+  }
+}

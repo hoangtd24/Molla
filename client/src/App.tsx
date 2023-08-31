@@ -11,6 +11,8 @@ import DetailProduct from "./pages/detai-product/DetailProduct";
 import { useLayoutEffect } from "react";
 import { useAuth } from "./context/UserContext";
 import Cart from "./pages/cart/Cart";
+import Shop from "./pages/shop/Shop";
+import Checkout from "./pages/checkout/Checkout";
 function App() {
   const { pathname } = useLocation();
 
@@ -47,6 +49,22 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <Cart />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/shop/:name",
+                element: (
+                  <DefaultLayout>
+                    <Shop />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/checkout",
+                element: (
+                  <DefaultLayout>
+                    <Checkout />
                   </DefaultLayout>
                 ),
               },
@@ -121,6 +139,14 @@ function App() {
             element: (
               <DefaultLayout>
                 <DetailProduct />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/shop/:name",
+            element: (
+              <DefaultLayout>
+                <Shop />
               </DefaultLayout>
             ),
           },

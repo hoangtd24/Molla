@@ -24,6 +24,20 @@
   color: var(--color-primary);
   font-weight: 400;
 }
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #999;
+  padding: 16px 0;
+  font-weight: 300;
+
+  & span:last-child {
+    color: #333;
+  }
+}
 table {
   width: 100%;
 }
@@ -69,4 +83,38 @@ th {
   color: var(--color-primary);
   padding: 24px 0;
   border-top: 1px solid #ebebeb;
+}
+
+.cupon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  & input {
+    font-size: 13px;
+    color: #ccc;
+    outline: none;
+    padding: 12px 16px;
+    border: 1px solid var(--color-primary);
+    min-width: 250px;
+  }
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: all 0.2s ease-in;
+
+    &:hover {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+  }
 }
