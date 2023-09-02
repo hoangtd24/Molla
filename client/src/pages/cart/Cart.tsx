@@ -29,7 +29,7 @@ const Cart = () => {
           </div>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8.4}>
-              <table>
+              <table className={cx("table")}>
                 <thead>
                   <tr>
                     <th>Product</th>

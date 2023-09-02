@@ -60,8 +60,8 @@ const CartItem = ({ id, product, qty, total }: CartItemprops) => {
   }, [quantity]);
 
   return (
-    <tr>
-      <td>
+    <tr className={cx("tr")}>
+      <td className={cx("td")}>
         <Link to={`/detail-product/${product.id}`}>
           <img
             src={product.images[0]}
@@ -70,7 +70,7 @@ const CartItem = ({ id, product, qty, total }: CartItemprops) => {
           />
         </Link>
       </td>
-      <td>
+      <td className={cx("td")}>
         <Link
           to={`/detail-product/${product.id}`}
           className={cx("product-name")}
@@ -79,7 +79,7 @@ const CartItem = ({ id, product, qty, total }: CartItemprops) => {
         </Link>
       </td>
       <td className={cx("product-price")}>${product.newPrice}</td>
-      <td>
+      <td className={cx("td")}>
         <div className={cx("product-qty__actions")}>
           <span
             className={cx("product-qty__icons")}

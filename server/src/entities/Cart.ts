@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { Product } from "./Product";
 import { User } from "./User";
+import { Order } from "./Order";
 
 @ObjectType()
 @Entity()
@@ -35,6 +36,10 @@ export class Cart extends BaseEntity {
   @Field()
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => Order, (order) => order.carts)
+  @Field()
+  order: Order;
 
   @Field(() => Float)
   total: number;

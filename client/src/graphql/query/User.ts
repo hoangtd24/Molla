@@ -9,15 +9,8 @@ export const ME = gql`
       user {
         username
         email
-        cart {
-          id
-          product {
-            name
-            newPrice
-            images
-          }
-          qty
-        }
+        phone
+        address
       }
     }
   }

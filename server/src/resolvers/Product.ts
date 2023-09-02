@@ -7,17 +7,17 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { ILike, In, IsNull, Like, Not } from "typeorm";
+import { ILike, In, IsNull, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
 import { Product } from "../entities/Product";
+import { Review } from "../entities/Review";
+import { FilterProductResponse } from "../types/FilterProductResponse";
 import { ProductMutationResponse } from "../types/ProductResponse";
+import { FilterProductArg } from "../types/argTypes/FilterProductArg";
 import { GetProductArg } from "../types/argTypes/GetProductArg";
 import { ProductInput } from "../types/inputTypes/ProductInput";
-import { Review } from "../entities/Review";
-import { FilterProductArg } from "../types/argTypes/FilterProductArg";
-import { FilterProductResponse } from "../types/FilterProductResponse";
 
 @Resolver((_of) => Product)
 export class ProductResolver {

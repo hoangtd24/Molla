@@ -193,7 +193,7 @@ const HeaderOnLargeScreen = () => {
                               />
                               <Button
                                 title="Check out"
-                                to="/"
+                                to="/checkout"
                                 size="sm"
                                 rightIcon={
                                   <ArrowRightAltIcon

@@ -38,17 +38,16 @@
     color: #333;
   }
 }
-table {
+.table {
   width: 100%;
-}
-
-th {
-  font-size: 14px;
-  color: #999;
-  font-weight: 400;
-  text-align: left;
-  border-bottom: 1px solid #ebebeb;
-  padding: 14px 10px 14px 0;
+  th {
+    font-size: 14px;
+    color: #999;
+    font-weight: 400;
+    text-align: left;
+    border-bottom: 1px solid #ebebeb;
+    padding: 14px 10px 14px 0;
+  }
 }
 
 .summary-wrapper {
@@ -116,5 +115,11 @@ th {
       background-color: var(--color-primary);
       color: #fff;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
   }
 }
