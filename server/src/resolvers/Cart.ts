@@ -9,6 +9,7 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
+import { IsNull, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Cart } from "../entities/Cart";
 import { Product } from "../entities/Product";
@@ -17,6 +18,7 @@ import { checkAuth } from "../middleware/checkAuth";
 import { CartResponse } from "../types/CartResponse";
 import { Context } from "../types/Context";
 import { CartInput } from "../types/inputTypes/CartInput";
+import { delCartsInput } from "../types/inputTypes/DelCartsInput";
 
 @Resolver((_of) => Cart)
 export class CartResolver {
@@ -40,6 +42,7 @@ export class CartResolver {
           user: {
             id: user?.userId,
           },
+          createdAt: Not(IsNull()),
           product: {
             id: productId,
           },
@@ -118,7 +121,7 @@ export class CartResolver {
           createdAt: "DESC",
         },
       });
-      let total: number = 0;
+      let total = 0;
       if (carts.length === 0) {
         total = 0;
       } else {
@@ -183,5 +186,23 @@ export class CartResolver {
         message: error.message,
       };
     }
+  }
+
+  @Mutation(() => CartResponse)
+  @UseMiddleware(checkAuth)
+  async deleteCarts(
+    @Arg("delCartsInput") { cartIds }: delCartsInput
+  ): Promise<CartResponse> {
+    await AppDataSource.getRepository(Cart)
+      .createQueryBuilder("cart")
+      .softDelete()
+      .where("cart.id IN (:...cartIds)", { cartIds: cartIds })
+      .execute();
+
+    return {
+      code: 200,
+      success: true,
+      message: "delete carts successfully",
+    };
   }
 }

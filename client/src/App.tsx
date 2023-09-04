@@ -13,6 +13,7 @@ import { useAuth } from "./context/UserContext";
 import Cart from "./pages/cart/Cart";
 import Shop from "./pages/shop/Shop";
 import Checkout from "./pages/checkout/Checkout";
+import Receive from "./pages/checkout/Receive";
 function App() {
   const { pathname } = useLocation();
 
@@ -65,6 +66,14 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <Checkout />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/checkout/receive/:id",
+                element: (
+                  <DefaultLayout>
+                    <Receive />
                   </DefaultLayout>
                 ),
               },

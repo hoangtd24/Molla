@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -36,6 +37,10 @@ export class Cart extends BaseEntity {
   @Field()
   @CreateDateColumn()
   createdAt: Date;
+
+  @Field({ nullable: true })
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => Order, (order) => order.carts)
   @Field()

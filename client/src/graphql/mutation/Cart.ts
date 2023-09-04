@@ -52,3 +52,13 @@ export const UPDATE_CART = gql`
     }
   }
 `;
+
+export const CLEAR_CART = gql`
+  mutation deleteCarts($delCartsInput: delCartsInput!) {
+    deleteCarts(delCartsInput: $delCartsInput) {
+      code
+      success
+      message
+    }
+  }
+`;

@@ -25,6 +25,9 @@ import { CartResolver } from "./resolvers/Cart";
 import refreshToken from "./routes/refreshToken";
 import cookieParser from "cookie-parser";
 import { Order } from "./entities/Order";
+import { Payment } from "./entities/Payment";
+import { PaymentResolver } from "./resolvers/Payment";
+import { OrderResolver } from "./resolvers/Order";
 require("dotenv").config();
 
 export const AppDataSource = new DataSource({
@@ -34,7 +37,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: "molla",
-  entities: [User, Product, Category, Discount, Review, Cart, Order],
+  entities: [User, Product, Category, Discount, Review, Cart, Order, Payment],
   synchronize: true,
   logging: true,
 });
@@ -71,6 +74,8 @@ const main = async () => {
         ProductResolver,
         ReviewResolver,
         CartResolver,
+        PaymentResolver,
+        OrderResolver,
       ],
     }),
     plugins: [

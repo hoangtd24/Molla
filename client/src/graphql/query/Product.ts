@@ -6,6 +6,7 @@ export const GET_PRODUCTS = gql`
       id
       name
       price
+      newPrice
       images
       discount {
         id
@@ -25,6 +26,7 @@ export const DETAIL_PRODUCT = gql`
         id
         name
         price
+        newPrice
         discount {
           discount_percent
         }
@@ -33,6 +35,7 @@ export const DETAIL_PRODUCT = gql`
       product {
         name
         price
+        newPrice
         discount {
           discount_percent
         }

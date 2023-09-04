@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Container, Grid } from "@mui/material";
 import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Checkout.module.scss";
 import { useForm } from "react-hook-form";
 import Button from "../../components/button/Button";
 import { GET_CARTS } from "../../graphql/query/Cart";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CartItemprops } from "../../components/cartItem/CartItem/CartItem";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { useState, useEffect } from "react";
 import { ME } from "../../graphql/query/User";
+import { GET_PAYMENTS } from "../../graphql/query/Payment";
+import { CREATE_ORDER } from "../../graphql/mutation/Order";
+import { CLEAR_CART } from "../../graphql/mutation/Cart";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -18,22 +22,60 @@ interface formValues {
   phone: string;
   address: string;
 }
+
+interface Payment {
+  id: string;
+  name: string;
+  desc: string;
+}
 const Checkout = () => {
-  const [showCupon, setShowCupon] = useState(false);
+  const [showCupon, setShowCupon] = useState<boolean>(false);
+  const [payment, setPayment] = useState<string | null>(null);
   const { data } = useQuery(GET_CARTS);
-  const { data: meData, loading } = useQuery(ME);
+  const { data: meData } = useQuery(ME);
+  const { data: paymentsData } = useQuery(GET_PAYMENTS);
+  const [createOrder] = useMutation(CREATE_ORDER);
+  const [deleteCarts] = useMutation(CLEAR_CART, {
+    refetchQueries: [GET_CARTS],
+  });
+
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    setError,
     reset,
-    watch,
     formState: { errors },
   } = useForm<formValues>({ defaultValues: meData?.me?.user });
 
-  const handleCreateOrder = (data) => {
-    console.log(data);
+  const handleCreateOrder = async (formData: formValues) => {
+    const res = await createOrder({
+      variables: {
+        orderInput: {
+          ...formData,
+          cartId: data?.getCarts?.carts.map((cart: CartItemprops) =>
+            Number(cart.id)
+          ),
+          total: data?.getCarts?.total,
+          paymentId: payment
+            ? Number(payment)
+            : Number(paymentsData.getPayments[0].id),
+        },
+      },
+    });
+    if (res.data?.createOrder?.code === 200) {
+      await deleteCarts({
+        variables: {
+          delCartsInput: {
+            cartIds: data?.getCarts?.carts.map((cart: CartItemprops) =>
+              Number(cart.id)
+            ),
+          },
+        },
+      });
+      navigate(`/checkout/receive/${res.data?.createOrder?.order?.id}`);
+    }
+    console.log(res);
   };
   useEffect(() => {
     reset(meData?.me?.user);
@@ -105,6 +147,7 @@ const Checkout = () => {
                   <input
                     {...register("phone", {
                       required: { value: true, message: "Phone is required" },
+                      pattern: /((09|03|07|08|05)+([0-9]{8})\b)/g,
                     })}
                     type="text"
                     id="phone"
@@ -120,6 +163,22 @@ const Checkout = () => {
                     id="address"
                   />
                 </div>
+                {(errors as any)[Object.keys(errors)[0]]?.message && (
+                  <div className={cx("error")}>
+                    <span className={cx("error-heading")}>Error:</span>
+                    <span className={cx("error-title")}>
+                      {(errors as any)[Object.keys(errors)[0]]?.message}
+                    </span>
+                  </div>
+                )}
+                {errors.phone?.type === "pattern" && (
+                  <div className={cx("error")}>
+                    <span className={cx("error-heading")}>Error:</span>
+                    <span className={cx("error-title")}>
+                      Please enter phone number exactly
+                    </span>
+                  </div>
+                )}
               </form>
             </Grid>
             <Grid item md={3.6} xs={12}>
@@ -157,10 +216,24 @@ const Checkout = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <div className={cx("payment-method")}>
-                    <input type="radio" id="payment" />
-                    <label htmlFor="payment">Cash on delivery</label>
-                  </div>
+                  {paymentsData &&
+                    paymentsData.getPayments.map((payment: Payment) => (
+                      <div key={payment.id} style={{ marginBottom: "16px" }}>
+                        <div className={cx("payment-method")}>
+                          <input
+                            type="radio"
+                            id={payment.id}
+                            name="payment"
+                            defaultChecked={
+                              payment.id === paymentsData.getPayments[0].id
+                            }
+                            onChange={() => setPayment(payment.id)}
+                          />
+                          <label htmlFor={payment.id}>{payment.name}</label>
+                        </div>
+                        <p className={cx("payment-desc")}>{payment.desc}</p>
+                      </div>
+                    ))}
                   <Button
                     title="PROCEED TO CHECKOUT"
                     theme="green"

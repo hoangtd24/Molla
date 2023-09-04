@@ -135,3 +135,19 @@
     }
   }
 }
+
+.sale-lable {
+  font-size: 13px;
+  color: #fff;
+  background-color: #ef837b;
+  border-color: #ef837b;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -75,8 +75,14 @@ const ProductItem = ({
           {name}
         </Link>
         <div className={cx("product-price")}>
-          <span className={cx("product-price__new")}>${price}</span>
-          <span className={cx("product-price__old")}>{newPrice}</span>
+          {price === newPrice ? (
+            `$${price}`
+          ) : (
+            <>
+              <span className={cx("product-price__new")}>${price}</span>
+              <span className={cx("product-price__old")}>${newPrice}</span>
+            </>
+          )}
         </div>
         <button
           className={cx("add_btn")}
@@ -88,6 +94,7 @@ const ProductItem = ({
           <span className={cx("title")}>Add to cart</span>
         </button>
       </div>
+      {price !== newPrice && <div className={cx("sale-lable")}>SALE</div>}
     </div>
   );
 };
