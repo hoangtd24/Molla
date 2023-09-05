@@ -14,7 +14,7 @@ import Slider from "../../components/slider/Slider";
 import styles from "./Home.module.scss";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -29,7 +29,7 @@ import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import { brands } from "../../data";
-import { GET_PRODUCTS } from "../../graphql/query/Product";
+import { FILTER_PRODUCT, GET_PRODUCTS } from "../../graphql/query/Product";
 import { ItemCenter } from "../../styles";
 import PolicyItem from "./components/policyItem/PolicyItem";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
@@ -46,7 +46,8 @@ const Home = () => {
     fontFamily: "Jost",
   };
   const [value, setValue] = React.useState(0);
-  const [skip, setSkip] = useState(0);
+  const [sale, setSale] = useState<boolean>(false);
+  const [top, setTop] = useState<boolean>(false);
   const [category, setCategory] = useState<number | null>(null);
   const matches = useMediaQuery("(max-width:900px)");
   // const [tab, setTab] = useState<number | null>(null);
@@ -54,15 +55,24 @@ const Home = () => {
     setValue(newValue);
   };
 
+  const { data: dataFilter } = useQuery(FILTER_PRODUCT, {
+    variables: {
+      limit: 10,
+      page: 1,
+      sale: sale,
+      top: top,
+    },
+  });
   const [getProducts, { data }] = useLazyQuery(GET_PRODUCTS);
   useEffect(() => {
     getProducts({
       variables: {
-        skip: skip,
+        skip: 0,
         category: category,
       },
     });
-  }, [category, skip]);
+  }, [category, getProducts]);
+
   return (
     <Box>
       <Slider />
@@ -165,14 +175,25 @@ const Home = () => {
             <Tab
               label="Featured"
               sx={tabStyle}
-              onClick={() => setCategory(null)}
+              onClick={() => {
+                setSale(false);
+                setTop(false);
+              }}
             />
-            <Tab label="On Sale" sx={tabStyle} onClick={() => setCategory(1)} />
+            <Tab
+              label="On Sale"
+              sx={tabStyle}
+              onClick={() => {
+                setSale(true);
+                setTop(false);
+              }}
+            />
             <Tab
               label="Top Rated"
               sx={tabStyle}
               onClick={() => {
-                setCategory(2);
+                setTop(true);
+                setSale(false);
               }}
             />
           </Tabs>
@@ -195,8 +216,8 @@ const Home = () => {
               1200: { slidesPerView: 4 },
             }}
           >
-            {data &&
-              data.getProducts?.map((props: ProductItemProps) => (
+            {dataFilter &&
+              dataFilter.filter?.products?.map((props: ProductItemProps) => (
                 <SwiperSlide key={props.id}>
                   <ProductItem {...props} />
                 </SwiperSlide>

@@ -10,8 +10,8 @@ import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOu
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/UserContext";
 import { LOGOUT_USER } from "../../graphql/mutation/User";
 import { GET_CARTS } from "../../graphql/query/Cart";
@@ -30,6 +30,8 @@ const HeaderOnLargeScreen = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const { isAuthenticated, logoutClient } = useAuth();
   const [fixHeader, setFixHeader] = useState<boolean>(false);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [logout, _] = useMutation(LOGOUT_USER, {
     update(cache) {
@@ -136,9 +138,20 @@ const HeaderOnLargeScreen = () => {
                     type="text"
                     placeholder="Search product ..."
                     required
+                    ref={searchRef}
                   />
                 </div>
-                <div className={cx("search-btn")}>
+                <div
+                  className={cx("search-btn")}
+                  onClick={() =>
+                    navigate({
+                      pathname: "/search",
+                      search: `?${createSearchParams({
+                        keyword: `${searchRef.current?.value}`,
+                      })}`,
+                    })
+                  }
+                >
                   <SearchIcon />
                 </div>
               </div>
@@ -254,15 +267,15 @@ const HeaderOnLargeScreen = () => {
                             maxWidth: "288px",
                           }}
                         >
-                          <Link to="/">Furniture</Link>
+                          <Link to="/shop/furniture">Furniture</Link>
                           <Link to="/">Sofas & Sleep Sofas</Link>
-                          <Link to="/">Decor</Link>
-                          <Link to="/">Lighting</Link>
-                          <Link to="/">Beds</Link>
-                          <Link to="/">Storage</Link>
+                          <Link to="/shop/decor">Decor</Link>
+                          <Link to="/shop/lighting">Lighting</Link>
+                          <Link to="/shop/bed">Beds</Link>
+                          <Link to="/shop/storage">Storage</Link>
                           <Link to="/">Kitchen cabinets</Link>
                           <Link to="/">Electronics</Link>
-                          <Link to="/">Coffee & Tables</Link>
+                          <Link to="/shop/table">Coffee & Tables</Link>
                         </Box>
                       </div>
                     )}

@@ -42,12 +42,12 @@ export class Review extends BaseEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field(() => [User])
+  @Field(() => [User], { defaultValue: [] })
   @ManyToMany(() => User)
   @JoinTable()
   like: User[];
 
-  @Field(() => [User])
+  @Field(() => [User], { defaultValue: [] })
   @ManyToMany(() => User)
   @JoinTable()
   dislike: User[];

@@ -33,6 +33,10 @@
     color: #fff;
     border-color: var(--color-primary);
   }
+
+  &.fit-content {
+    width: fit-content;
+  }
 }
 
 .btn.lg {

@@ -32,6 +32,8 @@ export class ReviewResolver {
         product,
         content,
         rating,
+        like: [],
+        dislike: [],
       });
       await newReview.save();
 

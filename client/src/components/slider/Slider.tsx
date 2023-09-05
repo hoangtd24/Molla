@@ -67,6 +67,8 @@ const Slider = () => {
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
                   size="lg"
                   theme="black"
+                  to="/shop/all"
+                  fitContent
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-1-3.png" />
@@ -119,6 +121,8 @@ const Slider = () => {
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
                   size="lg"
                   theme="black"
+                  to="/shop/all"
+                  fitContent
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-2.jpg" />
@@ -170,6 +174,8 @@ const Slider = () => {
                   rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
                   size="lg"
                   theme="black"
+                  to="/shop/all"
+                  fitContent
                 />
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-3-1.png" />

@@ -7,7 +7,7 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { ILike, In, IsNull, Not } from "typeorm";
+import { ILike, In, IsNull, MoreThan, Not } from "typeorm";
 import { AppDataSource } from "..";
 import { Category } from "../entities/Category";
 import { Discount } from "../entities/Discount";
@@ -37,6 +37,8 @@ export class ProductResolver {
         (prevValue, currentValue) => prevValue + currentValue.rating,
         0
       );
+      product.averageRating = totalRating / reviews.length;
+      await product.save();
       return (totalRating / reviews.length).toFixed(1);
     }
   }
@@ -44,9 +46,12 @@ export class ProductResolver {
   @FieldResolver()
   async newPrice(@Root() product: Product) {
     if (product.discount) {
-      return product.price * (1 - product.discount.discount_percent / 100);
+      return (
+        product.price *
+        (1 - product.discount.discount_percent / 100)
+      ).toFixed(2);
     }
-    return product.price;
+    return product.price.toFixed(2);
   }
 
   @Mutation((_returns) => ProductMutationResponse)
@@ -157,6 +162,8 @@ export class ProductResolver {
           }),
         },
       });
+
+      console.log("everage rating", product.averageRating);
       return {
         code: 200,
         success: true,
@@ -187,7 +194,8 @@ export class ProductResolver {
 
   @Query(() => FilterProductResponse)
   async filter(
-    @Args() { category, limit, page, price, search }: FilterProductArg
+    @Args()
+    { category, limit, page, price, search, sale, top }: FilterProductArg
   ): Promise<FilterProductResponse> {
     const whereOptions: { [key in string]: any } = {};
     const orderOptions: { [key in string]: any } = {};
@@ -203,6 +211,15 @@ export class ProductResolver {
     if (price) {
       orderOptions.price = price;
     }
+
+    if (top) {
+      whereOptions.averageRating = MoreThan(4);
+    }
+
+    if (sale) {
+      whereOptions.discount = Not(IsNull());
+    }
+
     const products = await Product.findAndCount({
       where: whereOptions,
       skip: (page - 1) * limit,
@@ -210,6 +227,48 @@ export class ProductResolver {
       order: orderOptions,
       relations: {
         categories: true,
+        discount: true,
+      },
+    });
+
+    return {
+      pages: Math.ceil(products[1] / limit),
+      products: products[0],
+      total: products[1],
+    };
+  }
+
+  @Query(() => FilterProductResponse)
+  async search(
+    @Args()
+    { limit, page, price, search, sale, top }: FilterProductArg
+  ): Promise<FilterProductResponse> {
+    const whereOptions: { [key in string]: any } = {};
+    const orderOptions: { [key in string]: any } = {};
+    if (search) {
+      whereOptions.name = ILike(`%${search}%`);
+    }
+
+    if (price) {
+      orderOptions.price = price;
+    }
+
+    if (top) {
+      whereOptions.averageRating = MoreThan(4);
+    }
+
+    if (sale) {
+      whereOptions.discount = Not(IsNull());
+    }
+
+    const products = await Product.findAndCount({
+      where: whereOptions,
+      skip: (page - 1) * limit,
+      take: limit,
+      order: orderOptions,
+      relations: {
+        categories: true,
+        discount: true,
       },
     });
 

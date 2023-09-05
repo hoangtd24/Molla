@@ -21,16 +21,17 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import classNames from "classnames/bind";
 import { Fragment, useState } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useSearchParams } from "react-router-dom";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
-import { FILTER_PRODUCT } from "../../graphql/query/Product";
-import styles from "./Shop.module.scss";
+import { SEARCH_PRODUCT } from "../../graphql/query/Product";
+import styles from "./Search.module.scss";
 
 const cx = classNames.bind(styles);
 
-const Shop = () => {
+const Search = () => {
+  const [searchParams] = useSearchParams();
   const matches = useMediaQuery("(max-width:900px)");
 
   const [price, setPrice] = useState<string>("");
@@ -53,15 +54,14 @@ const Shop = () => {
   };
 
   //call query filter product
-  const param = useParams();
-  const { data } = useQuery(FILTER_PRODUCT, {
+  const { data } = useQuery(SEARCH_PRODUCT, {
     variables: {
-      category: param.name === "all" ? null : param.name,
       limit: 6,
       page: page,
       price: price,
       sale: sale,
       top: top,
+      search: searchParams.get("keyword"),
     },
   });
 
@@ -92,6 +92,8 @@ const Shop = () => {
             <Link to="/">Home</Link>
             <span>{">"}</span>
             <span>Shop</span>
+            <span>{">"}</span>
+            <span>Search results for "{searchParams.get("keyword")}"</span>
           </div>
         </Container>
       </Box>
@@ -282,7 +284,7 @@ const Shop = () => {
               </div>
               <Grid item container xs spacing={2}>
                 {data &&
-                  data.filter.products.map((product: ProductItemProps) => (
+                  data.search.products.map((product: ProductItemProps) => (
                     <Grid item xs={6} sm={4} key={product.id}>
                       <ProductItem {...product} />
                     </Grid>
@@ -421,4 +423,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Search;

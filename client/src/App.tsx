@@ -14,6 +14,7 @@ import Cart from "./pages/cart/Cart";
 import Shop from "./pages/shop/Shop";
 import Checkout from "./pages/checkout/Checkout";
 import Receive from "./pages/checkout/Receive";
+import Search from "./pages/search/Search";
 function App() {
   const { pathname } = useLocation();
 
@@ -42,6 +43,14 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <DetailProduct />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/search",
+                element: (
+                  <DefaultLayout>
+                    <Search />
                   </DefaultLayout>
                 ),
               },
@@ -156,6 +165,14 @@ function App() {
             element: (
               <DefaultLayout>
                 <Shop />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/search",
+            element: (
+              <DefaultLayout>
+                <Search />
               </DefaultLayout>
             ),
           },

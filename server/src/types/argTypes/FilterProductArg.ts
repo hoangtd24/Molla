@@ -21,8 +21,11 @@ export class FilterProductArg {
   @Field({ nullable: true })
   category?: string;
 
-  // @Field({ nullable: true })
-  // latest?: boolean;
+  @Field({ nullable: true })
+  sale?: boolean;
+
+  @Field({ nullable: true })
+  top?: boolean;
 
   @Field({ nullable: true })
   search?: string;

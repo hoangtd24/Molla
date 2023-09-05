@@ -12,6 +12,7 @@ type buttonComp =
   | "a";
 type buttonSize = "xs" | "sm" | "md" | "lg";
 type buttonTheme = "black" | "normal" | "green";
+
 interface btnProps {
   to?: string;
   href?: string;
@@ -21,6 +22,7 @@ interface btnProps {
   size?: buttonSize;
   theme?: buttonTheme;
   title?: string;
+  fitContent?: boolean;
 }
 const Button = ({
   leftIcon,
@@ -31,6 +33,7 @@ const Button = ({
   to,
   href,
   title,
+  fitContent,
 }: btnProps) => {
   let Comp: buttonComp = "button";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +47,9 @@ const Button = ({
     props.href = href;
     Comp = "a";
   }
-  const classes = cx("btn", `${size}`, `${theme}`);
+  const classes = cx("btn", `${size}`, `${theme}`, {
+    "fit-content": fitContent,
+  });
   return (
     <Comp to={""} className={classes} {...props}>
       {leftIcon && <span className={cx("btn-icon")}>{leftIcon}</span>}

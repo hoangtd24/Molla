@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from "@apollo/client";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import PinterestIcon from "@mui/icons-material/Pinterest";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -30,18 +30,21 @@ import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import WoocommerTabs from "../../components/woocommerceTabs/WoocommerceTabs";
+import { useSnackBar } from "../../context/SnackBar";
 import { useAuth } from "../../context/UserContext";
 import { CREATE_CART } from "../../graphql/mutation/Cart";
+import { GET_CARTS } from "../../graphql/query/Cart";
 import { DETAIL_PRODUCT } from "../../graphql/query/Product";
-import { ME } from "../../graphql/query/User";
 import styles from "./DetailProduct.module.scss";
 
 const cx = classNames.bind(styles);
 
 export default function DetailProduct() {
+  const { isAuthenticated } = useAuth();
+  const { setOpenSnackBar, setMessageSnackBar } = useSnackBar();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
-  const { isAuthenticated } = useAuth();
+
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [qty, setQty] = useState<number>(1);
   const param = useParams();
@@ -52,13 +55,14 @@ export default function DetailProduct() {
     variables: { id: Number(param.id) },
   });
 
-  const [createCart] = useMutation(CREATE_CART, { refetchQueries: [ME] });
-
+  const [createCart] = useMutation(CREATE_CART, {
+    refetchQueries: [GET_CARTS],
+  });
   const handleAddToCart = async (id: number) => {
     if (!isAuthenticated) {
       navigate("/login", { state: location });
     }
-    createCart({
+    const res = await createCart({
       variables: {
         cartInput: {
           productId: Number(id),
@@ -66,6 +70,10 @@ export default function DetailProduct() {
         },
       },
     });
+    if (res.data?.createCart?.success) {
+      setOpenSnackBar(true);
+      setMessageSnackBar("Add to cart successfully");
+    }
   };
   useLayoutEffect(() => {
     if (qty < 1) {
@@ -158,16 +166,18 @@ export default function DetailProduct() {
                 </div>
               )}
               <div className={cx("product-price")}>
-                <span className={cx("product-price__new")}>
-                  $
-                  {data?.detailProduct?.product?.price *
-                    (1 -
-                      data?.detailProduct?.product?.discount?.discount_percent /
-                        100)}
-                </span>
-                <span className={cx("product-price__old")}>
-                  ${data?.detailProduct?.product?.price}
-                </span>
+                {data?.detailProduct?.product?.discount ? (
+                  <>
+                    <span className={cx("product-price__new")}>
+                      ${data?.detailProduct?.product?.newPrice}
+                    </span>
+                    <span className={cx("product-price__old")}>
+                      ${data?.detailProduct?.product?.price}
+                    </span>
+                  </>
+                ) : (
+                  `$${data?.detailProduct?.product?.newPrice}`
+                )}
               </div>
               <span className={cx("product-desc")}>
                 Morbi purus libero, faucibus adipiscing, commodo quis, gravida

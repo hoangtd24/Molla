@@ -81,6 +81,8 @@ export const FILTER_PRODUCT = gql`
     $category: String
     $search: String
     $price: String
+    $sale: Boolean
+    $top: Boolean
   ) {
     filter(
       page: $page
@@ -88,6 +90,8 @@ export const FILTER_PRODUCT = gql`
       category: $category
       search: $search
       price: $price
+      sale: $sale
+      top: $top
     ) {
       total
       pages
@@ -100,6 +104,47 @@ export const FILTER_PRODUCT = gql`
         categories {
           name
         }
+        discount {
+          id
+        }
+        averageRating
+      }
+    }
+  }
+`;
+
+export const SEARCH_PRODUCT = gql`
+  query search(
+    $page: Int! = 1
+    $limit: Int!
+    $search: String
+    $price: String
+    $sale: Boolean
+    $top: Boolean
+  ) {
+    search(
+      page: $page
+      limit: $limit
+      search: $search
+      price: $price
+      sale: $sale
+      top: $top
+    ) {
+      total
+      pages
+      products {
+        id
+        name
+        price
+        newPrice
+        images
+        categories {
+          name
+        }
+        discount {
+          id
+        }
+        averageRating
       }
     }
   }

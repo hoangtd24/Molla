@@ -136,18 +136,41 @@
   }
 }
 
+.lable {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
 .sale-lable {
   font-size: 13px;
   color: #fff;
   background-color: #ef837b;
   border-color: #ef837b;
   border-radius: 50%;
-  position: absolute;
-  top: 20px;
-  left: 20px;
   width: 46px;
   height: 46px;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+}
+
+.top-lable {
+  font-size: 13px;
+  color: #fff;
+  background-color: #7dd2ea;
+  border-color: #7dd2ea;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.sale-lable + .top-lable{
+  margin-top: -8px;
 }

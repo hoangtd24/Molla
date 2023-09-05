@@ -9,6 +9,7 @@ import { useAuth } from "../../context/UserContext";
 import { CREATE_CART } from "../../graphql/mutation/Cart";
 import { GET_CARTS } from "../../graphql/query/Cart";
 import styles from "./ProductItem.module.scss";
+import { useSnackBar } from "../../context/SnackBar";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: number;
@@ -16,6 +17,7 @@ export interface ProductItemProps {
   price: number;
   images: string[];
   newPrice: number;
+  averageRating?: number;
 }
 const ProductItem = ({
   id,
@@ -23,6 +25,7 @@ const ProductItem = ({
   price,
   images,
   newPrice,
+  averageRating,
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
 
@@ -31,13 +34,15 @@ const ProductItem = ({
   });
 
   const { isAuthenticated } = useAuth();
+  const { setOpenSnackBar, setMessageSnackBar } = useSnackBar();
+
   const navigate = useNavigate();
 
   const handleAddToCart = async (id: number) => {
     if (!isAuthenticated) {
       navigate("/login");
     }
-    createCart({
+    const res = await createCart({
       variables: {
         cartInput: {
           productId: Number(id),
@@ -45,6 +50,10 @@ const ProductItem = ({
         },
       },
     });
+    if (res.data?.createCart?.success) {
+      setOpenSnackBar(true);
+      setMessageSnackBar("Add to cart successfully");
+    }
   };
   return (
     <div className={cx("product-wrapper")}>
@@ -94,7 +103,14 @@ const ProductItem = ({
           <span className={cx("title")}>Add to cart</span>
         </button>
       </div>
-      {price !== newPrice && <div className={cx("sale-lable")}>SALE</div>}
+      <div className={cx("lable")}>
+        {price !== newPrice && <div className={cx("sale-lable")}>SALE</div>}
+        {averageRating && averageRating > 4 ? (
+          <div className={cx("top-lable")}>TOP</div>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

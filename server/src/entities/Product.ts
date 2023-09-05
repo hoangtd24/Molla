@@ -48,6 +48,7 @@ export class Product extends BaseEntity {
   reviews?: Review[];
 
   @Field(() => Float)
+  @Column({ type: "float", nullable: true })
   averageRating: number;
 
   @Field(() => Float)
