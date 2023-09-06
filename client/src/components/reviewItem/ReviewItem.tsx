@@ -5,6 +5,7 @@ import { Rating } from "@mui/material";
 import classNames from "classnames/bind";
 import { REVIEW_EMOTION } from "../../graphql/mutation/Review";
 import styles from "./ReviewItem.module.scss";
+import moment from "moment";
 
 const cx = classNames.bind(styles);
 export interface ReviewItemprops {
@@ -20,6 +21,7 @@ export interface ReviewItemprops {
   dislike: {
     id: number;
   }[];
+  createdAt: string;
 }
 const ReviewItem = ({
   id,
@@ -28,6 +30,7 @@ const ReviewItem = ({
   rating,
   like,
   dislike,
+  createdAt,
 }: ReviewItemprops) => {
   const [reviewEmotion] = useMutation(REVIEW_EMOTION, {
     update(cache, { data }) {
@@ -89,7 +92,9 @@ const ReviewItem = ({
               precision={0.5}
             />
           </div>
-          <span className={cx("review-time")}>3 years ago</span>
+          <span className={cx("review-time")}>
+            {moment(createdAt).fromNow()}
+          </span>
         </div>
         <div className={cx("review-content__right")}>
           <p>{content}</p>

@@ -28,6 +28,7 @@ import { Order } from "./entities/Order";
 import { Payment } from "./entities/Payment";
 import { PaymentResolver } from "./resolvers/Payment";
 import { OrderResolver } from "./resolvers/Order";
+import mongoose from "mongoose";
 require("dotenv").config();
 
 export const AppDataSource = new DataSource({
@@ -86,6 +87,9 @@ const main = async () => {
   });
   await apolloServer.start();
 
+  await mongoose.connect(
+    `mongodb+srv://hoangtd241100:${process.env.MONGOOSE_PASS}@cluster0.4ozdp8b.mongodb.net/`
+  );
   apolloServer.applyMiddleware({
     app,
     cors: {

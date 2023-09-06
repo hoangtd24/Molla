@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import classNames from "classnames/bind";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -56,7 +56,6 @@ const Login = () => {
     <Box
       sx={{
         backgroundImage: `url("../../../../src/assets/images/login-bg.jpg")`,
-        paddingTop: "50%",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         position: "relative",
@@ -64,109 +63,100 @@ const Login = () => {
         justifyContent: "center",
       }}
     >
-      <Container
-        sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)" }}
+      <Paper
+        sx={{
+          width: "575px",
+          padding: "36px 60px 36px",
+          margin: "116px 16px",
+          maxWidth: "100%",
+        }}
       >
-        <Paper
-          sx={{
-            maxWidth: "575px",
-            padding: "36px 60px 36px",
-            margin: "auto",
-          }}
-        >
-          <form
-            className={cx("login-form")}
-            onSubmit={handleSubmit(handleLogin)}
+        <form className={cx("login-form")} onSubmit={handleSubmit(handleLogin)}>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
           >
-            <Typography
-              variant="h2"
-              sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
-            >
-              Sign In
-            </Typography>
-            <Divider
-              sx={{
-                borderBottomWidth: "unset",
-                borderColor: "var(--color-primary)",
-                marginBottom: "20px",
-              }}
-            />
-            <Box>
-              <div className={cx("form-group")}>
-                <label htmlFor="email">Email</label>
-                <input
-                  {...register("email", {
-                    required: { value: true, message: "Email is required" },
-                  })}
-                  type="email"
-                  id="email"
-                />
-              </div>
-
-              <div className={cx("form-group")}>
-                <label htmlFor="password">Password</label>
-                <input
-                  {...register("password", {
-                    required: { value: true, message: "Password is required" },
-                    minLength: {
-                      value: 5,
-                      message: "Password must be at least 5 characters",
-                    },
-                  })}
-                  type="password"
-                  id="password"
-                />
-              </div>
-            </Box>
-            {loading && <span className={cx("loading")}>Please wait ...</span>}
-            {(errors as any)[Object.keys(errors)[0]]?.message && (
-              <div className={cx("error")}>
-                <span className={cx("error-heading")}>Error:</span>
-                <span className={cx("error-title")}>
-                  {(errors as any)[Object.keys(errors)[0]]?.message}
-                </span>
-              </div>
-            )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                margin: "20px 0 30px 0",
-              }}
-            >
-              <Button
-                title="LOG IN"
-                onClick={() => {}}
-                rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
+            Sign In
+          </Typography>
+          <Divider
+            sx={{
+              borderBottomWidth: "unset",
+              borderColor: "var(--color-primary)",
+              marginBottom: "20px",
+            }}
+          />
+          <Box>
+            <div className={cx("form-group")}>
+              <label htmlFor="email">Email</label>
+              <input
+                {...register("email", {
+                  required: { value: true, message: "Email is required" },
+                })}
+                type="email"
+                id="email"
               />
-              <Link
-                className={cx("forgot-password__link")}
-                to="/forget-password"
-              >
-                Forgot Your Password?
+            </div>
+
+            <div className={cx("form-group")}>
+              <label htmlFor="password">Password</label>
+              <input
+                {...register("password", {
+                  required: { value: true, message: "Password is required" },
+                  minLength: {
+                    value: 5,
+                    message: "Password must be at least 5 characters",
+                  },
+                })}
+                type="password"
+                id="password"
+              />
+            </div>
+          </Box>
+          {loading && <span className={cx("loading")}>Please wait ...</span>}
+          {(errors as any)[Object.keys(errors)[0]]?.message && (
+            <div className={cx("error")}>
+              <span className={cx("error-heading")}>Error:</span>
+              <span className={cx("error-title")}>
+                {(errors as any)[Object.keys(errors)[0]]?.message}
+              </span>
+            </div>
+          )}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "20px 0 30px 0",
+            }}
+          >
+            <Button
+              title="LOG IN"
+              onClick={() => {}}
+              rightIcon={<ArrowRightAltIcon sx={{ fontSize: "20px" }} />}
+            />
+            <Link className={cx("forgot-password__link")} to="/forget-password">
+              Forgot Your Password?
+            </Link>
+          </Box>
+          <Divider />
+          <Box sx={{ marginTop: "24px" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: "14px",
+                fontFamily: "Jost",
+                color: "#777",
+                textAlign: "center",
+              }}
+            >
+              Don't have an account?
+              <Link to="/register" className={cx("sign-up_btn")}>
+                Sign up for Molla
               </Link>
-            </Box>
-            <Divider />
-            <Box sx={{ marginTop: "24px" }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: "14px",
-                  fontFamily: "Jost",
-                  color: "#777",
-                  textAlign: "center",
-                }}
-              >
-                Don't have an account?
-                <Link to="/register" className={cx("sign-up_btn")}>
-                  Sign up for Molla
-                </Link>
-              </Typography>
-            </Box>
-          </form>
-        </Paper>
-      </Container>
+            </Typography>
+          </Box>
+        </form>
+      </Paper>
     </Box>
   );
 };

@@ -48,3 +48,13 @@ export const LOGOUT_USER = gql`
     }
   }
 `;
+
+export const FORGET_PASSWORD = gql`
+  mutation forgetPassword($email: String!) {
+    forgetPassword(email: $email) {
+      code
+      success
+      message
+    }
+  }
+`;

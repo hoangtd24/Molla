@@ -221,6 +221,7 @@ export default function WoocommerTabs({
                     minHeight: "42px",
                     outline: "none",
                     padding: "12px 20px",
+                    fontFamily:"Jost"
                   }}
                   ref={inputRef}
                 />

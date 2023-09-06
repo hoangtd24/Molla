@@ -64,7 +64,7 @@ const Cart = () => {
                   <span>SubTotal</span>
                   <span>{data && data.getCarts?.total}</span>
                 </div>
-                <Button title="PROCEED TO CHECKOUT" theme="green" />
+                <Button title="PROCEED TO CHECKOUT" theme="green" to="/checkout"/>
               </div>
             </Grid>
           </Grid>
