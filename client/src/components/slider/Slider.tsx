@@ -10,6 +10,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Button from "../button/Button";
+import { images } from "../../assets/images";
 
 const Slider = () => {
   return (
@@ -71,10 +72,16 @@ const Slider = () => {
                   fitContent
                 />
               </Box>
-              <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-1-3.png" />
+              <img
+                src={images.slide1}
+                alt="slider_img_1"
+                style={{
+                  marginLeft: "60px",
+                }}
+              />
             </Box>
           </SwiperSlide>
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <Box
               sx={{
                 display: "flex",
@@ -127,7 +134,7 @@ const Slider = () => {
               </Box>
               <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-2.jpg" />
             </Box>
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <Box
               sx={{
@@ -178,7 +185,13 @@ const Slider = () => {
                   fitContent
                 />
               </Box>
-              <img src="https://d-themes.com/wordpress/molla/demo-1/wp-content/uploads/sites/2/2020/11/slide-3-1.png" />
+              <img
+                src={images.slide3}
+                alt="slider_img_3"
+                style={{
+                  marginLeft: "60px",
+                }}
+              />
             </Box>
           </SwiperSlide>
         </Swiper>

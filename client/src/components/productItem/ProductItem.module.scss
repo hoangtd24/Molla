@@ -36,6 +36,8 @@
   background-repeat: no-repeat;
   background-position: center;
   transition: all 0.35s ease-in-out;
+  background-color: #f4f4f4;
+  background-blend-mode: multiply;
 }
 
 .product-content {
@@ -171,6 +173,6 @@
   z-index: 2;
 }
 
-.sale-lable + .top-lable{
+.sale-lable + .top-lable {
   margin-top: -8px;
 }

@@ -23,8 +23,14 @@ import MinicartItem, {
 import DropDownItem from "../dropdownItem/DropDownItem";
 import MenuItem from "../menuItem/MenuItem";
 import styles from "./Header.module.scss";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
 
 const cx = classNames.bind(styles);
+
+export interface Category {
+  id: string;
+  name: string;
+}
 
 const HeaderOnLargeScreen = () => {
   const [visible, setVisible] = useState<boolean>(false);
@@ -46,6 +52,7 @@ const HeaderOnLargeScreen = () => {
   });
 
   const { data: cartData } = useQuery(GET_CARTS);
+  const { data: categoryData } = useQuery(GET_CATEGORIES);
 
   const handleLogout = () => {
     logoutClient();
@@ -267,15 +274,17 @@ const HeaderOnLargeScreen = () => {
                             maxWidth: "288px",
                           }}
                         >
-                          <Link to="/shop/furniture">Furniture</Link>
-                          <Link to="/">Sofas & Sleep Sofas</Link>
-                          <Link to="/shop/decor">Decor</Link>
-                          <Link to="/shop/lighting">Lighting</Link>
-                          <Link to="/shop/bed">Beds</Link>
-                          <Link to="/shop/storage">Storage</Link>
-                          <Link to="/">Kitchen cabinets</Link>
-                          <Link to="/">Electronics</Link>
-                          <Link to="/shop/table">Coffee & Tables</Link>
+                          {categoryData?.getCategories?.map(
+                            (category: Category) => (
+                              <Link
+                                to={`/shop/${category.name}`}
+                                key={category.id}
+                                onClick={() => setVisible(false)}
+                              >
+                                {category.name}
+                              </Link>
+                            )
+                          )}
                         </Box>
                       </div>
                     )}

@@ -2,7 +2,7 @@ import { prop, getModelForClass } from "@typegoose/typegoose";
 
 class Token {
   @prop({ required: true })
-  public userId: number;
+  public userId: string;
 
   @prop({ required: true })
   public token: string;

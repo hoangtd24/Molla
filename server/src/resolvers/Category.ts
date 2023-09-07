@@ -1,4 +1,4 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Category } from "../entities/Category";
 import { CategoryMutationResponse } from "../types/CategoryResponse";
 
@@ -27,5 +27,11 @@ export class CategoryResolver {
         message: error.message,
       };
     }
+  }
+
+  @Query(() => [Category])
+  async getCategories() {
+    const categories = await Category.find({});
+    return categories;
   }
 }

@@ -17,6 +17,7 @@ import { LoginInput } from "../types/inputTypes/LoginInput";
 import { RegisterInput } from "../types/inputTypes/RegisterInput";
 import { createToken, sendRefreshToken } from "../utils/createToken";
 import { sendMail } from "../utils/sendMail";
+import { resetPasswordInput } from "../types/inputTypes/ResetPasswordInput";
 @Resolver()
 export class UserResolver {
   @Mutation((_returns) => UserMutationResponse)
@@ -167,5 +168,56 @@ export class UserResolver {
       success: true,
       message: "Please check your email",
     };
+  }
+
+  @Mutation((_return) => UserMutationResponse)
+  async resetPassword(
+    @Arg("resetPasswordInput") { password, token, userId }: resetPasswordInput
+  ): Promise<UserMutationResponse> {
+    try {
+      const tokenRecord = await TokenModel.findOne({ userId: userId });
+      console.log(tokenRecord);
+      if (!tokenRecord) {
+        return {
+          code: 400,
+          success: false,
+          message: "Invalid or expired password reset token",
+        };
+      }
+      const hashTokenRecord = argon2.verify(tokenRecord.token, token);
+
+      if (!hashTokenRecord) {
+        return {
+          code: 400,
+          success: false,
+          message: "Invalid or expired password reset token",
+        };
+      }
+      const userIdNum = parseInt(userId);
+      const user = await User.findOneBy({ id: userIdNum });
+
+      if (!user) {
+        return {
+          code: 400,
+          success: false,
+          message: "User no longer exists",
+        };
+      }
+
+      const updatedPassword = await argon2.hash(password);
+      await User.update({ id: userIdNum }, { password: updatedPassword });
+
+      await tokenRecord.deleteOne();
+
+      return {
+        code: 200,
+        success: true,
+        message: "User password reset successfully",
+        user,
+      };
+    } catch (error) {
+      console.log(error);
+      return error.message;
+    }
   }
 }

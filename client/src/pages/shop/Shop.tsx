@@ -27,6 +27,9 @@ import ProductItem, {
 } from "../../components/productItem/ProductItem";
 import { FILTER_PRODUCT } from "../../graphql/query/Product";
 import styles from "./Shop.module.scss";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
+import { Category } from "../../components/header/HeaedOnLargeScreen";
+import ProductItemThrough from "../../components/productItem/ProductItemThrough";
 
 const cx = classNames.bind(styles);
 
@@ -37,6 +40,7 @@ const Shop = () => {
   const [page, setPage] = useState<number>(1);
   const [sale, setSale] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
+  const [view, setView] = useState<number>(1);
   const [state, setState] = useState({
     left: false,
   });
@@ -51,6 +55,8 @@ const Shop = () => {
   ) => {
     setPage(value);
   };
+
+  const { data: categoryData } = useQuery(GET_CATEGORIES);
 
   //call query filter product
   const param = useParams();
@@ -132,46 +138,19 @@ const Shop = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      <NavLink
-                        to="/shop/decor"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Decor
-                      </NavLink>
-                      <NavLink
-                        to="/shop/furniture"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Furniture
-                      </NavLink>
-                      <NavLink
-                        to="/shop/lighting"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Lighting
-                      </NavLink>
-                      <NavLink
-                        to="/shop/chair"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Chair
-                      </NavLink>
-                      <NavLink
-                        to="/shop/table"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Table
-                      </NavLink>
+                      {categoryData?.getCategories?.map(
+                        (category: Category) => (
+                          <NavLink
+                            to={`/shop/${category.name}`}
+                            className={({ isActive }) =>
+                              cx("filter-item", { active: isActive })
+                            }
+                            key={category.id}
+                          >
+                            {category.name}
+                          </NavLink>
+                        )
+                      )}
                     </AccordionDetails>
                   </Accordion>
                   <Accordion
@@ -271,10 +250,20 @@ const Shop = () => {
                     </FormControl>
                   </div>
                   <div className={cx("filter-views")}>
-                    <span className={cx("filter-views__item", "active")}>
+                    <span
+                      className={cx("filter-views__item", {
+                        active: view === 2,
+                      })}
+                      onClick={() => setView(2)}
+                    >
                       <ViewListOutlinedIcon sx={{ fontSize: "18px" }} />
                     </span>
-                    <span className={cx("filter-views__item")}>
+                    <span
+                      className={cx("filter-views__item", {
+                        active: view === 1,
+                      })}
+                      onClick={() => setView(1)}
+                    >
                       <ViewModuleOutlinedIcon sx={{ fontSize: "18px" }} />
                     </span>
                   </div>
@@ -282,13 +271,19 @@ const Shop = () => {
               </div>
               <Grid item container xs spacing={2}>
                 {data &&
-                  data.filter.products.map((product: ProductItemProps) => (
-                    <Grid item xs={6} sm={4} key={product.id}>
-                      <ProductItem {...product} />
-                    </Grid>
-                  ))}
+                  data.filter.products.map((product: ProductItemProps) => {
+                    return view === 1 ? (
+                      <Grid item xs={6} sm={4} key={product.id}>
+                        <ProductItem {...product} />
+                      </Grid>
+                    ) : (
+                      <Grid item xs={12} key={product.id}>
+                        <ProductItemThrough {...product} />
+                      </Grid>
+                    );
+                  })}
               </Grid>
-              {data && data.filter?.pages && (
+              {data && data.filter?.pages > 1 && (
                 <div className={cx("pagination")}>
                   <Pagination
                     count={data.filter.pages}
@@ -341,46 +336,19 @@ const Shop = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      <NavLink
-                        to="/shop/decor"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Decor
-                      </NavLink>
-                      <NavLink
-                        to="/shop/furniture"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Furniture
-                      </NavLink>
-                      <NavLink
-                        to="/shop/lighting"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Lighting
-                      </NavLink>
-                      <NavLink
-                        to="/shop/chair"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Chair
-                      </NavLink>
-                      <NavLink
-                        to="/shop/table"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Table
-                      </NavLink>
+                      {categoryData?.getCategories?.map(
+                        (category: Category) => (
+                          <NavLink
+                            to={`/shop/${category.name}`}
+                            className={({ isActive }) =>
+                              cx("filter-item", { active: isActive })
+                            }
+                            key={category.id}
+                          >
+                            {category.name}
+                          </NavLink>
+                        )
+                      )}
                     </AccordionDetails>
                   </Accordion>
                   <Accordion

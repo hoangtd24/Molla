@@ -107,11 +107,19 @@ export default function DetailProduct() {
                   data.detailProduct.product.images.map(
                     (image: string, index: number) => (
                       <SwiperSlide key={index}>
-                        <img
-                          src={image}
-                          className={cx("zoom-img")}
-                          alt="zoom-img"
-                        />
+                        <div
+                          style={{
+                            backgroundColor: "#f4f4f4",
+                            display: "flex",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          <img
+                            src={image}
+                            className={cx("zoom-img")}
+                            alt="zoom-img"
+                          />
+                        </div>
                       </SwiperSlide>
                     )
                   )}

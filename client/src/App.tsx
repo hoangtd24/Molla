@@ -15,6 +15,7 @@ import Shop from "./pages/shop/Shop";
 import Checkout from "./pages/checkout/Checkout";
 import Receive from "./pages/checkout/Receive";
 import Search from "./pages/search/Search";
+import ResetPassword from "./pages/reset-password/ResetPassword";
 function App() {
   const { pathname } = useLocation();
 
@@ -141,6 +142,14 @@ function App() {
             element: (
               <DefaultLayout>
                 <ForgetPassword />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/change-password",
+            element: (
+              <DefaultLayout>
+                <ResetPassword />
               </DefaultLayout>
             ),
           },

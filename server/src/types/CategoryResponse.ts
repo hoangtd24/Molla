@@ -5,5 +5,5 @@ import { Category } from "../entities/Category";
 @ObjectType({ implements: MutationResponse })
 export class CategoryMutationResponse extends MutationResponse {
   @Field({ nullable: true })
-  disount?: Category;
+  category?: Category;
 }

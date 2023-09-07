@@ -17,6 +17,8 @@ import Blog1 from "./blog-1.jpg";
 import Blog2 from "./blog-2.jpg";
 import Blog3 from "./blog-3.jpg";
 import parallax from "./parallax.jpg";
+import slide1 from "./slide-1.png";
+import slide3 from "./slide-3.png";
 
 export const images = {
   brand1: brand1,
@@ -37,4 +39,8 @@ export const images = {
   Blog2,
   Blog3,
   parallax,
+  slide1,
+  slide3,
+  slide1Resize,
+  slide3Resize,
 };

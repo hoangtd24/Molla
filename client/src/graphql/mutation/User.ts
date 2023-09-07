@@ -58,3 +58,13 @@ export const FORGET_PASSWORD = gql`
     }
   }
 `;
+
+export const RESET_PASSWORD = gql`
+  mutation resetPassword($resetPasswordInput: resetPasswordInput!) {
+    resetPassword(resetPasswordInput: $resetPasswordInput) {
+      code
+      success
+      message
+    }
+  }
+`;

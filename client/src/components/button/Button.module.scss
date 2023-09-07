@@ -10,7 +10,7 @@
   outline: none;
   cursor: pointer;
   transition: all 0.3s linear;
-  font-size: 15px;
+  font-size: clamp(13px, 1.3vw, 15px);
   min-width: 110px;
   font-family: "Jost";
   &.black {
