@@ -29,6 +29,8 @@ import { Payment } from "./entities/Payment";
 import { PaymentResolver } from "./resolvers/Payment";
 import { OrderResolver } from "./resolvers/Order";
 import mongoose from "mongoose";
+import { Wishlist } from "./entities/Wishlist";
+import { WishlistResolver } from "./resolvers/Wishlist";
 require("dotenv").config();
 
 export const AppDataSource = new DataSource({
@@ -38,7 +40,17 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: "molla",
-  entities: [User, Product, Category, Discount, Review, Cart, Order, Payment],
+  entities: [
+    User,
+    Product,
+    Category,
+    Discount,
+    Review,
+    Cart,
+    Order,
+    Payment,
+    Wishlist,
+  ],
   synchronize: true,
   logging: true,
 });
@@ -77,6 +89,7 @@ const main = async () => {
         CartResolver,
         PaymentResolver,
         OrderResolver,
+        WishlistResolver,
       ],
     }),
     plugins: [

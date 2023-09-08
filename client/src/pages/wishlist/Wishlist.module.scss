@@ -1,0 +1,122 @@
+.page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(231, 231, 231);
+  background: linear-gradient(
+    90deg,
+    rgba(231, 231, 231, 1) 0%,
+    rgba(226, 223, 255, 1) 100%
+  );
+  padding: 42px 0;
+}
+
+.header {
+  font-size: clamp(28px, 5vw, 40px);
+  color: #333;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.sub-header {
+  font-size: clamp(16px, 5vw, 20px);
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #999;
+  padding: 16px 0;
+  font-weight: 300;
+
+  & span:last-child {
+    color: #333;
+  }
+}
+.table {
+  width: 100%;
+  th {
+    font-size: 14px;
+    color: #999;
+    font-weight: 400;
+    text-align: left;
+    border-bottom: 1px solid #ebebeb;
+    padding: 14px 10px 14px 0;
+  }
+}
+
+.summary-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+
+  & h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    padding-bottom: 16px;
+  }
+}
+
+.cart-subtotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #333;
+  padding: 24px 0;
+  border-top: 1px solid #ccc;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: var(--color-primary);
+  padding: 24px 0;
+  border-top: 1px solid #ebebeb;
+}
+
+//social
+.product-social {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #999;
+  font-size: 14px;
+  font-family: "Jost";
+  padding: 20px 0;
+
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+.product-social__icon {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.wish-list__empty {
+  display: block;
+  font-size: 14px;
+  color: #777;
+  padding: 30px 0;
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+}

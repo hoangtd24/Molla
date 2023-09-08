@@ -106,3 +106,7 @@ div.swiper-slide-thumb-active {
   cursor: unset;
   border-color: #ccc;
 }
+
+.swiper-pagination-bullet-active {
+  background-color: var(--color-primary) !important;
+}

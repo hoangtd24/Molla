@@ -5,19 +5,26 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSnackBar } from "../../context/SnackBar";
 import { useAuth } from "../../context/UserContext";
 import { CREATE_CART } from "../../graphql/mutation/Cart";
+import {
+  CREATE_WISHLIST,
+  REMOVE_WISHLIST_BY_PRODUCT_ID,
+} from "../../graphql/mutation/Wishlist";
 import { GET_CARTS } from "../../graphql/query/Cart";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import styles from "./ProductItem.module.scss";
-import { useSnackBar } from "../../context/SnackBar";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
-  id: number;
+  id: string;
   name: string;
   price: number;
   images: string[];
   newPrice: number;
   averageRating?: number;
+  inWishlist: boolean;
 }
 const ProductItem = ({
   id,
@@ -26,18 +33,30 @@ const ProductItem = ({
   images,
   newPrice,
   averageRating,
+  inWishlist,
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
 
+  //mutation create cart
   const [createCart] = useMutation(CREATE_CART, {
     refetchQueries: [GET_CARTS],
   });
 
+  //mutation create wishlist
+  const [createWishlist] = useMutation(CREATE_WISHLIST, {
+    refetchQueries: [GET_WISHLISTS],
+  });
+
+  const [removeWishlistByProductId] = useMutation(
+    REMOVE_WISHLIST_BY_PRODUCT_ID,
+    { refetchQueries: [GET_WISHLISTS] }
+  );
   const { isAuthenticated } = useAuth();
   const { setOpenSnackBar, setMessageSnackBar } = useSnackBar();
 
   const navigate = useNavigate();
 
+  // function handle add to cart
   const handleAddToCart = async (id: number) => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -55,6 +74,40 @@ const ProductItem = ({
       setMessageSnackBar("Add to cart successfully");
     }
   };
+
+  // FN add to wish list
+  const handleAddToWishlist = async (id: number) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    const res = await createWishlist({
+      variables: {
+        productId: Number(id),
+      },
+    });
+    if (res.data?.createWishlist?.success) {
+      setOpenSnackBar(true);
+      setMessageSnackBar("Added product to wishlist");
+    }
+  };
+
+  //Fn remove item from wishlist
+
+  const handleRemoveProductFromWishlist = async (id: number) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    const res = await removeWishlistByProductId({
+      variables: {
+        productId: Number(id),
+      },
+    });
+    if (res.data?.removeWishlistByProductId?.success) {
+      setOpenSnackBar(true);
+      setMessageSnackBar("Product removed from wishlist");
+    }
+  };
+
   return (
     <div className={cx("product-wrapper")}>
       <Link
@@ -70,9 +123,20 @@ const ProductItem = ({
         ></div>
       </Link>
       <div className={cx("product-actions")}>
-        <span>
-          <FavoriteBorderIcon sx={{ fontSize: "16px" }} />
-        </span>
+        {inWishlist ? (
+          <span
+            onClick={() => handleRemoveProductFromWishlist(Number(id))}
+            className={cx({
+              active: inWishlist,
+            })}
+          >
+            <FavoriteIcon sx={{ fontSize: "16px" }} />
+          </span>
+        ) : (
+          <span onClick={() => handleAddToWishlist(Number(id))}>
+            <FavoriteBorderIcon sx={{ fontSize: "16px" }} />
+          </span>
+        )}
         <span>
           <Link to={`/detail-product/${id}`}>
             <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />

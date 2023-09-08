@@ -284,6 +284,7 @@ export default function DetailProduct() {
             <Swiper
               modules={[Pagination]}
               slidesPerView={4}
+              slidesPerGroup={4}
               pagination={{ clickable: true }}
               style={{ maxHeight: "500px" }}
               spaceBetween={32}

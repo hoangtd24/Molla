@@ -24,6 +24,7 @@ import DropDownItem from "../dropdownItem/DropDownItem";
 import MenuItem from "../menuItem/MenuItem";
 import styles from "./Header.module.scss";
 import { GET_CATEGORIES } from "../../graphql/query/Category";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 
 const cx = classNames.bind(styles);
 
@@ -53,6 +54,7 @@ const HeaderOnLargeScreen = () => {
 
   const { data: cartData } = useQuery(GET_CARTS);
   const { data: categoryData } = useQuery(GET_CATEGORIES);
+  const { data: wishlistData } = useQuery(GET_WISHLISTS);
 
   const handleLogout = () => {
     logoutClient();
@@ -168,11 +170,17 @@ const HeaderOnLargeScreen = () => {
                 <ActionIcon
                   icon={<AccountCircleOutlinedIcon />}
                   name="Account"
+                  to="/login"
                 />
                 <ActionIcon
                   icon={<FavoriteBorderOutlinedIcon />}
                   name="Wishlist"
-                  quantity={0}
+                  quantity={
+                    wishlistData?.getWishlists?.length > 0
+                      ? wishlistData?.getWishlists?.length
+                      : 0
+                  }
+                  to="/wishlist"
                 />
                 <Tippy
                   interactive
@@ -232,6 +240,7 @@ const HeaderOnLargeScreen = () => {
                 >
                   <Box>
                     <ActionIcon
+                      to="/cart"
                       icon={<ShoppingCartOutlinedIcon />}
                       name="Cart"
                       quantity={

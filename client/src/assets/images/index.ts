@@ -41,6 +41,4 @@ export const images = {
   parallax,
   slide1,
   slide3,
-  slide1Resize,
-  slide3Resize,
 };

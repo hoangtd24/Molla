@@ -310,16 +310,22 @@ const HeaderOnSmallScreen = () => {
             </Typography>
           </div>
           <div className={cx("list-action_icon")}>
-            <ActionIcon icon={<AccountCircleOutlinedIcon />} name="Account" />
+            <ActionIcon
+              icon={<AccountCircleOutlinedIcon />}
+              name="Account"
+              to="/login"
+            />
             <ActionIcon
               icon={<FavoriteBorderOutlinedIcon />}
               name="Wishlist"
               quantity={0}
+              to="/wishlist"
             />
             <ActionIcon
               icon={<ShoppingCartOutlinedIcon />}
               name="Cart"
               quantity={0}
+              to="/cart"
             />
           </div>
         </Container>

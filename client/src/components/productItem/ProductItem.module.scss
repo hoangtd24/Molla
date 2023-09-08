@@ -124,6 +124,11 @@
     border-radius: 50%;
     padding: 4px;
     cursor: pointer;
+    background-color: #fff;
+
+    &.active {
+      color: var(--color-primary);
+    }
 
     & a {
       display: flex;

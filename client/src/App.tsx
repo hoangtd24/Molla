@@ -16,6 +16,7 @@ import Checkout from "./pages/checkout/Checkout";
 import Receive from "./pages/checkout/Receive";
 import Search from "./pages/search/Search";
 import ResetPassword from "./pages/reset-password/ResetPassword";
+import Wishlist from "./pages/wishlist/Wishlist";
 function App() {
   const { pathname } = useLocation();
 
@@ -60,6 +61,14 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <Cart />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/wishlist",
+                element: (
+                  <DefaultLayout>
+                    <Wishlist />
                   </DefaultLayout>
                 ),
               },

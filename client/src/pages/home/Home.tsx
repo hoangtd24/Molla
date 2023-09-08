@@ -36,11 +36,13 @@ import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SupportOutlinedIcon from "@mui/icons-material/SupportOutlined";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
+import { includeWislist } from "../../utils/includeWishlst";
 
 const cx = classNames.bind(styles);
 const Home = () => {
   const tabStyle = {
-    fontSize: "30px",
+    fontSize: "clamp(24px, 2vw, 30px)",
     textTransform: "none",
     fontWeight: "500",
     fontFamily: "Jost",
@@ -50,11 +52,11 @@ const Home = () => {
   const [top, setTop] = useState<boolean>(false);
   const [category, setCategory] = useState<number | null>(null);
   const matches = useMediaQuery("(max-width:900px)");
-  // const [tab, setTab] = useState<number | null>(null);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  //product filter
   const { data: dataFilter } = useQuery(FILTER_PRODUCT, {
     variables: {
       limit: 10,
@@ -63,6 +65,8 @@ const Home = () => {
       top: top,
     },
   });
+
+  //get product query
   const [getProducts, { data }] = useLazyQuery(GET_PRODUCTS);
   useEffect(() => {
     getProducts({
@@ -73,6 +77,8 @@ const Home = () => {
     });
   }, [category, getProducts]);
 
+  //getWishlist
+  const { data: wishlistData } = useQuery(GET_WISHLISTS);
   return (
     <Box>
       <Slider />
@@ -208,7 +214,10 @@ const Home = () => {
             modules={[Pagination]}
             slidesPerView={4}
             pagination={{ clickable: true }}
-            style={{ maxHeight: "500px" }}
+            slidesPerGroup={4}
+            style={{
+              maxHeight: "500px",
+            }}
             spaceBetween={32}
             breakpoints={{
               300: { slidesPerView: 2 },
@@ -218,8 +227,14 @@ const Home = () => {
           >
             {dataFilter &&
               dataFilter.filter?.products?.map((props: ProductItemProps) => (
-                <SwiperSlide key={props.id}>
-                  <ProductItem {...props} />
+                <SwiperSlide key={props.id} style={{ marginBottom: "60px" }}>
+                  <ProductItem
+                    {...props}
+                    inWishlist={includeWislist(
+                      wishlistData?.getWishlists,
+                      props.id
+                    )}
+                  />
                 </SwiperSlide>
               ))}
           </Swiper>

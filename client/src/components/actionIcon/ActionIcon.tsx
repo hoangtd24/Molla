@@ -6,14 +6,15 @@ import { ReactElement } from "react";
 const cx = classNames.bind(styles);
 
 interface ActionIconProps {
+  to: string;
   icon: ReactElement;
   name: string;
   quantity?: number;
 }
-const ActionIcon = ({ icon, name, quantity }: ActionIconProps) => {
+const ActionIcon = ({ icon, name, quantity, to }: ActionIconProps) => {
   return (
     <div className={cx("action-item")}>
-      <Link to="/">
+      <Link to={to}>
         <div className={cx("action-item__icon")}>{icon}</div>
         <span className={cx("action-item__title")}>{name}</span>
       </Link>

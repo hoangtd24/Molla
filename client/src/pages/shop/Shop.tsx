@@ -30,6 +30,8 @@ import styles from "./Shop.module.scss";
 import { GET_CATEGORIES } from "../../graphql/query/Category";
 import { Category } from "../../components/header/HeaedOnLargeScreen";
 import ProductItemThrough from "../../components/productItem/ProductItemThrough";
+import { includeWislist } from "../../utils/includeWishlst";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 
 const cx = classNames.bind(styles);
 
@@ -57,6 +59,7 @@ const Shop = () => {
   };
 
   const { data: categoryData } = useQuery(GET_CATEGORIES);
+  const { data: wishlistData } = useQuery(GET_WISHLISTS);
 
   //call query filter product
   const param = useParams();
@@ -274,11 +277,23 @@ const Shop = () => {
                   data.filter.products.map((product: ProductItemProps) => {
                     return view === 1 ? (
                       <Grid item xs={6} sm={4} key={product.id}>
-                        <ProductItem {...product} />
+                        <ProductItem
+                          {...product}
+                          inWishlist={includeWislist(
+                            wishlistData?.getWishlists,
+                            product.id
+                          )}
+                        />
                       </Grid>
                     ) : (
                       <Grid item xs={12} key={product.id}>
-                        <ProductItemThrough {...product} />
+                        <ProductItemThrough
+                          {...product}
+                          inWishlist={includeWislist(
+                            wishlistData?.getWishlists,
+                            product.id
+                          )}
+                        />
                       </Grid>
                     );
                   })}

@@ -62,6 +62,7 @@
   color: #777;
   gap: 4px;
   padding: 2px 0;
+  cursor: pointer;
 
   & span:first-child {
     display: flex;
@@ -70,4 +71,19 @@
   & span:last-child {
     font-size: 12px;
   }
+
+  &:hover {
+    color: var(--color-primary);
+
+    & span {
+      text-decoration: underline;
+    }
+  }
+}
+
+.quick-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
