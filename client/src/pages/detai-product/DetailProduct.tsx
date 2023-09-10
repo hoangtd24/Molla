@@ -284,14 +284,13 @@ export default function DetailProduct() {
             <Swiper
               modules={[Pagination]}
               slidesPerView={4}
-              slidesPerGroup={4}
               pagination={{ clickable: true }}
               style={{ maxHeight: "500px" }}
               spaceBetween={32}
               breakpoints={{
-                300: { slidesPerView: 2 },
-                600: { slidesPerView: 3 },
-                1200: { slidesPerView: 4 },
+                300: { slidesPerView: 2, slidesPerGroup: 2 },
+                600: { slidesPerView: 3, slidesPerGroup: 2 },
+                1200: { slidesPerView: 4, slidesPerGroup: 3 },
               }}
             >
               {data &&

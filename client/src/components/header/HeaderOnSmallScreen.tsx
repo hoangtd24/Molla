@@ -1,8 +1,10 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
   Accordion,
@@ -20,11 +22,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/UserContext";
 import { LOGOUT_USER } from "../../graphql/mutation/User";
+import { GET_CARTS } from "../../graphql/query/Cart";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import ActionIcon from "../actionIcon/ActionIcon";
 import DropDownItem from "../dropdownItem/DropDownItem";
 import styles from "./Header.module.scss";
-import SearchIcon from "@mui/icons-material/Search";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const cx = classNames.bind(styles);
 
@@ -71,6 +73,8 @@ const HeaderOnSmallScreen = () => {
       setState({ ...state, [anchor]: open });
     };
 
+  const { data: cartData } = useQuery(GET_CARTS);
+  const { data: wishlistData } = useQuery(GET_WISHLISTS);
   return (
     <header className={cx("header")}>
       <Box>
@@ -318,13 +322,21 @@ const HeaderOnSmallScreen = () => {
             <ActionIcon
               icon={<FavoriteBorderOutlinedIcon />}
               name="Wishlist"
-              quantity={0}
+              quantity={
+                wishlistData?.getWishlists?.length > 0
+                  ? wishlistData?.getWishlists?.length
+                  : 0
+              }
               to="/wishlist"
             />
             <ActionIcon
               icon={<ShoppingCartOutlinedIcon />}
               name="Cart"
-              quantity={0}
+              quantity={
+                cartData?.getCarts?.carts?.length > 0
+                  ? cartData.getCarts.carts.length
+                  : 0
+              }
               to="/cart"
             />
           </div>

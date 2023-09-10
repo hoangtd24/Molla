@@ -25,6 +25,7 @@ import MenuItem from "../menuItem/MenuItem";
 import styles from "./Header.module.scss";
 import { GET_CATEGORIES } from "../../graphql/query/Category";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
+import { client } from "../../api/apolloClient";
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +36,7 @@ export interface Category {
 
 const HeaderOnLargeScreen = () => {
   const [visible, setVisible] = useState<boolean>(false);
+  const [visibleUserMenu, setVisibleUserMenu] = useState<boolean>(false);
   const { isAuthenticated, logoutClient } = useAuth();
   const [fixHeader, setFixHeader] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -50,6 +52,7 @@ const HeaderOnLargeScreen = () => {
         },
       });
     },
+    refetchQueries: [GET_CARTS, GET_WISHLISTS],
   });
 
   const { data: cartData } = useQuery(GET_CARTS);
@@ -59,6 +62,7 @@ const HeaderOnLargeScreen = () => {
   const handleLogout = () => {
     logoutClient();
     logout();
+    client.cache.reset();
   };
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -167,11 +171,41 @@ const HeaderOnLargeScreen = () => {
             </Grid>
             <Grid item xs={3}>
               <div className={cx("list-action_icon")}>
-                <ActionIcon
-                  icon={<AccountCircleOutlinedIcon />}
-                  name="Account"
-                  to="/login"
-                />
+                {isAuthenticated ? (
+                  <Tippy
+                    visible={visibleUserMenu}
+                    interactive
+                    onClickOutside={() => setVisibleUserMenu(false)}
+                    placement={"bottom-start"}
+                    maxWidth={300}
+                    render={(attrs) => (
+                      <div className={cx("user-box")} tabIndex={1} {...attrs}>
+                        <Link
+                          to="/myorders"
+                          onClick={() => setVisibleUserMenu(false)}
+                        >
+                          My orders
+                        </Link>
+                        <Link to="/login" onClick={handleLogout}>
+                          Log out
+                        </Link>
+                      </div>
+                    )}
+                  >
+                    <div onClick={() => setVisibleUserMenu(!visibleUserMenu)}>
+                      <ActionIcon
+                        icon={<AccountCircleOutlinedIcon />}
+                        name="Account"
+                      />
+                    </div>
+                  </Tippy>
+                ) : (
+                  <ActionIcon
+                    icon={<AccountCircleOutlinedIcon />}
+                    name="Account"
+                    to="/login"
+                  />
+                )}
                 <ActionIcon
                   icon={<FavoriteBorderOutlinedIcon />}
                   name="Wishlist"
@@ -233,7 +267,9 @@ const HeaderOnLargeScreen = () => {
                           </div>
                         </Box>
                       ) : (
-                        <span>No items in cart</span>
+                        <span className={cx("cart-empty")}>
+                          No items in cart
+                        </span>
                       )}
                     </div>
                   )}
@@ -330,7 +366,7 @@ const HeaderOnLargeScreen = () => {
               <Grid item xs={6}>
                 <Box sx={{ display: "flex", margin: "0 16px" }}>
                   <MenuItem title="HOME" to="/" />
-                  <MenuItem title="SHOP" to="/shop" />
+                  <MenuItem title="SHOP" to="/shop/all" />
                   <MenuItem title="PRODUCT" to="/product" />
                   <MenuItem title="PAGES" to="/pages" />
                   <MenuItem title="ELEMENTS" to="/elements" />

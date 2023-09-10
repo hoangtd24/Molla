@@ -144,7 +144,7 @@
   &::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   /* Handle */
   &::-webkit-scrollbar-thumb {
     background: #dadada;
@@ -166,4 +166,31 @@
 .cart-action {
   display: flex;
   justify-content: space-between;
+}
+
+.cart-empty {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  padding: 12px 16px;
+}
+
+.user-box {
+  width: 250px;
+  padding: 4px 0;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  & a {
+    display: block;
+    font-size: 14px;
+    color: #777;
+    padding: 9px 16px;
+
+    &:hover {
+      background-color: #f3f3f3;
+      color: var(--color-primary);
+    }
+  }
 }

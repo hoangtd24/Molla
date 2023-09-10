@@ -123,6 +123,7 @@ export class WishlistResolver extends BaseEntity {
   }
 
   @Query(() => [Wishlist])
+  @UseMiddleware(checkAuth)
   async getWishlists(@Ctx() { user }: Context): Promise<Wishlist[]> {
     const wishlists = await Wishlist.find({
       where: {

@@ -21,3 +21,24 @@ export const GET_ORDER = gql`
     }
   }
 `;
+
+export const PAGINATED_ORDER = gql`
+  query Orders($limit: Float!, $cursor: String) {
+    orders(limit: $limit, cursor: $cursor) {
+      totalCount
+      cursor
+      hasMore
+      paginatedOrders {
+        id
+        createdAt
+        carts {
+          product {
+            name
+            newPrice
+          }
+        }
+        total
+      }
+    }
+  }
+`;

@@ -95,6 +95,18 @@ export const client = new ApolloClient({
               };
             },
           },
+          orders: {
+            keyArgs: ["productId"],
+            merge(existing, incomming) {
+              return {
+                ...incomming,
+                paginatedOrders: [
+                  ...(existing?.paginatedOrders || []),
+                  ...incomming.paginatedOrders,
+                ],
+              };
+            },
+          },
         },
       },
     },
