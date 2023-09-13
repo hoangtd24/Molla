@@ -104,7 +104,7 @@ export default function DetailProduct() {
                 modules={[FreeMode, Navigation, Thumbs, Controller]}
               >
                 {data &&
-                  data.detailProduct.product.images.map(
+                  data?.detailProduct?.product?.images?.map(
                     (image: string, index: number) => (
                       <SwiperSlide key={index}>
                         <div
@@ -142,7 +142,7 @@ export default function DetailProduct() {
                 className={cx("thumb-swiper")}
               >
                 {data &&
-                  data.detailProduct.product.images.map(
+                  data?.detailProduct?.product?.images?.map(
                     (image: string, index: number) => (
                       <SwiperSlide key={index}>
                         <img

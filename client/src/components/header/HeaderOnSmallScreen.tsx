@@ -46,7 +46,7 @@ const HeaderOnSmallScreen = () => {
   const [visibleLink, setVisibleLink] = useState<boolean>(false);
   const { isAuthenticated, logoutClient } = useAuth();
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

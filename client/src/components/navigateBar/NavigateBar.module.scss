@@ -1,0 +1,33 @@
+.sticky-header {
+  position: sticky;
+  top: -1px;
+  width: 100%;
+  background-color: #fff;
+  z-index: 100;
+  transition: all 0.2s linear;
+  &.fixHeader {
+    box-shadow: 0 3px 6px rgba(51, 51, 51, 0.05);
+  }
+}
+
+.box {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  & a {
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid #ebebeb;
+    border-top: none;
+    padding: 10px 20px;
+    color: #666;
+  }
+
+  & a:hover {
+    color: var(--color-primary);
+    opacity: 0.95;
+  }
+}
+
+.isActive {
+  background-color: var(--color-primary);
+}

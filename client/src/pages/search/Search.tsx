@@ -27,6 +27,8 @@ import ProductItem, {
 } from "../../components/productItem/ProductItem";
 import { SEARCH_PRODUCT } from "../../graphql/query/Product";
 import styles from "./Search.module.scss";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
+import { Category } from "../../components/header/HeaderOnLargeScreen";
 
 const cx = classNames.bind(styles);
 
@@ -64,6 +66,7 @@ const Search = () => {
       search: searchParams.get("keyword"),
     },
   });
+  const { data: categoryData } = useQuery(GET_CATEGORIES);
 
   //toggle drawer in samll screen
   const toggleDrawer =
@@ -134,46 +137,19 @@ const Search = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      <NavLink
-                        to="/shop/decor"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Decor
-                      </NavLink>
-                      <NavLink
-                        to="/shop/furniture"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Furniture
-                      </NavLink>
-                      <NavLink
-                        to="/shop/lighting"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Lighting
-                      </NavLink>
-                      <NavLink
-                        to="/shop/chair"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Chair
-                      </NavLink>
-                      <NavLink
-                        to="/shop/table"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Table
-                      </NavLink>
+                      {categoryData?.getCategories?.map(
+                        (category: Category) => (
+                          <NavLink
+                            to={`/shop/${category.name}`}
+                            className={({ isActive }) =>
+                              cx("filter-item", { active: isActive })
+                            }
+                            key={category.id}
+                          >
+                            {category.name}
+                          </NavLink>
+                        )
+                      )}
                     </AccordionDetails>
                   </Accordion>
                   <Accordion
@@ -343,46 +319,19 @@ const Search = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      <NavLink
-                        to="/shop/decor"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Decor
-                      </NavLink>
-                      <NavLink
-                        to="/shop/furniture"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Furniture
-                      </NavLink>
-                      <NavLink
-                        to="/shop/lighting"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Lighting
-                      </NavLink>
-                      <NavLink
-                        to="/shop/chair"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Chair
-                      </NavLink>
-                      <NavLink
-                        to="/shop/table"
-                        className={({ isActive }) =>
-                          cx("filter-item", { active: isActive })
-                        }
-                      >
-                        Table
-                      </NavLink>
+                      {categoryData?.getCategories?.map(
+                        (category: Category) => (
+                          <NavLink
+                            to={`/shop/${category.name}`}
+                            className={({ isActive }) =>
+                              cx("filter-item", { active: isActive })
+                            }
+                            key={category.id}
+                          >
+                            {category.name}
+                          </NavLink>
+                        )
+                      )}
                     </AccordionDetails>
                   </Accordion>
                   <Accordion

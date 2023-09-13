@@ -28,7 +28,7 @@ import ProductItem, {
 import { FILTER_PRODUCT } from "../../graphql/query/Product";
 import styles from "./Shop.module.scss";
 import { GET_CATEGORIES } from "../../graphql/query/Category";
-import { Category } from "../../components/header/HeaedOnLargeScreen";
+import { Category } from "../../components/header/HeaderOnLargeScreen";
 import ProductItemThrough from "../../components/productItem/ProductItemThrough";
 import { includeWislist } from "../../utils/includeWishlst";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";

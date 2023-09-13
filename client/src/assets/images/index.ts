@@ -19,6 +19,7 @@ import Blog3 from "./blog-3.jpg";
 import parallax from "./parallax.jpg";
 import slide1 from "./slide-1.png";
 import slide3 from "./slide-3.png";
+import errorBg from "./error-bg.jpg";
 
 export const images = {
   brand1: brand1,
@@ -41,4 +42,5 @@ export const images = {
   parallax,
   slide1,
   slide3,
+  errorBg,
 };

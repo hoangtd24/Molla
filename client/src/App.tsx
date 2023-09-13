@@ -1,23 +1,29 @@
 import { useLocation, useRoutes } from "react-router-dom";
 import "./App.css";
-import DefaultLayout from "./layouts/DefaultLayout";
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import PrivateOutlet from "./routes/PrivateOutlet";
-import Verify from "./routes/Verify";
-import ForgetPassword from "./pages/forget-password/ForgetPassword";
-import DetailProduct from "./pages/detai-product/DetailProduct";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, lazy } from "react";
 import { useAuth } from "./context/UserContext";
-import Cart from "./pages/cart/Cart";
-import Shop from "./pages/shop/Shop";
-import Checkout from "./pages/checkout/Checkout";
-import Receive from "./pages/checkout/Receive";
-import Search from "./pages/search/Search";
-import ResetPassword from "./pages/reset-password/ResetPassword";
-import Wishlist from "./pages/wishlist/Wishlist";
-import Order from "./pages/order/Order";
+import DefaultLayout from "./layouts/DefaultLayout";
+const Home = lazy(() => import("./pages/home/Home"));
+const Login = lazy(() => import("./pages/login/Login"));
+const Register = lazy(() => import("./pages/register/Register"));
+const PrivateOutlet = lazy(() => import("./routes/PrivateOutlet"));
+const Verify = lazy(() => import("./routes/Verify"));
+const ForgetPassword = lazy(
+  () => import("./pages/forget-password/ForgetPassword")
+);
+const DetailProduct = lazy(() => import("./pages/detai-product/DetailProduct"));
+const Cart = lazy(() => import("./pages/cart/Cart"));
+const Shop = lazy(() => import("./pages/shop/Shop"));
+const Checkout = lazy(() => import("./pages/checkout/Checkout"));
+const Receive = lazy(() => import("./pages/checkout/Receive"));
+const Search = lazy(() => import("./pages/search/Search"));
+const ResetPassword = lazy(
+  () => import("./pages/reset-password/ResetPassword")
+);
+const Wishlist = lazy(() => import("./pages/wishlist/Wishlist"));
+const Order = lazy(() => import("./pages/order/Order"));
+const NotFound = lazy(() => import("./pages/notFound/NotFound"));
+
 function App() {
   const { pathname } = useLocation();
 
@@ -105,6 +111,14 @@ function App() {
                   </DefaultLayout>
                 ),
               },
+              {
+                path: "/*",
+                element: (
+                  <DefaultLayout>
+                    <NotFound />
+                  </DefaultLayout>
+                ),
+              },
             ],
           },
           {
@@ -124,6 +138,14 @@ function App() {
                 element: (
                   <DefaultLayout>
                     <Register />
+                  </DefaultLayout>
+                ),
+              },
+              {
+                path: "/*",
+                element: (
+                  <DefaultLayout>
+                    <NotFound />
                   </DefaultLayout>
                 ),
               },
@@ -200,6 +222,14 @@ function App() {
             element: (
               <DefaultLayout>
                 <Search />
+              </DefaultLayout>
+            ),
+          },
+          {
+            path: "/*",
+            element: (
+              <DefaultLayout>
+                <NotFound />
               </DefaultLayout>
             ),
           },

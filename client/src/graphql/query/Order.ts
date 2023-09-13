@@ -7,7 +7,10 @@ export const GET_ORDER = gql`
       carts {
         id
         product {
+          id
           name
+          newPrice
+          images
         }
         qty
         total

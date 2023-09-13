@@ -143,10 +143,10 @@ const ProductItemThrough = ({
                   `$${price}`
                 ) : (
                   <>
-                    <span className={cx("product-price__new")}>${price}</span>
-                    <span className={cx("product-price__old")}>
+                    <span className={cx("product-price__new")}>
                       ${newPrice}
                     </span>
+                    <span className={cx("product-price__old")}>${price}</span>
                   </>
                 )}
               </div>

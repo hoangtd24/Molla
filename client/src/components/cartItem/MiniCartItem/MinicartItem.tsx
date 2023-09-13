@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 export interface MinicartItemProps {
   id: number;
   product: {
+    id: string;
     name: string;
     newPrice: number;
     images: string[];
@@ -20,7 +21,7 @@ const MinicartItem = ({ id, product, qty }: MinicartItemProps) => {
     <div className={cx("mini-cart__wrap")}>
       <div className={cx("mini-cart__right")}>
         <h4 className={cx("product-title")}>
-          <Link to={`/detail-product/${id}`}>
+          <Link to={`/detail-product/${product.id}`}>
             <span>{product.name}</span>
           </Link>
         </h4>
