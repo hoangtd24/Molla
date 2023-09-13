@@ -1,3 +1,4 @@
+require("dotenv").config();
 import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
@@ -31,15 +32,30 @@ import { OrderResolver } from "./resolvers/Order";
 import mongoose from "mongoose";
 import { Wishlist } from "./entities/Wishlist";
 import { WishlistResolver } from "./resolvers/Wishlist";
-require("dotenv").config();
+import path from "path";
+import { __prod__ } from "./constants";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: "molla",
+  ...(__prod__
+    ? { url: process.env.POSTGRES_URL }
+    : {
+        database: process.env.POSTGRES_DATABASE,
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+      }),
+  logging: true,
+  ...(__prod__
+    ? {
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
+        ssl: true,
+      }
+    : {}),
+  ...(__prod__ ? {} : { synchronize: true }),
   entities: [
     User,
     Product,
@@ -51,12 +67,11 @@ export const AppDataSource = new DataSource({
     Payment,
     Wishlist,
   ],
-  synchronize: true,
-  logging: true,
+  migrations: [path.join(__dirname, "./migrations/*")],
 });
 
 const main = async () => {
-  AppDataSource.initialize()
+  await AppDataSource.initialize()
     .then(() => {
       console.log("Data Source has been initialized!");
     })
@@ -64,10 +79,15 @@ const main = async () => {
       console.error("Error during Data Source initialization", err);
     });
 
+  if (__prod__) {
+    await AppDataSource.runMigrations();
+  }
   const app = express();
   app.use(
     cors({
-      origin: ["http://localhost:3000"],
+      origin: __prod__
+        ? process.env.CORS_ORIGIN_PROD
+        : process.env.CORS_ORIGIN_DEV,
       credentials: true,
     })
   );
@@ -106,7 +126,9 @@ const main = async () => {
   apolloServer.applyMiddleware({
     app,
     cors: {
-      origin: ["http://localhost:3000"],
+      origin: __prod__
+        ? process.env.CORS_ORIGIN_PROD
+        : process.env.CORS_ORIGIN_DEV,
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
     },
