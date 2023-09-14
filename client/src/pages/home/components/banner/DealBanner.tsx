@@ -120,6 +120,7 @@ const DealBanner = () => {
               <img
                 src={images.abImg1}
                 style={{ position: "relative", top: "86px", right: "-16px" }}
+                alt="deal_thumb"
               />
             </Box>
           </Grid>

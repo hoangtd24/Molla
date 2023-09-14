@@ -6,6 +6,7 @@ import styles from "./Receive.module.scss";
 import { useQuery } from "@apollo/client";
 import { GET_ORDER } from "../../graphql/query/Order";
 import { CartItemprops } from "../../components/cartItem/CartItem/CartItem";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,10 @@ const Receive = () => {
     },
   });
 
-  console.log(data);
+  useEffect(() => {
+    document.title = `Recieve - Molla Funiture`;
+  }, []);
+
   return (
     <Box>
       <div className={cx("page-header")}>
@@ -70,7 +74,7 @@ const Receive = () => {
                 </thead>
                 <tbody>
                   {data &&
-                    data?.getOrder?.carts?.map((cart:CartItemprops) => (
+                    data?.getOrder?.carts?.map((cart: CartItemprops) => (
                       <tr className={cx("tr")} key={cart.id}>
                         <td className={cx("td")}>
                           {cart.product.name} x <strong>{cart.qty}</strong>

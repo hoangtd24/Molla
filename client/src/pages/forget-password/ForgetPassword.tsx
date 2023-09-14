@@ -9,6 +9,7 @@ import styles from "./ForgetPassword.module.scss";
 import { useMutation } from "@apollo/client";
 import { useSnackBar } from "../../context/SnackBar";
 import { FORGET_PASSWORD } from "../../graphql/mutation/User";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -38,6 +39,9 @@ const ForgetPassword = () => {
       });
     }
   };
+  useEffect(() => {
+    document.title = `My account - Molla Funiture`;
+  }, []);
   return (
     <Box
       sx={{

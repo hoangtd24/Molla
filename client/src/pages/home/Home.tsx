@@ -41,6 +41,9 @@ import { includeWislist } from "../../utils/includeWishlst";
 
 const cx = classNames.bind(styles);
 const Home = () => {
+  useEffect(() => {
+    document.title = `Molla Funiture`;
+  }, []);
   const tabStyle = {
     fontSize: "clamp(24px, 2vw, 30px)",
     textTransform: "none",

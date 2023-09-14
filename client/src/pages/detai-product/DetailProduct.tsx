@@ -11,7 +11,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Box, Container, Divider, Grid, Rating } from "@mui/material";
 import classNames from "classnames/bind";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -58,6 +58,11 @@ export default function DetailProduct() {
   const [createCart] = useMutation(CREATE_CART, {
     refetchQueries: [GET_CARTS],
   });
+
+  useEffect(() => {
+    if (data?.detailProduct?.product?.name)
+      document.title = `${data.detailProduct.product.name}-Molla Funiture`;
+  }, [data]);
   const handleAddToCart = async (id: number) => {
     if (!isAuthenticated) {
       navigate("/login", { state: location });

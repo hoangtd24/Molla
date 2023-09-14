@@ -11,12 +11,15 @@ import WishlisItem, {
 } from "../../components/wishlistItem/Wishlist";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import styles from "./Wishlist.module.scss";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
 const Wishlist = () => {
   const { data } = useQuery(GET_WISHLISTS);
-
+  useEffect(() => {
+    document.title = `Wishlist - Molla Funiture`;
+  }, []);
   return (
     <Box>
       <div className={cx("page-header")}>

@@ -10,6 +10,7 @@ import { useMutation } from "@apollo/client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSnackBar } from "../../context/SnackBar";
 import { RESET_PASSWORD } from "../../graphql/mutation/User";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -50,7 +51,6 @@ const ResetPassword = () => {
         },
       },
     });
-    console.log(res);
     if (res.data.resetPassword.code === 200) {
       setMessageSnackBar(res.data.resetPassword.message);
       setOpenSnackBar(true);
@@ -62,6 +62,9 @@ const ResetPassword = () => {
       });
     }
   };
+  useEffect(() => {
+    document.title = `My account - Molla Funiture`;
+  }, []);
   return (
     <Box
       sx={{

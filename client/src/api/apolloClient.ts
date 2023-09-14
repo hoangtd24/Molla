@@ -10,7 +10,9 @@ import { onError } from "@apollo/client/link/error";
 import axios from "axios";
 
 const httpLink = createHttpLink({
-  uri: "https://molla-shop-be.onrender.com/graphql",
+  uri: `${
+    import.meta.env.PROD ? import.meta.env.VITE_PROD : import.meta.env.VITE_DEV
+  }/graphql`,
   credentials: "include",
 });
 
@@ -28,9 +30,16 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const GetNewAccessToken = async () => {
-  const res = await axios.get("https://molla-shop-be.onrender.com/refresh_token", {
-    withCredentials: true,
-  });
+  const res = await axios.get(
+    `${
+      import.meta.env.PROD
+        ? import.meta.env.VITE_PROD
+        : import.meta.env.VITE_DEV
+    }/refresh_token`,
+    {
+      withCredentials: true,
+    }
+  );
   console.log(res);
   if (res.data && res.data.code === 403) {
     localStorage.removeItem("access_token");

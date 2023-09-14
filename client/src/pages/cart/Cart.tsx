@@ -9,11 +9,14 @@ import { GET_CARTS } from "../../graphql/query/Cart";
 import styles from "./Cart.module.scss";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { Link } from "react-router-dom";
-
+import { useEffect } from "react";
 const cx = classNames.bind(styles);
 
 const Cart = () => {
   const { data } = useQuery(GET_CARTS);
+  useEffect(() => {
+    document.title = `Cart - Molla Funiture`;
+  }, []);
   return (
     <Box>
       <div className={cx("page-header")}>
@@ -64,7 +67,11 @@ const Cart = () => {
                   <span>SubTotal</span>
                   <span>{data && data.getCarts?.total}</span>
                 </div>
-                <Button title="PROCEED TO CHECKOUT" theme="green" to="/checkout"/>
+                <Button
+                  title="PROCEED TO CHECKOUT"
+                  theme="green"
+                  to="/checkout"
+                />
               </div>
             </Grid>
           </Grid>

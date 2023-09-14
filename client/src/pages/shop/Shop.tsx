@@ -20,7 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import classNames from "classnames/bind";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import ProductItem, {
   ProductItemProps,
@@ -88,6 +88,9 @@ const Shop = () => {
 
       setState({ ...state, [anchor]: open });
     };
+  useEffect(() => {
+    document.title = `Shop - Molla Funiture`;
+  }, []);
 
   return (
     <Box>

@@ -22,6 +22,7 @@ const BannerItem = ({
         src={image}
         style={{ width: "100%", objectFit: "cover", height: "100%" }}
         loading="lazy"
+        alt={`${title}_thumb`}
       />
       <Box sx={{ position: "absolute", top: "50px", left: "36px" }}>
         <Typography

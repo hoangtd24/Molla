@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/client";
 import { PAGINATED_ORDER } from "../../graphql/query/Order";
 import Button from "../../components/button/Button";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,9 @@ const Order = () => {
       limit: 4,
     },
   });
+  useEffect(() => {
+    document.title = `My orders - Molla Funiture`;
+  }, []);
   return (
     <Box>
       <div className={cx("page-header")}>

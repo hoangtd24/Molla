@@ -224,7 +224,7 @@ const HeaderOnLargeScreen = () => {
                           <div className={cx("cart-info")}>
                             <div className={cx("cart-total__price")}>
                               <span>SUBTOTAL</span>
-                              <span>$500</span>
+                              <span>${cartData?.getCarts?.total}</span>
                             </div>
                             <div className={cx("cart-action")}>
                               <Button

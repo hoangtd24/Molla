@@ -10,6 +10,7 @@ import styles from "./Login.module.scss";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../../context/UserContext";
 import { LOGIN_USER } from "../../graphql/mutation/User";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -20,7 +21,7 @@ const Login = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
+
   const [login, { loading }] = useMutation(LOGIN_USER, {
     update(cache, { data }) {
       cache.modify({
@@ -52,6 +53,10 @@ const Login = () => {
       setError("email", { type: "error", message: res.data.login?.message });
     }
   };
+
+  useEffect(() => {
+    document.title = `My account - Molla Funiture`;
+  }, []);
   return (
     <Box
       sx={{

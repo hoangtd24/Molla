@@ -81,6 +81,9 @@ const Checkout = () => {
     reset(meData?.me?.user);
   }, [meData, reset]);
 
+  useEffect(() => {
+    document.title = `Checkout - Molla Funiture`;
+  }, []);
   return (
     <Box>
       <div className={cx("page-header")}>
