@@ -10,11 +10,10 @@ import { onError } from "@apollo/client/link/error";
 import axios from "axios";
 
 const httpLink = createHttpLink({
-  uri: `${
-    import.meta.env.PROD ? import.meta.env.VITE_PROD : import.meta.env.VITE_DEV
-  }/graphql`,
+  uri: `https://molla-shop-be.onrender.com/graphql`,
   credentials: "include",
 });
+console.log(import.meta.env.PROD);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
@@ -31,11 +30,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 const GetNewAccessToken = async () => {
   const res = await axios.get(
-    `${
-      import.meta.env.PROD
-        ? import.meta.env.VITE_PROD
-        : import.meta.env.VITE_DEV
-    }/refresh_token`,
+    `https://molla-shop-be.onrender.com/refresh_token`,
     {
       withCredentials: true,
     }

@@ -36,6 +36,8 @@ import { CREATE_CART } from "../../graphql/mutation/Cart";
 import { GET_CARTS } from "../../graphql/query/Cart";
 import { DETAIL_PRODUCT } from "../../graphql/query/Product";
 import styles from "./DetailProduct.module.scss";
+import { includeWislist } from "../../utils/includeWishlst";
+import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 
 const cx = classNames.bind(styles);
 
@@ -54,6 +56,8 @@ export default function DetailProduct() {
   const { data } = useQuery(DETAIL_PRODUCT, {
     variables: { id: Number(param.id) },
   });
+
+  const { data: wishlistData } = useQuery(GET_WISHLISTS);
 
   const [createCart] = useMutation(CREATE_CART, {
     refetchQueries: [GET_CARTS],
@@ -302,7 +306,13 @@ export default function DetailProduct() {
                 data.detailProduct?.relatedProduct?.map(
                   (product: ProductItemProps) => (
                     <SwiperSlide key={product.id}>
-                      <ProductItem {...product} />
+                      <ProductItem
+                        {...product}
+                        inWishlist={includeWislist(
+                          wishlistData?.getWishlists,
+                          product.id
+                        )}
+                      />
                     </SwiperSlide>
                   )
                 )}
