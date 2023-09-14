@@ -78,7 +78,7 @@ const HeaderOnLargeScreen = () => {
               Read more ...
             </Link>
 
-            <div className={cx("nav-dropdown")}>
+            <ul className={cx("nav-dropdown")}>
               <DropDownItem options={["USD", "VND"]} />
               <DropDownItem options={["English", "Spanish", "VietNam"]} />
               {isAuthenticated ? (
@@ -94,7 +94,7 @@ const HeaderOnLargeScreen = () => {
                   Sign in / Sign up
                 </Link>
               )}
-            </div>
+            </ul>
           </Container>
         </Box>
         <Container

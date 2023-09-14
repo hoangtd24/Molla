@@ -29,7 +29,7 @@ import ModalCustom from "../../components/modal/ModalCustom";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
-import WoocommerTabs from "../../components/woocommerceTabs/WoocommerceTabs";
+import { WoocommerTabs } from "../../components/woocommerceTabs/WoocommerceTabs";
 import { useSnackBar } from "../../context/SnackBar";
 import { useAuth } from "../../context/UserContext";
 import { CREATE_CART } from "../../graphql/mutation/Cart";

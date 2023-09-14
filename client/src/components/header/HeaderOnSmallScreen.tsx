@@ -103,11 +103,13 @@ const HeaderOnSmallScreen = () => {
               onClickOutside={() => setVisibleLink(false)}
               render={(attrs) => (
                 <div className={cx("box")} tabIndex={1} {...attrs}>
-                  <Box
-                    sx={{
+                  <ul
+                    style={{
                       width: "100%",
                       display: "flex",
                       flexDirection: "column",
+                      backgroundColor: "#fdfdfd",
+                      boxShadow: "5px 10px 16px rgba(51, 51, 51, 0.05)",
                     }}
                   >
                     <DropDownItem
@@ -119,19 +121,23 @@ const HeaderOnSmallScreen = () => {
                       position="bottom-left"
                     />
                     {isAuthenticated ? (
-                      <Link
-                        to="/login"
-                        className={cx("signIn-link")}
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </Link>
+                      <li>
+                        <Link
+                          to="/login"
+                          className={cx("signIn-link")}
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </Link>
+                      </li>
                     ) : (
-                      <Link to="/login" className={cx("signIn-link")}>
-                        Sign in / Sign up
-                      </Link>
+                      <li>
+                        <Link to="/login" className={cx("signIn-link")}>
+                          Sign in
+                        </Link>
+                      </li>
                     )}
-                  </Box>
+                  </ul>
                 </div>
               )}
             >

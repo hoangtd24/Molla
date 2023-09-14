@@ -62,7 +62,10 @@ const CartItem = ({ id, product, qty, total }: CartItemprops) => {
   return (
     <tr className={cx("tr")}>
       <td className={cx("td")}>
-        <Link to={`/detail-product/${product.id}`}>
+        <Link
+          to={`/detail-product/${product.id}`}
+          aria-label={`detail product ${product.name}`}
+        >
           <img
             src={product.images[0]}
             alt="product_img"
@@ -74,6 +77,7 @@ const CartItem = ({ id, product, qty, total }: CartItemprops) => {
         <Link
           to={`/detail-product/${product.id}`}
           className={cx("product-name")}
+          aria-label={`detail product ${product.name}`}
         >
           {product.name}
         </Link>

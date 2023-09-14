@@ -108,6 +108,7 @@ const ProductItemThrough = ({
               to={`/detail-product/${id}`}
               onMouseOver={() => setBgImage(images[1])}
               onMouseLeave={() => setBgImage(images[0])}
+              aria-label={`detail product ${name}`}
             >
               <div
                 className={cx("product-img")}
@@ -125,7 +126,10 @@ const ProductItemThrough = ({
             style={{ order: `${matches ? "2" : "unset"}` }}
           >
             <div className={cx("product-info")}>
-              <Link to={`/detail-product/${id}`}>
+              <Link
+                to={`/detail-product/${id}`}
+                aria-label={`detail product ${name}`}
+              >
                 <h3 className={cx("product-name")}>{name}</h3>
               </Link>
               <p className={cx("product-desc")}>
@@ -155,6 +159,7 @@ const ProductItemThrough = ({
                   <Link
                     to={`/detail-product/${id}`}
                     className={cx("quick-view")}
+                    aria-label={`detail product ${name}`}
                   >
                     <span>
                       <VisibilityOutlinedIcon sx={{ fontSize: "20px" }} />

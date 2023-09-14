@@ -21,7 +21,10 @@ const MinicartItem = ({ id, product, qty }: MinicartItemProps) => {
     <div className={cx("mini-cart__wrap")}>
       <div className={cx("mini-cart__right")}>
         <h4 className={cx("product-title")}>
-          <Link to={`/detail-product/${product.id}`}>
+          <Link
+            to={`/detail-product/${product.id}`}
+            aria-label={`detail product ${product.name}`}
+          >
             <span>{product.name}</span>
           </Link>
         </h4>

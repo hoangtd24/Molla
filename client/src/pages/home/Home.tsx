@@ -119,7 +119,7 @@ const Home = () => {
       <Box sx={{ marginTop: "50px" }}>
         <Container>
           <Grid container spacing={2}>
-            <Grid item lg={5} md={6} xs={12}>
+            <Grid item lg={5} sm={6} xs={12}>
               <BannerItem
                 heading="Clearance"
                 image={images.banner1}
@@ -128,7 +128,7 @@ const Home = () => {
                 height={528}
               />
             </Grid>
-            <Grid item lg={3} md={6} xs={12}>
+            <Grid item lg={3} sm={6} xs={12}>
               <BannerItem
                 heading="On Sale"
                 image={images.banner2}
@@ -284,7 +284,13 @@ const Home = () => {
             {data &&
               data.getProducts?.map((props: ProductItemProps) => (
                 <Grid item lg={2.4} md={3} sm={4} xs={6} key={props.id}>
-                  <ProductItem {...props} />
+                  <ProductItem
+                    {...props}
+                    inWishlist={includeWislist(
+                      wishlistData?.getWishlists,
+                      props.id
+                    )}
+                  />
                 </Grid>
               ))}
           </Grid>

@@ -5,10 +5,11 @@ import { images } from "../../../../assets/images";
 import classNames from "classnames/bind";
 import styles from "./DealBanner.module.scss";
 import CountDownItem from "../time/CountDownItem";
+import { memo } from "react";
 
 const cx = classNames.bind(styles);
 
-const DealBanner = () => {
+const DealBanner = memo(() => {
   const matches = useMediaQuery("(max-width:900px)");
   return (
     <Box sx={{ backgroundColor: "#EDF3F6", padding: "70px 0" }}>
@@ -195,6 +196,6 @@ const DealBanner = () => {
       </Container>
     </Box>
   );
-};
+});
 
 export default DealBanner;

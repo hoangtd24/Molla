@@ -114,6 +114,7 @@ const ProductItem = ({
         to={`/detail-product/${id}`}
         onMouseOver={() => setBgImage(images[1])}
         onMouseLeave={() => setBgImage(images[0])}
+        aria-label={`detail product ${name}`}
       >
         <div
           className={cx("product-img")}
@@ -138,13 +139,20 @@ const ProductItem = ({
           </span>
         )}
         <span>
-          <Link to={`/detail-product/${id}`}>
+          <Link
+            to={`/detail-product/${id}`}
+            aria-label={`detail product ${name}`}
+          >
             <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />
           </Link>
         </span>
       </div>
       <div className={cx("product-content")}>
-        <Link to={`/detail-product/${id}`} className={cx("product-name")}>
+        <Link
+          to={`/detail-product/${id}`}
+          className={cx("product-name")}
+          aria-label={`detail product ${name}`}
+        >
           {name}
         </Link>
         <div className={cx("product-price")}>

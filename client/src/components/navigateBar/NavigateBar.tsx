@@ -86,29 +86,19 @@ const NavigateBar = () => {
                   className={cx({ isActive: visible })}
                 >
                   {visible ? <CloseIcon /> : <MenuIcon />}
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      color: "#333",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    BROWSE CATEGORY
-                  </Typography>
+                  <p className={cx("category-sum")}>BROWSE CATEGORY</p>
                 </Box>
               </Tippy>
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Box sx={{ display: "flex", margin: "0 16px" }}>
+            <ul style={{ display: "flex", margin: "0 16px" }}>
               <MenuItem title="HOME" to="/" />
               <MenuItem title="SHOP" to="/shop/all" />
               <MenuItem title="PRODUCT" to="/product" />
               <MenuItem title="PAGES" to="/pages" />
               <MenuItem title="ELEMENTS" to="/elements" />
-            </Box>
+            </ul>
           </Grid>
           <Grid item xs={3}>
             <Box
