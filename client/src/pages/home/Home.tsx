@@ -1,84 +1,58 @@
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import {
   Box,
   Container,
   Divider,
   Grid,
-  Tab,
-  Tabs,
-  useMediaQuery,
+  Skeleton,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import classNames from "classnames/bind";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "../../components/slider/Slider";
 import styles from "./Home.module.scss";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
+import SupportOutlinedIcon from "@mui/icons-material/SupportOutlined";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { images } from "../../assets/images";
-import BannerItem from "./components/banner/BannerItem";
-import DealBanner from "./components/banner/DealBanner";
 import BlogItem from "../../components/blogItem/BlogItem";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
 import { brands } from "../../data";
-import { FILTER_PRODUCT, GET_PRODUCTS } from "../../graphql/query/Product";
-import { ItemCenter } from "../../styles";
-import PolicyItem from "./components/policyItem/PolicyItem";
-import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
-import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import SupportOutlinedIcon from "@mui/icons-material/SupportOutlined";
+import { GET_PRODUCTS } from "../../graphql/query/Product";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
+import { ItemCenter } from "../../styles";
 import { includeWislist } from "../../utils/includeWishlst";
+import BannerItem from "./components/banner/BannerItem";
+import DealBanner from "./components/banner/DealBanner";
+import PolicyItem from "./components/policyItem/PolicyItem";
+import ProductTabs from "./components/productTabs/ProductTabs";
 
 const cx = classNames.bind(styles);
 const Home = () => {
   useEffect(() => {
     document.title = `Molla Funiture`;
   }, []);
-  const tabStyle = {
-    fontSize: "clamp(24px, 2vw, 30px)",
-    textTransform: "none",
-    fontWeight: "500",
-    fontFamily: "Jost",
-  };
-  const [value, setValue] = React.useState(0);
-  const [sale, setSale] = useState<boolean>(false);
-  const [top, setTop] = useState<boolean>(false);
   const [category, setCategory] = useState<number | null>(null);
   const matches = useMediaQuery("(max-width:900px)");
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  //product filter
-  const { data: dataFilter } = useQuery(FILTER_PRODUCT, {
-    variables: {
-      limit: 10,
-      page: 1,
-      sale: sale,
-      top: top,
-    },
-  });
 
   //get product query
-  const [getProducts, { data }] = useLazyQuery(GET_PRODUCTS);
-  useEffect(() => {
-    getProducts({
-      variables: {
-        skip: 0,
-        category: category,
-      },
-    });
-  }, [category, getProducts]);
+  const { data, loading: productsLoading } = useQuery(GET_PRODUCTS, {
+    variables: {
+      skip: 0,
+      category: category,
+    },
+  });
 
   //getWishlist
   const { data: wishlistData } = useQuery(GET_WISHLISTS);
@@ -160,88 +134,7 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
-      <Box sx={{ marginTop: "40px" }}>
-        <Box
-          sx={{
-            borderColor: "divider",
-            display: "flex",
-            justifyContent: "center",
-            color: "#333",
-          }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            textColor="inherit"
-            indicatorColor="primary"
-            TabIndicatorProps={{
-              style: {
-                backgroundColor: "var(--color-primary)",
-              },
-            }}
-          >
-            <Tab
-              label="Featured"
-              sx={tabStyle}
-              onClick={() => {
-                setSale(false);
-                setTop(false);
-              }}
-            />
-            <Tab
-              label="On Sale"
-              sx={tabStyle}
-              onClick={() => {
-                setSale(true);
-                setTop(false);
-              }}
-            />
-            <Tab
-              label="Top Rated"
-              sx={tabStyle}
-              onClick={() => {
-                setTop(true);
-                setSale(false);
-              }}
-            />
-          </Tabs>
-        </Box>
-        <Box
-          sx={{
-            padding: "40px 24px",
-            minHeight: `${matches ? "400px" : "600px"} `,
-          }}
-        >
-          <Swiper
-            modules={[Pagination]}
-            slidesPerView={4}
-            pagination={{ clickable: true }}
-            style={{
-              maxHeight: "500px",
-            }}
-            spaceBetween={32}
-            breakpoints={{
-              300: { slidesPerView: 2, slidesPerGroup: 2 },
-              600: { slidesPerView: 3, slidesPerGroup: 2 },
-              1200: { slidesPerView: 4, slidesPerGroup: 3 },
-            }}
-          >
-            {dataFilter &&
-              dataFilter.filter?.products?.map((props: ProductItemProps) => (
-                <SwiperSlide key={props.id} style={{ marginBottom: "60px" }}>
-                  <ProductItem
-                    {...props}
-                    inWishlist={includeWislist(
-                      wishlistData?.getWishlists,
-                      props.id
-                    )}
-                  />
-                </SwiperSlide>
-              ))}
-          </Swiper>
-        </Box>
-      </Box>
+      <ProductTabs />
       <DealBanner />
       <Box sx={{ padding: "48px 0" }}>
         <Container sx={{ minHeight: "600px" }}>
@@ -281,7 +174,96 @@ const Home = () => {
             </Box>
           </Box>
           <Grid container spacing={2}>
-            {data &&
+            {productsLoading ? (
+              <>
+                <Grid item lg={2.4} md={3} sm={4} xs={6}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </Grid>
+                <Grid item lg={2.4} md={3} sm={4} xs={6}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </Grid>
+                <Grid item lg={2.4} md={3} sm={4} xs={6}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </Grid>
+                <Grid item lg={2.4} md={3} sm={4} xs={6}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </Grid>
+                <Grid item lg={2.4} md={3} sm={4} xs={6}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </Grid>
+              </>
+            ) : (
+              data &&
               data.getProducts?.map((props: ProductItemProps) => (
                 <Grid item lg={2.4} md={3} sm={4} xs={6} key={props.id}>
                   <ProductItem
@@ -292,7 +274,8 @@ const Home = () => {
                     )}
                   />
                 </Grid>
-              ))}
+              ))
+            )}
           </Grid>
           <Divider />
         </Container>

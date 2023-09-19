@@ -12,7 +12,7 @@ const PolicyItem = ({ desc, heading, icon }: PolicyItemProps) => {
     <div className={cx("policy-item")}>
       <div className={cx("policy-item__icon")}>{icon}</div>
       <div className={cx("policy-item_content")}>
-        <h3 className={cx("policy-item__heading")}>{heading}</h3>
+        <p className={cx("policy-item__heading")}>{heading}</p>
         <p className={cx("policy-item__desc")}>{desc}</p>
       </div>
     </div>

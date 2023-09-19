@@ -9,7 +9,7 @@ const createToken = (type, user) => {
     return jsonwebtoken_1.default.sign({ userId: user.id }, type === "accessToken"
         ? process.env.ACCESS_TOKEN_SECRET
         : process.env.REFRESH_TOKEN_SECRET, {
-        expiresIn: type === "accessToken" ? "1h" : "2d",
+        expiresIn: type === "accessToken" ? "1m" : "2d",
     });
 };
 exports.createToken = createToken;
@@ -21,8 +21,10 @@ const sendRefreshToken = (res, user, exp) => {
     res.cookie(process.env.REFRESH_TOKEN_NAME, exp ? (0, exports.createRefreshToken)(user, exp) : (0, exports.createToken)("refreshToken", user), {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
+        sameSite: "strict",
         path: "/refresh_token",
+        domain: "localhost",
+        expires: new Date(new Date().getTime() + 60 * 1000 * 60 * 4),
     });
 };
 exports.sendRefreshToken = sendRefreshToken;

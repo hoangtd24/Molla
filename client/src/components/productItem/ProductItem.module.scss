@@ -1,7 +1,7 @@
 .product-wrapper {
   position: relative;
-  width: 100%;
-  max-width: 350px;
+  width: 350px;
+  max-width: 100%;
   transition: all linear 0.2s;
   & > a {
     display: block;
@@ -18,6 +18,21 @@
 
     & .add_btn {
       visibility: visible;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    & .product-actions {
+      visibility: visible;
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  &.loading:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+    & .add_btn {
+      visibility: hidden;
       transform: translateY(0);
       opacity: 1;
     }

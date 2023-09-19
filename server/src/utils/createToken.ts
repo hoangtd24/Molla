@@ -12,7 +12,7 @@ export const createToken = (
       ? (process.env.ACCESS_TOKEN_SECRET as Secret)
       : (process.env.REFRESH_TOKEN_SECRET as Secret),
     {
-      expiresIn: type === "accessToken" ? "1h" : "2d",
+      expiresIn: type === "accessToken" ? "1m" : "2d",
     }
   );
 };
@@ -31,8 +31,10 @@ export const sendRefreshToken = (res: Response, user: User, exp?: number) => {
     {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "strict",
       path: "/refresh_token",
+      domain: "localhost",
+      expires: new Date(new Date().getTime() + 60 * 1000 * 60 * 4),
     }
   );
 };

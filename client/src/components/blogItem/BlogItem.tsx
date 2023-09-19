@@ -33,11 +33,11 @@ const BlogItem = ({ image, title }: BlogProps) => {
           <span> March 29, 2020, </span>
           <span> 0 Comments</span>
         </Box>
-        <h4>
+        <h1>
           <Link to="/" className={cx("title")}>
             {title}
           </Link>
-        </h4>
+        </h1>
         <Link to="/" className={cx("read_btn")}>
           Continue reading
         </Link>

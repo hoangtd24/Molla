@@ -13,7 +13,6 @@ const httpLink = createHttpLink({
   uri: `https://molla-shop-be.onrender.com/graphql`,
   credentials: "include",
 });
-console.log(import.meta.env.PROD);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
@@ -35,7 +34,6 @@ const GetNewAccessToken = async () => {
       withCredentials: true,
     }
   );
-  console.log(res);
   if (res.data && res.data.code === 403) {
     localStorage.removeItem("access_token");
     return "";
