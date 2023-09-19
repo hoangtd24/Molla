@@ -63,6 +63,7 @@ const NavigateBar = () => {
                             to={`/shop/${category.name}`}
                             key={category.id}
                             onClick={() => setVisible(false)}
+                            className={cx("bar-item")}
                           >
                             {category.name}
                           </Link>

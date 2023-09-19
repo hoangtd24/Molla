@@ -38,3 +38,10 @@
   color: #333;
   font-family: inherit;
 }
+
+.bar-item {
+  &::first-letter {
+    font-size: 15px;
+    text-transform: uppercase;
+  }
+}

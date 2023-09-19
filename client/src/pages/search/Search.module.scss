@@ -72,6 +72,10 @@
   &.active {
     color: var(--color-primary);
   }
+  &::first-letter {
+    font-size: 15px;
+    text-transform: uppercase;
+  }
 }
 
 .filter-item + .filter-item {
