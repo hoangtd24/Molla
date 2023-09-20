@@ -7,7 +7,8 @@ interface bannerProps {
   title: string;
   subTitle: string;
   image: string;
-  height: number;
+  height: string;
+  aspectRatio?: string;
 }
 const BannerItem = ({
   heading,
@@ -15,12 +16,18 @@ const BannerItem = ({
   subTitle,
   title,
   height,
+  aspectRatio,
 }: bannerProps) => {
   return (
-    <Box sx={{ position: "relative" }} height={height}>
+    <Box sx={{ position: "relative", height: height }}>
       <img
         src={image}
-        style={{ width: "100%", objectFit: "cover", height: "100%" }}
+        style={{
+          width: "100%",
+          objectFit: "cover",
+          height: "100%",
+          aspectRatio: aspectRatio,
+        }}
         loading="lazy"
         alt={`${title}_thumb`}
       />

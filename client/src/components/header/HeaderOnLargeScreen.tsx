@@ -7,7 +7,8 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { client } from "../../api/apolloClient";
 import { useAuth } from "../../context/UserContext";
@@ -29,13 +30,16 @@ export interface Category {
   name: string;
 }
 
+interface formValues {
+  search: string;
+}
+
 const HeaderOnLargeScreen = () => {
   const [visibleUserMenu, setVisibleUserMenu] = useState<boolean>(false);
   const { isAuthenticated, logoutClient } = useAuth();
-  const searchRef = useRef<HTMLInputElement>(null);
+  const { register, handleSubmit } = useForm<formValues>();
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [logout, _] = useMutation(LOGOUT_USER, {
+  const [logout] = useMutation(LOGOUT_USER, {
     update(cache) {
       cache.modify({
         fields: {
@@ -56,6 +60,16 @@ const HeaderOnLargeScreen = () => {
     logout();
     client.cache.reset();
   };
+
+  const handleSearch: SubmitHandler<formValues> = (data: formValues) => {
+    navigate({
+      pathname: "/search",
+      search: `?${createSearchParams({
+        keyword: `${data.search}`,
+      })}`,
+    });
+  };
+
   return (
     <header className={cx("header")}>
       <Box>
@@ -126,29 +140,23 @@ const HeaderOnLargeScreen = () => {
               </div>
             </Grid>
             <Grid item xs={6}>
-              <div className={cx("search-wrapper")}>
-                <div className={cx("search-box")}>
-                  <input
-                    type="text"
-                    placeholder="Search product ..."
-                    required
-                    ref={searchRef}
-                  />
+              <form onSubmit={handleSubmit(handleSearch)}>
+                <div className={cx("search-wrapper")}>
+                  <div className={cx("search-box")}>
+                    <input
+                      type="text"
+                      placeholder="Search product ..."
+                      required
+                      {...register("search", {
+                        required: true,
+                      })}
+                    />
+                  </div>
+                  <button type="submit" className={cx("search-btn")}>
+                    <SearchIcon />
+                  </button>
                 </div>
-                <div
-                  className={cx("search-btn")}
-                  onClick={() =>
-                    navigate({
-                      pathname: "/search",
-                      search: `?${createSearchParams({
-                        keyword: `${searchRef.current?.value}`,
-                      })}`,
-                    })
-                  }
-                >
-                  <SearchIcon />
-                </div>
-              </div>
+              </form>
             </Grid>
             <Grid item xs={3}>
               <div className={cx("list-action_icon")}>

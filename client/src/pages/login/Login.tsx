@@ -78,7 +78,7 @@ const Login = () => {
       >
         <form className={cx("login-form")} onSubmit={handleSubmit(handleLogin)}>
           <Typography
-            variant="h2"
+            variant="h1"
             sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
           >
             Sign In

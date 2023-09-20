@@ -9,6 +9,7 @@ import {
   Drawer,
   Grid,
   Pagination,
+  Skeleton,
   useMediaQuery,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -18,17 +19,17 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Typography from "@mui/material/Typography";
 import classNames from "classnames/bind";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, NavLink, useSearchParams } from "react-router-dom";
+import { Category } from "../../components/header/HeaderOnLargeScreen";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
 import { SEARCH_PRODUCT } from "../../graphql/query/Product";
 import styles from "./Search.module.scss";
-import { GET_CATEGORIES } from "../../graphql/query/Category";
-import { Category } from "../../components/header/HeaderOnLargeScreen";
+import { sketelonData } from "../../data";
 
 const cx = classNames.bind(styles);
 
@@ -56,7 +57,7 @@ const Search = () => {
   };
 
   //call query filter product
-  const { data } = useQuery(SEARCH_PRODUCT, {
+  const { data, loading } = useQuery(SEARCH_PRODUCT, {
     variables: {
       limit: 6,
       page: page,
@@ -66,7 +67,7 @@ const Search = () => {
       search: searchParams.get("keyword"),
     },
   });
-  const { data: categoryData } = useQuery(GET_CATEGORIES);
+  const { data: categoryData, loading: cateLoading } = useQuery(GET_CATEGORIES);
 
   //toggle drawer in samll screen
   const toggleDrawer =
@@ -88,8 +89,8 @@ const Search = () => {
   return (
     <Box>
       <div className={cx("page-header")}>
-        <h2 className={cx("header")}>Shop</h2>
-        <h3 className={cx("sub-header")}>Find Your Items</h3>
+        <h1 className={cx("header")}>Shop</h1>
+        <h2 className={cx("sub-header")}>Find Your Items</h2>
       </div>
       <Box sx={{ borderBottom: "1px solid #ebebeb" }}>
         <Container>
@@ -128,28 +129,33 @@ const Search = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Category
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Category</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      {categoryData?.getCategories?.map(
-                        (category: Category) => (
-                          <NavLink
-                            to={`/shop/${category.name}`}
-                            className={({ isActive }) =>
-                              cx("filter-item", { active: isActive })
-                            }
-                            key={category.id}
-                          >
-                            {category.name}
-                          </NavLink>
+                      {cateLoading ? (
+                        <div className={cx("category-sketelon__wrap")}>
+                          {sketelonData.slice(0, 6).map((sketelon) => (
+                            <Skeleton
+                              variant="text"
+                              width={"100%"}
+                              sx={{ fontSize: "20px" }}
+                              key={sketelon}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        categoryData?.getCategories?.map(
+                          (category: Category) => (
+                            <NavLink
+                              to={`/shop/${category.name}`}
+                              className={({ isActive }) =>
+                                cx("filter-item", { active: isActive })
+                              }
+                              key={category.id}
+                            >
+                              {category.name}
+                            </NavLink>
+                          )
                         )
                       )}
                     </AccordionDetails>
@@ -168,15 +174,7 @@ const Search = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Popular
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Popular</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       <div className={cx("popular-item")}>
@@ -211,20 +209,28 @@ const Search = () => {
             <Grid item md={9} xs={12} minHeight={500}>
               <div className={cx("filter-result")}>
                 <div className={cx("filter-result__header")}>
-                  {data && data.filter?.total && (
+                  {loading ? (
+                    <Skeleton
+                      variant="text"
+                      sx={{ fontSize: "18px" }}
+                      width={200}
+                    />
+                  ) : data && data.search?.total ? (
                     <p>
                       Showing{" "}
-                      {data.filter.total === 1
+                      {data.search.total === 1
                         ? "a single"
-                        : data.filter.total <= 6
-                        ? `all of ${data.filter.total}`
+                        : data.search.total <= 6
+                        ? `all of ${data.search.total}`
                         : `${6 * (page - 1) + 1} - ${
-                            6 * page < data.filter.total
+                            6 * page < data.search.total
                               ? 6 * page
-                              : data.filter.total
-                          } of ${data.filter.total}`}{" "}
+                              : data.search.total
+                          } of ${data.search.total}`}{" "}
                       products
                     </p>
+                  ) : (
+                    <p>No product match with search</p>
                   )}
                   <div className={cx("filter-sort")}>
                     Sort by:
@@ -261,17 +267,37 @@ const Search = () => {
                 </div>
               </div>
               <Grid item container xs spacing={2}>
-                {data &&
-                  data.search.products.map((product: ProductItemProps) => (
-                    <Grid item xs={6} sm={4} key={product.id}>
-                      <ProductItem {...product} />
-                    </Grid>
-                  ))}
+                {loading
+                  ? sketelonData.slice(0, 6).map((sketelon) => (
+                      <Grid item xs={6} sm={4} key={sketelon}>
+                        <Skeleton
+                          variant="rectangular"
+                          width={350}
+                          sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          width={"100%"}
+                          sx={{ fontSize: "20px", marginTop: "10px" }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          width={"100%"}
+                          sx={{ fontSize: "20px" }}
+                        />
+                      </Grid>
+                    ))
+                  : data &&
+                    data.search.products.map((product: ProductItemProps) => (
+                      <Grid item xs={6} sm={4} key={product.id}>
+                        <ProductItem {...product} />
+                      </Grid>
+                    ))}
               </Grid>
-              {data && data.filter?.pages && (
+              {data && data.search?.pages > 1 && (
                 <div className={cx("pagination")}>
                   <Pagination
-                    count={data.filter.pages}
+                    count={data.search.pages}
                     variant="outlined"
                     shape="rounded"
                     page={page}
@@ -310,15 +336,7 @@ const Search = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Category
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Category</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       {categoryData?.getCategories?.map(
@@ -350,15 +368,7 @@ const Search = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Popular
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Popular</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       <p className={cx("filter-item")}>Everage rating</p>

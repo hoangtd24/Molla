@@ -14,6 +14,7 @@ import { includeWislist } from "../../../../utils/includeWishlst";
 import { useQuery } from "@apollo/client";
 import { FILTER_PRODUCT } from "../../../../graphql/query/Product";
 import { GET_WISHLISTS } from "../../../../graphql/query/Wishlist";
+import { sketelonData } from "../../../../data";
 
 const ProductTabs = memo(() => {
   const matches = useMediaQuery("(max-width:900px)");
@@ -110,108 +111,38 @@ const ProductTabs = memo(() => {
             1024: { slidesPerView: 5, slidesPerGroup: 3, spaceBetween: 16 },
           }}
         >
-          {loading ? (
-            <>
-              <SwiperSlide>
-                <Skeleton
-                  variant="rectangular"
-                  width={350}
-                  sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px", marginTop: "10px" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px" }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Skeleton
-                  variant="rectangular"
-                  width={350}
-                  sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px", marginTop: "10px" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px" }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Skeleton
-                  variant="rectangular"
-                  width={350}
-                  sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px", marginTop: "10px" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px" }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Skeleton
-                  variant="rectangular"
-                  width={350}
-                  sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px", marginTop: "10px" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px" }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Skeleton
-                  variant="rectangular"
-                  width={350}
-                  sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px", marginTop: "10px" }}
-                />
-                <Skeleton
-                  variant="text"
-                  width={"100%"}
-                  sx={{ fontSize: "20px" }}
-                />
-              </SwiperSlide>
-            </>
-          ) : (
-            dataFilter &&
-            dataFilter.filter?.products?.map((props: ProductItemProps) => (
-              <SwiperSlide key={props.id} style={{ marginBottom: "60px" }}>
-                <ProductItem
-                  {...props}
-                  inWishlist={includeWislist(
-                    wishlistData?.getWishlists,
-                    props.id
-                  )}
-                />
-              </SwiperSlide>
-            ))
-          )}
+          {loading
+            ? sketelonData.map((sketelon) => (
+                <SwiperSlide key={sketelon}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={350}
+                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px", marginTop: "10px" }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width={"100%"}
+                    sx={{ fontSize: "20px" }}
+                  />
+                </SwiperSlide>
+              ))
+            : dataFilter &&
+              dataFilter.filter?.products?.map((props: ProductItemProps) => (
+                <SwiperSlide key={props.id} style={{ marginBottom: "60px" }}>
+                  <ProductItem
+                    {...props}
+                    inWishlist={includeWislist(
+                      wishlistData?.getWishlists,
+                      props.id
+                    )}
+                  />
+                </SwiperSlide>
+              ))}
         </Swiper>
       </Box>
     </Box>

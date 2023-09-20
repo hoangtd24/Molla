@@ -9,6 +9,7 @@ import {
   Drawer,
   Grid,
   Pagination,
+  Skeleton,
   useMediaQuery,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -18,20 +19,20 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Typography from "@mui/material/Typography";
 import classNames from "classnames/bind";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
+import { Category } from "../../components/header/HeaderOnLargeScreen";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
-import { FILTER_PRODUCT } from "../../graphql/query/Product";
-import styles from "./Shop.module.scss";
-import { GET_CATEGORIES } from "../../graphql/query/Category";
-import { Category } from "../../components/header/HeaderOnLargeScreen";
 import ProductItemThrough from "../../components/productItem/ProductItemThrough";
-import { includeWislist } from "../../utils/includeWishlst";
+import { sketelonData } from "../../data";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
+import { FILTER_PRODUCT } from "../../graphql/query/Product";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
+import { includeWislist } from "../../utils/includeWishlst";
+import styles from "./Shop.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -58,12 +59,12 @@ const Shop = () => {
     setPage(value);
   };
 
-  const { data: categoryData } = useQuery(GET_CATEGORIES);
+  const { data: categoryData, loading: cateLoading } = useQuery(GET_CATEGORIES);
   const { data: wishlistData } = useQuery(GET_WISHLISTS);
 
   //call query filter product
   const param = useParams();
-  const { data } = useQuery(FILTER_PRODUCT, {
+  const { data, loading } = useQuery(FILTER_PRODUCT, {
     variables: {
       category: param.name === "all" ? null : param.name,
       limit: 6,
@@ -95,8 +96,8 @@ const Shop = () => {
   return (
     <Box>
       <div className={cx("page-header")}>
-        <h2 className={cx("header")}>Shop</h2>
-        <h3 className={cx("sub-header")}>Find Your Items</h3>
+        <h1 className={cx("header")}>Shop</h1>
+        <h2 className={cx("sub-header")}>Find Your Items</h2>
       </div>
       <Box sx={{ borderBottom: "1px solid #ebebeb" }}>
         <Container>
@@ -133,28 +134,33 @@ const Shop = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Category
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Category</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
-                      {categoryData?.getCategories?.map(
-                        (category: Category) => (
-                          <NavLink
-                            to={`/shop/${category.name}`}
-                            className={({ isActive }) =>
-                              cx("filter-item", { active: isActive })
-                            }
-                            key={category.id}
-                          >
-                            {category.name}
-                          </NavLink>
+                      {cateLoading ? (
+                        <div className={cx("category-sketelon__wrap")}>
+                          {sketelonData.slice(0, 6).map((sketelon) => (
+                            <Skeleton
+                              variant="text"
+                              width={"100%"}
+                              sx={{ fontSize: "20px" }}
+                              key={sketelon}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        categoryData?.getCategories?.map(
+                          (category: Category) => (
+                            <NavLink
+                              to={`/shop/${category.name}`}
+                              className={({ isActive }) =>
+                                cx("filter-item", { active: isActive })
+                              }
+                              key={category.id}
+                            >
+                              {category.name}
+                            </NavLink>
+                          )
                         )
                       )}
                     </AccordionDetails>
@@ -173,15 +179,7 @@ const Shop = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Popular
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Popular</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       <div className={cx("popular-item")}>
@@ -216,20 +214,29 @@ const Shop = () => {
             <Grid item md={9} xs={12} minHeight={500}>
               <div className={cx("filter-result")}>
                 <div className={cx("filter-result__header")}>
-                  {data && data.filter?.total && (
-                    <p>
-                      Showing{" "}
-                      {data.filter.total === 1
-                        ? "a single"
-                        : data.filter.total <= 6
-                        ? `all of ${data.filter.total}`
-                        : `${6 * (page - 1) + 1} - ${
-                            6 * page < data.filter.total
-                              ? 6 * page
-                              : data.filter.total
-                          } of ${data.filter.total}`}{" "}
-                      products
-                    </p>
+                  {loading ? (
+                    <Skeleton
+                      variant="text"
+                      sx={{ fontSize: "18px" }}
+                      width={200}
+                    />
+                  ) : (
+                    data &&
+                    data.filter?.total && (
+                      <p>
+                        Showing{" "}
+                        {data.filter.total === 1
+                          ? "a single"
+                          : data.filter.total <= 6
+                          ? `all of ${data.filter.total}`
+                          : `${6 * (page - 1) + 1} - ${
+                              6 * page < data.filter.total
+                                ? 6 * page
+                                : data.filter.total
+                            } of ${data.filter.total}`}{" "}
+                        products
+                      </p>
+                    )
                   )}
                   <div className={cx("filter-sort")}>
                     Sort by:
@@ -276,32 +283,52 @@ const Shop = () => {
                 </div>
               </div>
               <Grid item container xs spacing={2}>
-                {data &&
-                  data.filter.products.map((product: ProductItemProps) => {
-                    return view === 1 ? (
-                      <Grid item xs={6} sm={4} key={product.id}>
-                        <ProductItem
-                          {...product}
-                          inWishlist={includeWislist(
-                            wishlistData?.getWishlists,
-                            product.id
-                          )}
+                {loading
+                  ? sketelonData.slice(0, 6).map((sketelon) => (
+                      <Grid item xs={6} sm={4} key={sketelon}>
+                        <Skeleton
+                          variant="rectangular"
+                          width={350}
+                          sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          width={"100%"}
+                          sx={{ fontSize: "20px", marginTop: "10px" }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          width={"100%"}
+                          sx={{ fontSize: "20px" }}
                         />
                       </Grid>
-                    ) : (
-                      <Grid item xs={12} key={product.id}>
-                        <ProductItemThrough
-                          {...product}
-                          inWishlist={includeWislist(
-                            wishlistData?.getWishlists,
-                            product.id
-                          )}
-                        />
-                      </Grid>
-                    );
-                  })}
+                    ))
+                  : data &&
+                    data.filter.products.map((product: ProductItemProps) => {
+                      return view === 1 ? (
+                        <Grid item xs={6} sm={4} key={product.id}>
+                          <ProductItem
+                            {...product}
+                            inWishlist={includeWislist(
+                              wishlistData?.getWishlists,
+                              product.id
+                            )}
+                          />
+                        </Grid>
+                      ) : (
+                        <Grid item xs={12} key={product.id}>
+                          <ProductItemThrough
+                            {...product}
+                            inWishlist={includeWislist(
+                              wishlistData?.getWishlists,
+                              product.id
+                            )}
+                          />
+                        </Grid>
+                      );
+                    })}
               </Grid>
-              {data && data.filter?.pages > 1 && (
+              {!loading && data?.filter?.pages > 1 && (
                 <div className={cx("pagination")}>
                   <Pagination
                     count={data.filter.pages}
@@ -343,15 +370,7 @@ const Shop = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Category
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Category</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       {categoryData?.getCategories?.map(
@@ -383,15 +402,7 @@ const Shop = () => {
                       id="panel1a-header"
                       sx={{ padding: "0" }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          color: "#666",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Popular
-                      </Typography>
+                      <h3 className={cx("category-heading")}>Popular</h3>
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "0" }}>
                       <p className={cx("filter-item")}>Everage rating</p>

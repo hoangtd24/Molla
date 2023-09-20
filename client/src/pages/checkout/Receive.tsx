@@ -25,8 +25,8 @@ const Receive = () => {
   return (
     <Box>
       <div className={cx("page-header")}>
-        <h2 className={cx("header")}>Checkout</h2>
-        <h3 className={cx("sub-header")}>Shop</h3>
+        <h1 className={cx("header")}>Checkout</h1>
+        <h2 className={cx("sub-header")}>Shop</h2>
       </div>
       <Box>
         <Container>

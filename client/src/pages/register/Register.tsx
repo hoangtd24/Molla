@@ -59,7 +59,7 @@ const Register = () => {
           onSubmit={handleSubmit(handleRegister)}
         >
           <Typography
-            variant="h2"
+            variant="h1"
             sx={{ fontSize: "20px", textAlign: "center", lineHeight: "2.1" }}
           >
             Sign Up

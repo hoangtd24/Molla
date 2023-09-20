@@ -5,7 +5,6 @@ import {
   Divider,
   Grid,
   Skeleton,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import classNames from "classnames/bind";
@@ -28,10 +27,9 @@ import BlogItem from "../../components/blogItem/BlogItem";
 import ProductItem, {
   ProductItemProps,
 } from "../../components/productItem/ProductItem";
-import { brands } from "../../data";
+import { brands, sketelonData } from "../../data";
 import { GET_PRODUCTS } from "../../graphql/query/Product";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
-import { ItemCenter } from "../../styles";
 import { includeWislist } from "../../utils/includeWishlst";
 import BannerItem from "./components/banner/BannerItem";
 import DealBanner from "./components/banner/DealBanner";
@@ -72,20 +70,13 @@ const Home = () => {
         >
           {brands.map((brand, index) => (
             <SwiperSlide key={index}>
-              <Box
-                style={ItemCenter}
-                sx={{
-                  height: "90px",
-                  border: "1px solid #ccc",
-                  borderTop: "none",
-                }}
-              >
+              <div className={cx("brand-wrapper")}>
                 <img
                   src={brand}
                   alt="brand_le_barrel"
                   className={cx("image")}
                 />
-              </Box>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -99,7 +90,8 @@ const Home = () => {
                 image={images.banner1}
                 title="Coffee Tables"
                 subTitle="from $19.99"
-                height={528}
+                height={`${matches ? "unset" : "528px"}`}
+                aspectRatio={`${matches ? "9/10" : "unset"}`}
               />
             </Grid>
             <Grid item lg={3} sm={6} xs={12}>
@@ -108,7 +100,8 @@ const Home = () => {
                 image={images.banner2}
                 title="Kitchenware"
                 subTitle="from $39.00"
-                height={528}
+                height={`${matches ? "unset" : "528px"}`}
+                aspectRatio={`${matches ? "9/10" : "unset"}`}
               />
             </Grid>
             <Grid item lg={4} container spacing={2} xs={12}>
@@ -118,7 +111,7 @@ const Home = () => {
                   image={images.banner3}
                   title="Home Decor"
                   subTitle="up to 30% off"
-                  height={256}
+                  height={"256px"}
                 />
               </Grid>
               <Grid item md={6} lg={12} xs={12}>
@@ -127,7 +120,7 @@ const Home = () => {
                   image={images.banner4}
                   title="Collection Chairs"
                   subTitle="from $39.00"
-                  height={256}
+                  height={"256px"}
                 />
               </Grid>
             </Grid>
@@ -174,108 +167,38 @@ const Home = () => {
             </Box>
           </Box>
           <Grid container spacing={2}>
-            {productsLoading ? (
-              <>
-                <Grid item lg={2.4} md={3} sm={4} xs={6}>
-                  <Skeleton
-                    variant="rectangular"
-                    width={350}
-                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px", marginTop: "10px" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px" }}
-                  />
-                </Grid>
-                <Grid item lg={2.4} md={3} sm={4} xs={6}>
-                  <Skeleton
-                    variant="rectangular"
-                    width={350}
-                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px", marginTop: "10px" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px" }}
-                  />
-                </Grid>
-                <Grid item lg={2.4} md={3} sm={4} xs={6}>
-                  <Skeleton
-                    variant="rectangular"
-                    width={350}
-                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px", marginTop: "10px" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px" }}
-                  />
-                </Grid>
-                <Grid item lg={2.4} md={3} sm={4} xs={6}>
-                  <Skeleton
-                    variant="rectangular"
-                    width={350}
-                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px", marginTop: "10px" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px" }}
-                  />
-                </Grid>
-                <Grid item lg={2.4} md={3} sm={4} xs={6}>
-                  <Skeleton
-                    variant="rectangular"
-                    width={350}
-                    sx={{ paddingTop: "100%", maxWidth: "100%" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px", marginTop: "10px" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width={"100%"}
-                    sx={{ fontSize: "20px" }}
-                  />
-                </Grid>
-              </>
-            ) : (
-              data &&
-              data.getProducts?.map((props: ProductItemProps) => (
-                <Grid item lg={2.4} md={3} sm={4} xs={6} key={props.id}>
-                  <ProductItem
-                    {...props}
-                    inWishlist={includeWislist(
-                      wishlistData?.getWishlists,
-                      props.id
-                    )}
-                  />
-                </Grid>
-              ))
-            )}
+            {productsLoading
+              ? sketelonData.map((sketelon) => (
+                  <Grid item lg={2.4} md={3} sm={4} xs={6} key={sketelon}>
+                    <Skeleton
+                      variant="rectangular"
+                      width={350}
+                      sx={{ paddingTop: "100%", maxWidth: "100%" }}
+                    />
+                    <Skeleton
+                      variant="text"
+                      width={"100%"}
+                      sx={{ fontSize: "20px", marginTop: "10px" }}
+                    />
+                    <Skeleton
+                      variant="text"
+                      width={"100%"}
+                      sx={{ fontSize: "20px" }}
+                    />
+                  </Grid>
+                ))
+              : data &&
+                data.getProducts?.map((props: ProductItemProps) => (
+                  <Grid item lg={2.4} md={3} sm={4} xs={6} key={props.id}>
+                    <ProductItem
+                      {...props}
+                      inWishlist={includeWislist(
+                        wishlistData?.getWishlists,
+                        props.id
+                      )}
+                    />
+                  </Grid>
+                ))}
           </Grid>
           <Divider />
         </Container>
@@ -370,50 +293,18 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
-      <Box
-        sx={{
+      <div
+        className={cx("cupon-wrap")}
+        style={{
           backgroundImage: `url(${images.parallax})`,
           paddingTop: `${matches ? "40%" : "20%"}`,
-          backgroundSize: "cover",
-          position: "relative",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h3"
-            component="h2"
-            sx={{
-              fontSize: `${matches ? "30px" : "40px"}`,
-              color: "#fff",
-              fontFamily: "Jost",
-              marginBottom: "4px",
-            }}
-          >
-            Get The Latest Deals
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="span"
-            sx={{
-              fontSize: `${matches ? "14px" : "15px"}`,
-              color: "#fff",
-              fontFamily: "Jost",
-              fontWeight: "300",
-              marginBottom: `${matches ? "16px" : "24px"}`,
-            }}
-          >
+        <div className={cx("cupon-content")}>
+          <p className={cx("cupon-title")}>Get The Latest Deals</p>
+          <span className={cx("cupon-desc")}>
             and receive <strong>$20 coupon</strong> for first shopping
-          </Typography>
+          </span>
           <div className={cx("give-cupon")}>
             <input
               type="text"
@@ -424,8 +315,8 @@ const Home = () => {
               Subscribe <ArrowRightAltIcon sx={{ fontSize: "16px" }} />
             </button>
           </div>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </Box>
   );
 };

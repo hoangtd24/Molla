@@ -157,7 +157,7 @@ export default function DetailProduct() {
                 </>
               )}
               {loading ? (
-                <div className={cx("sketelon-")}>
+                <div className={cx("sketelon-wrap")}>
                   <Skeleton variant="rectangular" width={100} height={100} />
                   <Skeleton variant="rectangular" width={100} height={100} />
                   <Skeleton variant="rectangular" width={100} height={100} />
