@@ -13,6 +13,7 @@ import {
 import { Category } from "./Category";
 import { Discount } from "./Discount";
 import { Review } from "./Review";
+import { Attribute } from "./Attribute";
 
 @ObjectType()
 @Entity()
@@ -46,6 +47,10 @@ export class Product extends BaseEntity {
   @Field(() => [Review])
   @OneToMany(() => Review, (review) => review.product)
   reviews?: Review[];
+
+  @Field(() => [Attribute])
+  @OneToMany(() => Attribute, (attribute) => attribute.product)
+  attr?: Attribute[];
 
   @Field(() => Float)
   @Column({ type: "float", nullable: true })

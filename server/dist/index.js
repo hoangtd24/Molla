@@ -36,6 +36,14 @@ const Wishlist_1 = require("./entities/Wishlist");
 const Wishlist_2 = require("./resolvers/Wishlist");
 const path_1 = __importDefault(require("path"));
 const constants_1 = require("./constants");
+const Attribute_1 = require("./entities/Attribute");
+const AttributeValue_1 = require("./entities/AttributeValue");
+const Sku_1 = require("./entities/Sku");
+const VariantSku_1 = require("./entities/VariantSku");
+const Atrribute_1 = require("./resolvers/Atrribute");
+const AtrributeValue_1 = require("./resolvers/AtrributeValue");
+const Sku_2 = require("./resolvers/Sku");
+const VariantSku_2 = require("./resolvers/VariantSku");
 exports.AppDataSource = new typeorm_1.DataSource(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ type: "postgres" }, (constants_1.__prod__
     ? { url: process.env.POSTGRES_URL }
     : {
@@ -61,6 +69,10 @@ exports.AppDataSource = new typeorm_1.DataSource(Object.assign(Object.assign(Obj
         Order_1.Order,
         Payment_1.Payment,
         Wishlist_1.Wishlist,
+        Attribute_1.Attribute,
+        AttributeValue_1.AttributeValue,
+        Sku_1.Sku,
+        VariantSku_1.VariantSku,
     ], migrations: [path_1.default.join(__dirname, "./migrations/*")] }));
 const main = async () => {
     await exports.AppDataSource.initialize()
@@ -98,6 +110,10 @@ const main = async () => {
                 Payment_2.PaymentResolver,
                 Order_2.OrderResolver,
                 Wishlist_2.WishlistResolver,
+                Atrribute_1.AttributeResolver,
+                AtrributeValue_1.AttributeValueResolver,
+                Sku_2.SkuResolver,
+                VariantSku_2.VariantSkuResolver,
             ],
         }),
         plugins: [

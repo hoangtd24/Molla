@@ -34,6 +34,14 @@ import { Wishlist } from "./entities/Wishlist";
 import { WishlistResolver } from "./resolvers/Wishlist";
 import path from "path";
 import { __prod__ } from "./constants";
+import { Attribute } from "./entities/Attribute";
+import { AttributeValue } from "./entities/AttributeValue";
+import { Sku } from "./entities/Sku";
+import { VariantSku } from "./entities/VariantSku";
+import { AttributeResolver } from "./resolvers/Atrribute";
+import { AttributeValueResolver } from "./resolvers/AtrributeValue";
+import { SkuResolver } from "./resolvers/Sku";
+import { VariantSkuResolver } from "./resolvers/VariantSku";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -66,6 +74,10 @@ export const AppDataSource = new DataSource({
     Order,
     Payment,
     Wishlist,
+    Attribute,
+    AttributeValue,
+    Sku,
+    VariantSku,
   ],
   migrations: [path.join(__dirname, "./migrations/*")],
 });
@@ -111,6 +123,10 @@ const main = async () => {
         PaymentResolver,
         OrderResolver,
         WishlistResolver,
+        AttributeResolver,
+        AttributeValueResolver,
+        SkuResolver,
+        VariantSkuResolver,
       ],
     }),
     plugins: [

@@ -10,7 +10,7 @@ import { onError } from "@apollo/client/link/error";
 import axios from "axios";
 
 const httpLink = createHttpLink({
-  uri: `https://molla-shop-be.onrender.com/graphql`,
+  uri: `http://localhost:4000/graphql`,
   credentials: "include",
 });
 
@@ -29,7 +29,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 const GetNewAccessToken = async () => {
   const res = await axios.get(
-    `https://molla-shop-be.onrender.com/refresh_token`,
+    `http://localhost:4000/refresh_token`,
     {
       withCredentials: true,
     }

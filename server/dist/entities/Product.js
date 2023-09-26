@@ -15,6 +15,7 @@ const typeorm_1 = require("typeorm");
 const Category_1 = require("./Category");
 const Discount_1 = require("./Discount");
 const Review_1 = require("./Review");
+const Attribute_1 = require("./Attribute");
 let Product = exports.Product = class Product extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -54,6 +55,11 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Review_1.Review, (review) => review.product),
     __metadata("design:type", Array)
 ], Product.prototype, "reviews", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => [Attribute_1.Attribute]),
+    (0, typeorm_1.OneToMany)(() => Attribute_1.Attribute, (attribute) => attribute.product),
+    __metadata("design:type", Array)
+], Product.prototype, "attr", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     (0, typeorm_1.Column)({ type: "float", nullable: true }),

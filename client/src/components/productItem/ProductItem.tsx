@@ -160,8 +160,8 @@ const ProductItem = ({
             `$${price}`
           ) : (
             <>
-              <span className={cx("product-price__new")}>${price}</span>
               <span className={cx("product-price__old")}>${newPrice}</span>
+              <span className={cx("product-price__new")}>${price}</span>
             </>
           )}
         </div>
