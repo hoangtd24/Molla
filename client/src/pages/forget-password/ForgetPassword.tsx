@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Box, Paper, Typography } from "@mui/material";
 import classNames from "classnames/bind";
@@ -87,11 +86,11 @@ const ForgetPassword = () => {
             </div>
           </Box>
           {loading && <span className={cx("loading")}>Please wait ...</span>}
-          {(errors as any)[Object.keys(errors)[0]]?.message && (
+          {errors[Object.keys(errors)[0] as keyof formValues]?.message && (
             <div className={cx("error")}>
               <span className={cx("error-heading")}>Error:</span>
               <span className={cx("error-title")}>
-                {(errors as any)[Object.keys(errors)[0]]?.message}
+                {errors[Object.keys(errors)[0] as keyof formValues]?.message}
               </span>
             </div>
           )}

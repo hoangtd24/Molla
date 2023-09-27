@@ -27,6 +27,8 @@ import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import ActionIcon from "../actionIcon/ActionIcon";
 import DropDownItem from "../dropdownItem/DropDownItem";
 import styles from "./Header.module.scss";
+import { GET_CATEGORIES } from "../../graphql/query/Category";
+import { Category } from "./HeaderOnLargeScreen";
 
 const cx = classNames.bind(styles);
 
@@ -75,6 +77,7 @@ const HeaderOnSmallScreen = () => {
 
   const { data: cartData } = useQuery(GET_CARTS);
   const { data: wishlistData } = useQuery(GET_WISHLISTS);
+  const { data: categoryData } = useQuery(GET_CATEGORIES);
   return (
     <header className={cx("header")}>
       <Box>
@@ -294,15 +297,17 @@ const HeaderOnSmallScreen = () => {
                             flexDirection: "column",
                           }}
                         >
-                          <Link to="/">Furniture</Link>
-                          <Link to="/">Sofas & Sleep Sofas</Link>
-                          <Link to="/">Decor</Link>
-                          <Link to="/">Lighting</Link>
-                          <Link to="/">Beds</Link>
-                          <Link to="/">Storage</Link>
-                          <Link to="/">Kitchen cabinets</Link>
-                          <Link to="/">Electronics</Link>
-                          <Link to="/">Coffee & Tables</Link>
+                          {categoryData?.getCategories?.map(
+                            (category: Category) => (
+                              <Link
+                                to={`/shop/${category.name}`}
+                                key={category.id}
+                                className={cx("bar-item")}
+                              >
+                                {category.name}
+                              </Link>
+                            )
+                          )}
                         </Box>
                       </div>
                     )}

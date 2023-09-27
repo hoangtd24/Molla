@@ -18,7 +18,6 @@ interface formValues {
   password: string;
 }
 const Login = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -118,11 +117,11 @@ const Login = () => {
             </div>
           </Box>
           {loading && <span className={cx("loading")}>Please wait ...</span>}
-          {(errors as any)[Object.keys(errors)[0]]?.message && (
+          {errors[Object.keys(errors)[0] as keyof formValues]?.message && (
             <div className={cx("error")}>
               <span className={cx("error-heading")}>Error:</span>
               <span className={cx("error-title")}>
-                {(errors as any)[Object.keys(errors)[0]]?.message}
+                {errors[Object.keys(errors)[0] as keyof formValues]?.message}
               </span>
             </div>
           )}

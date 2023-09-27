@@ -8,6 +8,8 @@ import UserContextProvider from "./context/UserContext.tsx";
 import SnackBar from "./components/SnackBar/SnackBar.tsx";
 import SnackBarContextProvider from "./context/SnackBar.tsx";
 import { LinearProgress } from "@mui/material";
+import QuickView from "./components/quickview/QuickView.tsx";
+import QuickViewContextProvider from "./context/QuickView.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ApolloProvider client={client}>
@@ -15,10 +17,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <UserContextProvider>
           <SnackBarContextProvider>
-            <Suspense fallback={<LinearProgress color="success" />}>
-              <App />
-            </Suspense>
-            <SnackBar />
+            <QuickViewContextProvider>
+              <Suspense fallback={<LinearProgress color="success" />}>
+                <App />
+              </Suspense>
+              <SnackBar />
+              <QuickView />
+            </QuickViewContextProvider>
           </SnackBarContextProvider>
         </UserContextProvider>
       </BrowserRouter>

@@ -13,6 +13,7 @@ import { Box, Container, Divider, Grid, Rating, Skeleton } from "@mui/material";
 import classNames from "classnames/bind";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -38,6 +39,10 @@ import { DETAIL_PRODUCT } from "../../graphql/query/Product";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import { includeWislist } from "../../utils/includeWishlst";
 import styles from "./DetailProduct.module.scss";
+import {
+  CREATE_WISHLIST,
+  REMOVE_WISHLIST_BY_PRODUCT_ID,
+} from "../../graphql/mutation/Wishlist";
 
 const cx = classNames.bind(styles);
 
@@ -63,10 +68,51 @@ export default function DetailProduct() {
     refetchQueries: [GET_CARTS],
   });
 
+  const [createWishlist] = useMutation(CREATE_WISHLIST, {
+    refetchQueries: [GET_WISHLISTS],
+  });
+
+  const [removeWishlistByProductId] = useMutation(
+    REMOVE_WISHLIST_BY_PRODUCT_ID,
+    { refetchQueries: [GET_WISHLISTS] }
+  );
   useEffect(() => {
     if (data?.detailProduct?.product?.name)
       document.title = `${data.detailProduct.product.name}-Molla Funiture`;
   }, [data]);
+  // fn handle add item to wisjlist
+  const handleAddToWishlist = async (id: number) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    const inWishlist = includeWislist(
+      wishlistData?.getWishlists,
+      String(param.id)
+    );
+    if (!inWishlist) {
+      const res = await createWishlist({
+        variables: {
+          productId: Number(id),
+        },
+      });
+      if (res.data?.createWishlist?.success) {
+        setOpenSnackBar(true);
+        setMessageSnackBar("Added product to wishlist");
+      }
+    } else {
+      const res = await removeWishlistByProductId({
+        variables: {
+          productId: Number(id),
+        },
+      });
+      if (res.data?.removeWishlistByProductId?.success) {
+        setOpenSnackBar(true);
+        setMessageSnackBar("Product removed from wishlist");
+      }
+    }
+  };
+
+  //fn handle add to cart
   const handleAddToCart = async (id: number) => {
     if (!isAuthenticated) {
       navigate("/login", { state: location });
@@ -308,10 +354,28 @@ export default function DetailProduct() {
                 {loading ? (
                   <Skeleton variant="rectangular" width={200} height={40} />
                 ) : (
-                  <button className={cx("product-actions__wishlist")}>
-                    <FavoriteBorderOutlinedIcon
-                      sx={{ fontSize: "16px", color: "var(--color-primary)" }}
-                    />
+                  <button
+                    className={cx("product-actions__wishlist")}
+                    onClick={() => handleAddToWishlist(Number(param.id))}
+                  >
+                    {includeWislist(
+                      wishlistData?.getWishlists,
+                      String(param.id)
+                    ) ? (
+                      <FavoriteIcon
+                        sx={{
+                          fontSize: "16px",
+                          color: "var(--color-primary)",
+                        }}
+                      />
+                    ) : (
+                      <FavoriteBorderOutlinedIcon
+                        sx={{
+                          fontSize: "16px",
+                          color: "var(--color-primary)",
+                        }}
+                      />
+                    )}
                     <span>Add to wishlist</span>
                   </button>
                 )}

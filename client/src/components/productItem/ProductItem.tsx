@@ -16,6 +16,7 @@ import { GET_CARTS } from "../../graphql/query/Cart";
 import { GET_WISHLISTS } from "../../graphql/query/Wishlist";
 import styles from "./ProductItem.module.scss";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useQuickView } from "../../context/QuickView";
 const cx = classNames.bind(styles);
 export interface ProductItemProps {
   id: string;
@@ -36,6 +37,7 @@ const ProductItem = ({
   inWishlist,
 }: ProductItemProps) => {
   const [bgImage, setBgImage] = useState<string>(images[0]);
+  const { handleOpen } = useQuickView();
 
   //mutation create cart
   const [createCart] = useMutation(CREATE_CART, {
@@ -138,13 +140,8 @@ const ProductItem = ({
             <FavoriteBorderIcon sx={{ fontSize: "16px" }} />
           </span>
         )}
-        <span>
-          <Link
-            to={`/detail-product/${id}`}
-            aria-label={`detail product ${name}`}
-          >
-            <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />
-          </Link>
+        <span onClick={() => handleOpen(id)}>
+          <VisibilityOutlinedIcon sx={{ fontSize: "16px" }} />
         </span>
       </div>
       <div className={cx("product-content")}>

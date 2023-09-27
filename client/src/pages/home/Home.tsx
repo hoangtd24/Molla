@@ -35,6 +35,7 @@ import BannerItem from "./components/banner/BannerItem";
 import DealBanner from "./components/banner/DealBanner";
 import PolicyItem from "./components/policyItem/PolicyItem";
 import ProductTabs from "./components/productTabs/ProductTabs";
+import QuickView from "../../components/quickview/QuickView";
 
 const cx = classNames.bind(styles);
 const Home = () => {
@@ -317,6 +318,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <QuickView />
     </Box>
   );
 };

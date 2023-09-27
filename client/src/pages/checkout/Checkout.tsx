@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQuery } from "@apollo/client";
+import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { Box, Container, Grid } from "@mui/material";
 import classNames from "classnames/bind";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "./Checkout.module.scss";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
-import { GET_CARTS } from "../../graphql/query/Cart";
-import { useMutation, useQuery } from "@apollo/client";
 import { CartItemprops } from "../../components/cartItem/CartItem/CartItem";
-import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
-import { useState, useEffect } from "react";
-import { ME } from "../../graphql/query/User";
-import { GET_PAYMENTS } from "../../graphql/query/Payment";
-import { CREATE_ORDER } from "../../graphql/mutation/Order";
 import { CLEAR_CART } from "../../graphql/mutation/Cart";
+import { CREATE_ORDER } from "../../graphql/mutation/Order";
+import { GET_CARTS } from "../../graphql/query/Cart";
+import { GET_PAYMENTS } from "../../graphql/query/Payment";
+import { ME } from "../../graphql/query/User";
+import styles from "./Checkout.module.scss";
 
 const cx = classNames.bind(styles);
 interface formValues {
@@ -166,11 +165,15 @@ const Checkout = () => {
                     id="address"
                   />
                 </div>
-                {(errors as any)[Object.keys(errors)[0]]?.message && (
+                {errors[Object.keys(errors)[0] as keyof formValues]
+                  ?.message && (
                   <div className={cx("error")}>
                     <span className={cx("error-heading")}>Error:</span>
                     <span className={cx("error-title")}>
-                      {(errors as any)[Object.keys(errors)[0]]?.message}
+                      {
+                        errors[Object.keys(errors)[0] as keyof formValues]
+                          ?.message
+                      }
                     </span>
                   </div>
                 )}
